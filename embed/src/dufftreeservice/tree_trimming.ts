@@ -19,7 +19,7 @@ export type PricingArguments = {
 	easy_to_haul_out: boolean
 }
 
-const do_we_need_to_climb = ({
+const can_we_get_away_without_climbing = ({
 	distance_from_ground,
 	how_big_around_is_it,
 }: {
@@ -32,7 +32,7 @@ const do_we_need_to_climb = ({
 	if (distance_from_ground === '15-20 feet')
 		return how_big_around_is_it === '1-3 inches'
 
-	return true
+	return false
 }
 
 const increase_price_based_just_on_size = ({
@@ -140,7 +140,7 @@ export const pricing = ({
 	okay_if_it_falls,
 	easy_to_haul_out,
 }: PricingArguments) => {
-	const need_to_climb = do_we_need_to_climb({ distance_from_ground, how_big_around_is_it })
+	const need_to_climb = !can_we_get_away_without_climbing({ distance_from_ground, how_big_around_is_it })
 
 	const base_price = fnum('300')
 	const subtotal = base_price.plus(increase_price_based_just_on_size({ how_big_around_is_it, need_to_climb }))
@@ -152,19 +152,19 @@ export const pricing = ({
 		})
 		: fnum('0')
 
-	const over_something_increase = !okay_if_it_falls
-		? increase_by_ratio({
+	const over_something_increase = okay_if_it_falls
+		? fnum('0')
+		: increase_by_ratio({
 			value: subtotal,
 			ratio: cost_increase_ratio_if_its_over_something({ how_big_around_is_it }),
 		})
-		: fnum('0')
 
-	const not_easy_to_haul_out_increase = !easy_to_haul_out
-		? increase_by_ratio({
+	const not_easy_to_haul_out_increase = easy_to_haul_out
+		? fnum('0')
+		: increase_by_ratio({
 			value: subtotal,
 			ratio: cost_increase_ratio_if_its_not_easy_to_haul_out({ how_big_around_is_it }),
 		})
-		: fnum('0')
 
 	const total = subtotal
 		.plus(broken_branches_increase)

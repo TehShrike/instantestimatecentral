@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*.ts", "src/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte"],
+  "include": ["embed/src/**/*.ts", "embed/src/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
@@ -39,7 +39,7 @@
     // Recommended Options
     "strict": true,
     // "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
+    // "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
