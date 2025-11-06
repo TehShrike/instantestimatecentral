@@ -1,5 +1,5 @@
 import { build, context } from 'esbuild'
-import { writeFileSync, unlinkSync, mkdirSync } from 'fs'
+import { writeFileSync, unlinkSync, mkdirSync, existsSync } from 'fs'
 import { join, dirname, basename } from 'path'
 import sveltePlugin from 'esbuild-svelte'
 
@@ -12,8 +12,19 @@ const args = process.argv
 const component_arg = args[0]
 const output_path = args[1]
 
+if (!component_arg || component_arg.trim() === '') {
+	console.error('Error: Component path is required as the first argument')
+	process.exit(1)
+}
+
 const is_dev_mode = is_watch
-const component_path = component_arg?.endsWith('.svelte') ? component_arg : `${component_arg}.svelte`
+const component_path = component_arg.endsWith('.svelte') ? component_arg : `${component_arg}.svelte`
+const full_file_path = `embed/src/${component_path}`
+
+if (!existsSync(full_file_path)) {
+	console.error(`Error: Component file not found: ${full_file_path}`)
+	process.exit(1)
+}
 
 const entry_file = 'tmp/_entry.ts'
 
