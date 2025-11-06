@@ -43,8 +43,6 @@
 </script>
 
 <div class="container">
-	<h1>Tree Trimming Instant Price Estimate</h1>
-
 	<form class="pricing-form">
 		<div class="form-row">
 			<label class="left" for="is_it_broken">Is the limb broken?</label>
@@ -119,13 +117,7 @@
 
 	:global(:root) {
 		font-family: inherit;
-	}
-
-	h1 {
-		color: #2c3e50;
-		margin-bottom: 2rem;
-		font-size: 1.75rem;
-		font-weight: 600;
+		color: inherit;
 	}
 
 	.pricing-form {
@@ -144,7 +136,7 @@
 
 	.left {
 		font-weight: 500;
-		color: #34495e;
+		color: inherit;
 		padding-top: 0.25rem;
 	}
 
@@ -167,7 +159,7 @@
 		gap: 0.5rem;
 		cursor: pointer;
 		font-weight: 400;
-		color: #34495e;
+		color: inherit;
 	}
 
 	label[for], input[type="radio"] {
