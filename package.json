@@ -22,9 +22,11 @@
 		"test": "run-p test:*",
 		"test:types": "tsc --noEmit",
 		"test:unit": "node --test embed/src/**/*.test.ts",
-		"dev": "run-p dev:serve \"dev:watch -- {@}\" --",
+		"dev": "run-p dev:serve \"dev:watch -- {@} dev/build.js\" --",
 		"dev:serve": "live-server --no-css-inject dev",
-		"dev:watch": "node esbuild.config.ts --watch"
+		"dev:watch": "node esbuild.config.ts --watch",
+		"build": "run-p build:**",
+		"build:dufftreeservice:tree_trimming": "node esbuild.config.ts -- dufftreeservice/tree_trimming.svelte embed/build/dufftreeservice/tree_trimming.js"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.0",

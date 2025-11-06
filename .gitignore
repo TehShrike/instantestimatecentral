@@ -6,4 +6,5 @@ lerna-debug.log*
 node_modules/
 
 dev/build.*
+embed/build/*
 tmp/*

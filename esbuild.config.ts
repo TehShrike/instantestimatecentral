@@ -1,20 +1,23 @@
 import { build, context } from 'esbuild'
 import { writeFileSync, unlinkSync, mkdirSync } from 'fs'
-import { join, dirname } from 'path'
+import { join, dirname, basename } from 'path'
 import sveltePlugin from 'esbuild-svelte'
 
 const is_watch = process.argv.includes('--watch')
 
-const component_arg = process.argv
+const args = process.argv
 	.slice(2)
-	.find((arg) => !arg.includes('--') && !arg.endsWith('.ts'))
+	.filter((arg) => !arg.includes('--') && !arg.endsWith('.ts'))
+
+const component_arg = args[0]
+const output_path = args[1]
 
 const is_dev_mode = is_watch
-const component_path = `${component_arg}.svelte`
+const component_path = component_arg?.endsWith('.svelte') ? component_arg : `${component_arg}.svelte`
 
 const entry_file = 'tmp/_entry.ts'
 
-if (is_dev_mode && component_path) {
+if (component_path && component_arg) {
 	const full_component_path = `../embed/src/${component_path}`
 
 	const entry_content = `import { mount } from 'svelte'
@@ -30,16 +33,21 @@ mount(Component, {
 	console.log(`Building component: ${component_path}`)
 }
 
+const output_dir = output_path ? dirname(output_path) : 'embed/build'
+const output_name = output_path ? basename(output_path, '.js') : '[name]'
+
+mkdirSync(output_dir, { recursive: true })
+
 const build_options = {
 	entryPoints: [entry_file],
 	bundle: true,
-	outdir: is_dev_mode ? 'dev' : 'embed/build',
-	outbase: is_dev_mode ? 'dev' : undefined,
-	entryNames: is_dev_mode ? 'build' : '[name]',
+	outdir: output_dir,
+	entryNames: output_name,
 	plugins: [
 		sveltePlugin({
 			compilerOptions: {
 				dev: is_dev_mode,
+				css: 'injected'
 			},
 		}),
 	],
