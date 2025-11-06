@@ -28,7 +28,7 @@
 			<input type="checkbox" id="is_it_broken" bind:checked={is_it_broken} />
 		</div>
 
-		<div class="form-row">
+		<div class="form-row-radio">
 			<div class="left">How big around is it?</div>
 			<div class="radio-group">
 				<label class="radio-label">
@@ -54,7 +54,7 @@
 			</div>
 		</div>
 
-		<div class="form-row">
+		<div class="form-row-radio">
 			<div class="left">How far off the ground is it where it meets the trunk?</div>
 			<div class="radio-group">
 				<label class="radio-label">
@@ -111,7 +111,7 @@
 		margin-bottom: 2rem;
 	}
 
-	.form-row {
+	.form-row, .form-row-radio {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
@@ -172,5 +172,25 @@
 		font-weight: 700;
 		color: #27ae60;
 		font-size: 1.5rem;
+	}
+
+	@media (max-width: 600px) {
+		.form-row-radio {
+			grid-template-columns: 1fr;
+			justify-items: center;
+		}
+
+		.form-row-radio .left {
+			justify-self: start;
+		}
+
+		.radio-group {
+			max-width: max-content;
+			min-width: min(100%, 220px);
+		}
+
+		.form-row {
+			grid-template-columns: 1fr 60px;
+		}
 	}
 </style>

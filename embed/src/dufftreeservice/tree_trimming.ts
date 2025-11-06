@@ -19,7 +19,7 @@ export type PricingArguments = {
 	easy_to_haul_out: boolean
 }
 
-const can_we_get_away_without_climbing = ({
+const can_we_get_it_without_climbing = ({
 	distance_from_ground,
 	how_big_around_is_it,
 }: {
@@ -140,7 +140,7 @@ export const pricing = ({
 	okay_if_it_falls,
 	easy_to_haul_out,
 }: PricingArguments) => {
-	const need_to_climb = !can_we_get_away_without_climbing({ distance_from_ground, how_big_around_is_it })
+	const need_to_climb = !can_we_get_it_without_climbing({ distance_from_ground, how_big_around_is_it })
 
 	const base_price = fnum('300')
 	const subtotal = base_price.plus(increase_price_based_just_on_size({ how_big_around_is_it, need_to_climb }))
