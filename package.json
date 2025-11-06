@@ -29,7 +29,8 @@
 		"build": "run-p build:**",
 		"build:worker": "node esbuild.worker.ts",
 		"build:dufftreeservice:tree_trimming": "node esbuild.config.ts -- dufftreeservice/tree_trimming.svelte build/embed/dufftreeservice/tree_trimming.js",
-		"build:www": "cp -r www/* build/"
+		"build:www": "cp -r www build/",
+		"postinstall": "mkdir -p build"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.0",

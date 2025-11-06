@@ -1,5 +1,5 @@
 import { build, context } from 'esbuild'
-import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, basename } from 'path'
 import sveltePlugin from 'esbuild-svelte'
 

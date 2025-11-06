@@ -1,9 +1,6 @@
 import { build } from 'esbuild'
-import { mkdirSync } from 'fs'
 
 const output_dir = 'build'
-
-mkdirSync(output_dir, { recursive: true })
 
 await build({
 	entryPoints: ['worker/index.ts'],
