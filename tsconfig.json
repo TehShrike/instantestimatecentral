@@ -1,5 +1,5 @@
 {
-  "include": ["embed/src/**/*.ts", "embed/src/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte"],
+  "include": ["embed/src/**/*.ts", "embed/src/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte", "worker/**/*.ts"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout

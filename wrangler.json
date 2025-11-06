@@ -1,0 +1,8 @@
+{
+	"name": "instantestimatecentral",
+	"pages_build_output_dir": "build",
+	"compatibility_date": "2023-07-01",
+	"build": {
+		"command": "npm run build"
+	}
+}
