@@ -53,7 +53,7 @@ if (is_dev_mode) {
 	console.log(`Updated dev/index.html to use <${custom_element_name}>`)
 }
 
-const output_dir = output_path ? dirname(output_path) : 'embed/build'
+const output_dir = output_path ? dirname(output_path) : 'build'
 const output_name = output_path ? basename(output_path, '.js') : '[name]'
 
 mkdirSync(output_dir, { recursive: true })

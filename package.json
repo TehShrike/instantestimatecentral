@@ -26,7 +26,7 @@
 		"dev:serve": "live-server --no-css-inject dev",
 		"dev:watch": "node esbuild.config.ts --watch",
 		"build": "run-p build:**",
-		"build:dufftreeservice:tree_trimming": "node esbuild.config.ts -- dufftreeservice/tree_trimming.svelte embed/build/dufftreeservice/tree_trimming.js"
+		"build:dufftreeservice:tree_trimming": "node esbuild.config.ts -- dufftreeservice/tree_trimming.svelte build/embed/dufftreeservice/tree_trimming.js"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.0",
@@ -35,7 +35,8 @@
 		"live-server": "^1.2.2",
 		"npm-run-all": "^4.1.5",
 		"svelte": "^5.43.3",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"wrangler": "^4.46.0"
 	},
 	"dependencies": {
 		"financial-number": "^4.0.4"
