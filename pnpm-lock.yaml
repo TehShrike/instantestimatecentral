@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      financial-number:
+        specifier: ^4.0.4
+        version: 4.0.4
     devDependencies:
       '@types/node':
         specifier: ^24.10.0
@@ -560,6 +564,12 @@ packages:
   finalhandler@1.1.2:
     resolution: {integrity: sha512-aAWcW57uxVNrQZqFXjITpW3sIUQmHGG3qSb9mUah9MgMC4NeWhNOlNjXEYq3HjRAvL6arUviZGGJsBg6z0zsWA==}
     engines: {node: '>= 0.8'}
+
+  financial-arithmetic-functions@3.3.0:
+    resolution: {integrity: sha512-diSznowJPqNH+gThG+2uaoObXfxgTb2Z3Y+5odX8GVrgBIaVjq6jAK4POmqMmc6PI3DT5U6aaaHMCzLdKlHhOw==}
+
+  financial-number@4.0.4:
+    resolution: {integrity: sha512-fFIMvx2W6yx8brbChXlRy9JdSmG4KuO8gv101AhUoZaSsKruLprWX88mgrqdNLir4y+2vUfRKWee2rbtYhH4Fg==}
 
   for-each@0.3.5:
     resolution: {integrity: sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg==}
@@ -2045,6 +2055,12 @@ snapshots:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
+
+  financial-arithmetic-functions@3.3.0: {}
+
+  financial-number@4.0.4:
+    dependencies:
+      financial-arithmetic-functions: 3.3.0
 
   for-each@0.3.5:
     dependencies:

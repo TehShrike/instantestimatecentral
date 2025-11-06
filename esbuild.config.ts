@@ -20,12 +20,9 @@ if (is_dev_mode && component_path) {
 	const entry_content = `import { mount } from 'svelte'
 import Component from '${full_component_path}'
 
-const target = document.getElementById('app')
-if (target) {
-	mount(Component, { target })
-} else {
-	console.error('Mount point #app not found')
-}
+mount(Component, {
+	target: document.getElementById('app'),
+})
 `
 
 	mkdirSync(dirname(entry_file), { recursive: true })
