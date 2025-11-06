@@ -106,7 +106,7 @@
 
 	<div class="price-display">
 		<div class="price-label">Estimated Price:</div>
-		<div class="price-value">${calculated_price().toString(2)}</div>
+		<div class="price-value">${calculated_price().toString()}</div>
 	</div>
 </div>
 
