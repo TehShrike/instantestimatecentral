@@ -1,6 +1,6 @@
 import { build, context } from 'esbuild'
-import { writeFileSync, unlinkSync, mkdirSync, existsSync } from 'fs'
-import { join, dirname, basename } from 'path'
+import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
+import { dirname, basename } from 'path'
 import sveltePlugin from 'esbuild-svelte'
 
 const is_watch = process.argv.includes('--watch')
@@ -26,22 +26,31 @@ if (!existsSync(full_file_path)) {
 	process.exit(1)
 }
 
-const entry_file = 'tmp/_entry.ts'
+console.log(`Building component: ${component_path}`)
 
-if (component_path && component_arg) {
-	const full_component_path = `../embed/src/${component_path}`
+const extract_custom_element_name = (file_path: string): string | null => {
+	const content = readFileSync(file_path, 'utf-8')
+	const match = content.match(/<svelte:options\s+customElement="([^"]+)"\s*\/>/)
+	return match ? match[1] : null
+}
 
-	const entry_content = `import { mount } from 'svelte'
-import Component from '${full_component_path}'
+if (is_dev_mode) {
+	const custom_element_name = extract_custom_element_name(full_file_path)
+	if (!custom_element_name) {
+		console.error(`Error: Could not find customElement name in ${full_file_path}`)
+		process.exit(1)
+	}
 
-mount(Component, {
-	target: document.getElementById('app'),
-})
-`
+	const html_path = 'dev/index.html'
+	let html_content = readFileSync(html_path, 'utf-8')
 
-	mkdirSync(dirname(entry_file), { recursive: true })
-	writeFileSync(entry_file, entry_content)
-	console.log(`Building component: ${component_path}`)
+	html_content = html_content.replace(
+		/(<div class="content">)([\s\S]*?)(<\/div>)/,
+		`$1\n\t\t\t<${custom_element_name}></${custom_element_name}>\n\t\t$3`
+	)
+
+	writeFileSync(html_path, html_content)
+	console.log(`Updated dev/index.html to use <${custom_element_name}>`)
 }
 
 const output_dir = output_path ? dirname(output_path) : 'embed/build'
@@ -50,7 +59,7 @@ const output_name = output_path ? basename(output_path, '.js') : '[name]'
 mkdirSync(output_dir, { recursive: true })
 
 const build_options = {
-	entryPoints: [entry_file],
+	entryPoints: [full_file_path],
 	bundle: true,
 	outdir: output_dir,
 	entryNames: output_name,
@@ -58,7 +67,7 @@ const build_options = {
 		sveltePlugin({
 			compilerOptions: {
 				dev: is_dev_mode,
-				css: 'injected'
+				customElement: true,
 			},
 		}),
 	],
@@ -70,18 +79,7 @@ if (is_watch) {
 	const ctx = await context(build_options)
 	await ctx.watch()
 	console.log('Watching for changes...')
-
-	if (is_dev_mode) {
-		process.on('SIGINT', () => {
-			unlinkSync(entry_file)
-			process.exit()
-		})
-	}
 } else {
 	await build(build_options)
 	console.log('Build complete')
-
-	if (is_dev_mode) {
-		unlinkSync(entry_file)
-	}
 }

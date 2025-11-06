@@ -1,3 +1,5 @@
+<svelte:options customElement="tree-trimming" />
+
 <script lang="ts">
 	import { pricing, type PricingArguments } from './tree_trimming.ts'
 	import { get, set } from '#lib/localstorage.ts'
