@@ -22,7 +22,7 @@
 		"regenerate_worker_types": "wrangler types ./worker/worker_types.d.ts",
 		"test": "run-p test:*",
 		"test:types": "tsc --noEmit",
-		"test:unit": "node --test embed/src/**/*.test.ts",
+		"test:unit": "node --test embed/**/*.test.ts",
 		"dev": "run-p dev:serve \"dev:watch -- {@} dev/build.js\" --",
 		"dev:serve": "live-server --no-css-inject dev",
 		"dev:watch": "node esbuild.config.ts --watch",
