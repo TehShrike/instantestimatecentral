@@ -5,7 +5,7 @@
 	import { get, set } from '#lib/localstorage.ts'
 	import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 
-	const hog_big_around_is_it_validator: Validator<PricingArguments['how_big_around_is_it']> = one_of(
+	const how_big_around_is_it_validator: Validator<PricingArguments['how_big_around_is_it']> = one_of(
 		exact('1-3 inches' as const),
 		exact('3-5 inches' as const),
 		exact('6-9 inches' as const),
@@ -21,7 +21,7 @@
 
 	const tree_trimming_data_validator: Validator<PricingArguments> = object({
 		is_it_broken: is_boolean,
-		how_big_around_is_it: hog_big_around_is_it_validator,
+		how_big_around_is_it: how_big_around_is_it_validator,
 		distance_from_ground: distance_from_ground_validator,
 		okay_if_it_falls: is_boolean,
 		easy_to_haul_out: is_boolean,
