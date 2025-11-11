@@ -19,6 +19,55 @@ export type PricingArguments = {
 	easy_to_haul_out: boolean
 }
 
+const increase_by_ratio = ({
+	value,
+	ratio,
+}:{
+	value: FinancialNumber
+	ratio: FinancialNumber
+}) => value.times(fnum('1').plus(ratio))
+
+export const pricing = ({
+	is_it_broken,
+	how_big_around_is_it,
+	distance_from_ground,
+	okay_if_it_falls,
+	easy_to_haul_out,
+}: PricingArguments) => {
+	const need_to_climb = !can_we_get_it_without_climbing({ distance_from_ground, how_big_around_is_it })
+
+	const base_price = fnum('300')
+	const subtotal = base_price.plus(increase_price_based_just_on_size({ how_big_around_is_it, need_to_climb }))
+
+	const broken_branches_increase = is_it_broken
+		? increase_by_ratio({
+			value: subtotal,
+			ratio: cost_increase_ratio_for_broken_branches({ how_big_around_is_it }),
+		})
+		: fnum('0')
+
+	const over_something_increase = okay_if_it_falls
+		? fnum('0')
+		: increase_by_ratio({
+			value: subtotal,
+			ratio: cost_increase_ratio_if_its_over_something({ how_big_around_is_it }),
+		})
+
+	const not_easy_to_haul_out_increase = easy_to_haul_out
+		? fnum('0')
+		: increase_by_ratio({
+			value: subtotal,
+			ratio: cost_increase_ratio_if_its_not_easy_to_haul_out({ how_big_around_is_it }),
+		})
+
+	const total = subtotal
+		.plus(broken_branches_increase)
+		.plus(over_something_increase)
+		.plus(not_easy_to_haul_out_increase)
+
+	return greatest_of(MINIMUM_PRICE, total)
+}
+
 const can_we_get_it_without_climbing = ({
 	distance_from_ground,
 	how_big_around_is_it,
@@ -123,53 +172,4 @@ const cost_increase_ratio_if_its_not_easy_to_haul_out = ({
 	}
 
 	return fnum('0')
-}
-
-const increase_by_ratio = ({
-	value,
-	ratio,
-}:{
-	value: FinancialNumber
-	ratio: FinancialNumber
-}) => value.times(fnum('1').plus(ratio))
-
-export const pricing = ({
-	is_it_broken,
-	how_big_around_is_it,
-	distance_from_ground,
-	okay_if_it_falls,
-	easy_to_haul_out,
-}: PricingArguments) => {
-	const need_to_climb = !can_we_get_it_without_climbing({ distance_from_ground, how_big_around_is_it })
-
-	const base_price = fnum('300')
-	const subtotal = base_price.plus(increase_price_based_just_on_size({ how_big_around_is_it, need_to_climb }))
-
-	const broken_branches_increase = is_it_broken
-		? increase_by_ratio({
-			value: subtotal,
-			ratio: cost_increase_ratio_for_broken_branches({ how_big_around_is_it }),
-		})
-		: fnum('0')
-
-	const over_something_increase = okay_if_it_falls
-		? fnum('0')
-		: increase_by_ratio({
-			value: subtotal,
-			ratio: cost_increase_ratio_if_its_over_something({ how_big_around_is_it }),
-		})
-
-	const not_easy_to_haul_out_increase = easy_to_haul_out
-		? fnum('0')
-		: increase_by_ratio({
-			value: subtotal,
-			ratio: cost_increase_ratio_if_its_not_easy_to_haul_out({ how_big_around_is_it }),
-		})
-
-	const total = subtotal
-		.plus(broken_branches_increase)
-		.plus(over_something_increase)
-		.plus(not_easy_to_haul_out_increase)
-
-	return greatest_of(MINIMUM_PRICE, total)
 }
