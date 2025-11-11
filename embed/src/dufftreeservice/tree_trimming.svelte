@@ -94,7 +94,7 @@
 		</div>
 
 		<div class="form-row">
-			<label class="left" for="okay_if_it_falls">Is it over anything that couldn't handle a branch hitting it?</label>
+			<label class="left" for="okay_if_it_falls">Is it over anything that can't handle a branch hitting it?</label>
 			<input type="checkbox" id="okay_if_it_falls" bind:checked={okay_if_it_falls} />
 		</div>
 
