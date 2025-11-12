@@ -1,33 +1,10 @@
 <svelte:options customElement="limb-removal" />
 
 <script lang="ts">
-	import { pricing, type PricingArguments } from './limb_removal.ts'
+	import { pricing, validator, type PricingArguments } from './limb_removal.ts'
 	import { get, set } from '#lib/localstorage.ts'
-	import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
-
-	const how_big_around_is_it_validator: Validator<PricingArguments['how_big_around_is_it']> = one_of(
-		exact('1-3 inches' as const),
-		exact('3-5 inches' as const),
-		exact('6-9 inches' as const),
-		exact('10-13 inches' as const),
-		exact('14+ inches' as const),
-	)
-
-	const distance_from_ground_validator: Validator<PricingArguments['distance_from_ground']> = one_of(
-		exact('under 15 feet' as const),
-		exact('15-20 feet' as const),
-		exact('higher than 20 feet' as const),
-	)
-
-	const limb_removal_data_validator: Validator<PricingArguments> = object({
-		is_it_broken: is_boolean,
-		how_big_around_is_it: how_big_around_is_it_validator,
-		distance_from_ground: distance_from_ground_validator,
-		branches_over_something: is_boolean,
-		easy_to_haul_out: is_boolean,
-	})
 
 	const default_data: PricingArguments = {
 		is_it_broken: false,
@@ -37,7 +14,7 @@
 		easy_to_haul_out: true,
 	}
 
-	let data = $state(get('limb_removal_data', limb_removal_data_validator, default_data))
+	let data = $state(get('limb_removal_data', validator, default_data))
 
 	const calculated_price = $derived(pricing(data))
 

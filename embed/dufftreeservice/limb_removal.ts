@@ -1,4 +1,6 @@
 import fnum, { greatest_of, increase_by_ratio } from '#lib/fnum.ts'
+import { exact, object, one_of, Validator } from '#lib/json_validator.ts'
+import { is_boolean } from '#lib/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
 const MINIMUM_PRICE = fnum('300')
@@ -165,3 +167,34 @@ const cost_increase_ratio_if_its_not_easy_to_haul_out = ({
 
 	return fnum('0')
 }
+
+
+
+
+
+
+
+
+
+const how_big_around_is_it_validator: Validator<PricingArguments['how_big_around_is_it']> = one_of(
+	exact('1-3 inches' as const),
+	exact('3-5 inches' as const),
+	exact('6-9 inches' as const),
+	exact('10-13 inches' as const),
+	exact('14+ inches' as const),
+)
+
+const distance_from_ground_validator: Validator<PricingArguments['distance_from_ground']> = one_of(
+	exact('under 15 feet' as const),
+	exact('15-20 feet' as const),
+	exact('higher than 20 feet' as const),
+)
+
+export const validator: Validator<PricingArguments> = object({
+	is_it_broken: is_boolean,
+	how_big_around_is_it: how_big_around_is_it_validator,
+	distance_from_ground: distance_from_ground_validator,
+	branches_over_something: is_boolean,
+	easy_to_haul_out: is_boolean,
+})
+
