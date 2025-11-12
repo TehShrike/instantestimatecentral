@@ -19,7 +19,7 @@ if (!component_arg || component_arg.trim() === '') {
 
 const is_dev_mode = is_watch
 const component_path = component_arg.endsWith('.svelte') ? component_arg : `${component_arg}.svelte`
-const full_file_path = `embed/src/${component_path}`
+const full_file_path = `embed/${component_path}`
 
 if (!existsSync(full_file_path)) {
 	console.error(`Error: Component file not found: ${full_file_path}`)
