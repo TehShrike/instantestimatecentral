@@ -1,4 +1,3 @@
-import { assert_valid } from "./assert.ts"
 import { Validator } from "./json_validator.ts"
 
 const PREFIX = 'instant_estimate_central_'
@@ -9,7 +8,11 @@ export const get = <T>(key: string, validator: Validator<T>, default_value: T): 
 		return default_value
 	}
 	const parsed_value = JSON.parse(value)
-	assert_valid(validator, parsed_value)
+
+	if (!validator.is_valid(parsed_value)) {
+		console.warn('Invalid value for key', key, validator.get_messages(parsed_value, 'value').join(', '))
+		return default_value
+	}
 	return parsed_value
 }
 

@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends Record<string, 'toggle' | 'radio'>">
+<script lang="ts" generics="T extends Record<string, 'toggle' | 'radio' | 'number'>">
 	import type { Snippet } from 'svelte'
 
 	let {
@@ -53,7 +53,8 @@
 			justify-self: start;
 		}
 
-		.form-row[data-type="toggle"] {
+		.form-row[data-type="toggle"],
+		.form-row[data-type="number"] {
 			grid-template-columns: 1fr 70px;
 		}
 	}

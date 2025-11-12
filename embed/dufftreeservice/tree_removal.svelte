@@ -27,6 +27,7 @@
 		fence: 'radio',
 		adjacent_to_street_or_alley: 'toggle',
 	} as const
+
 </script>
 
 {#snippet tree_diameter()}

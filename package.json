@@ -21,7 +21,10 @@
 	"scripts": {
 		"regenerate_worker_types": "wrangler types ./worker/worker_types.d.ts",
 		"test": "run-p test:*",
-		"test:types": "tsc --noEmit",
+		"test:types:svelte": "svelte-check --no-tsconfig --fail-on-warnings",
+		"test:types:worker": "tsc -p worker --noEmit",
+		"test:types:everything_else": "tsc --noEmit",
+		"test:types": "run-s -c test:types:*",
 		"test:unit": "node --test embed/**/*.test.ts",
 		"dev": "run-p dev:serve \"dev:watch -- {@} dev/build.js\" --",
 		"dev:serve": "live-server --no-css-inject dev",
@@ -30,6 +33,8 @@
 		"build:worker": "node esbuild.worker.ts",
 		"build:dufftreeservice:limb_removal": "node esbuild.config.ts -- dufftreeservice/limb_removal.svelte build/embed/dufftreeservice/limb_removal.js",
 		"build:dufftreeservice:tree_removal": "node esbuild.config.ts -- dufftreeservice/tree_removal.svelte build/embed/dufftreeservice/tree_removal.js",
+		"build:dufftreeservice:tree_trimming": "node esbuild.config.ts -- dufftreeservice/tree_trimming.svelte build/embed/dufftreeservice/tree_trimming.js",
+		"build:dufftreeservice:tree_planting": "node esbuild.config.ts -- dufftreeservice/tree_planting.svelte build/embed/dufftreeservice/tree_planting.js",
 		"build:www": "cp -r www build/",
 		"postinstall": "mkdir -p build"
 	},
@@ -40,6 +45,7 @@
 		"live-server": "^1.2.2",
 		"npm-run-all": "^4.1.5",
 		"svelte": "^5.43.3",
+		"svelte-check": "^4.3.4",
 		"typescript": "^5.9.3",
 		"wrangler": "^4.46.0"
 	},
