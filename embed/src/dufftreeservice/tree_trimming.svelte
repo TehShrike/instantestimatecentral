@@ -5,6 +5,7 @@
 	import { get, set } from '#lib/localstorage.ts'
 	import { exact, is_boolean, one_of, type Validator } from '#lib/json_validator.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
+	import RadioGroup from '#lib/radio_group.svelte'
 
 	const hog_big_around_is_it_validator: Validator<PricingArguments['how_big_around_is_it']> = one_of(
 		exact('1-3 inches' as const),
@@ -26,15 +27,13 @@
 	let okay_if_it_falls = $state(get('okay_if_it_falls', is_boolean, true))
 	let easy_to_haul_out = $state(get('easy_to_haul_out', is_boolean, true))
 
-	const calculated_price = $derived(() => {
-		return pricing({
-			is_it_broken,
-			how_big_around_is_it,
-			distance_from_ground,
-			okay_if_it_falls,
-			easy_to_haul_out,
-		})
-	})
+	const calculated_price = $derived(pricing({
+		is_it_broken,
+		how_big_around_is_it,
+		distance_from_ground,
+		okay_if_it_falls,
+		easy_to_haul_out,
+	}))
 
 	$effect(() => set('is_it_broken', is_it_broken))
 	$effect(() => set('how_big_around_is_it', how_big_around_is_it))
@@ -52,46 +51,28 @@
 
 		<div class="form-row-radio">
 			<div class="left">How big around is it?</div>
-			<div class="radio-group">
-				<label class="radio-label">
-					<input type="radio" bind:group={how_big_around_is_it} value="1-3 inches" />
-					1-3 inches
-				</label>
-				<label class="radio-label">
-					<input type="radio" bind:group={how_big_around_is_it} value="3-5 inches" />
-					3-5 inches
-				</label>
-				<label class="radio-label">
-					<input type="radio" bind:group={how_big_around_is_it} value="6-9 inches" />
-					6-9 inches
-				</label>
-				<label class="radio-label">
-					<input type="radio" bind:group={how_big_around_is_it} value="10-13 inches" />
-					10-13 inches
-				</label>
-				<label class="radio-label">
-					<input type="radio" bind:group={how_big_around_is_it} value="14+ inches" />
-					14+ inches
-				</label>
-			</div>
+			<RadioGroup
+				options={[
+					{ label: '1-3 inches', value: '1-3 inches' as const },
+					{ label: '3-5 inches', value: '3-5 inches' as const },
+					{ label: '6-9 inches', value: '6-9 inches' as const },
+					{ label: '10-13 inches', value: '10-13 inches' as const },
+					{ label: '14+ inches', value: '14+ inches' as const },
+				]}
+				bind:value={how_big_around_is_it}
+			/>
 		</div>
 
 		<div class="form-row-radio">
 			<div class="left">How far off the ground is it where it meets the trunk?</div>
-			<div class="radio-group">
-				<label class="radio-label">
-					<input type="radio" bind:group={distance_from_ground} value="under 15 feet" />
-					under 15 feet
-				</label>
-				<label class="radio-label">
-					<input type="radio" bind:group={distance_from_ground} value="15-20 feet" />
-					15-20 feet
-				</label>
-				<label class="radio-label">
-					<input type="radio" bind:group={distance_from_ground} value="higher than 20 feet" />
-					higher than 20 feet
-				</label>
-			</div>
+			<RadioGroup
+				options={[
+					{ label: 'under 15 feet', value: 'under 15 feet' as const },
+					{ label: '15-20 feet', value: '15-20 feet' as const },
+					{ label: 'higher than 20 feet', value: 'higher than 20 feet' as const },
+				]}
+				bind:value={distance_from_ground}
+			/>
 		</div>
 
 		<div class="form-row">
@@ -107,7 +88,7 @@
 
 	<div class="price-display">
 		<div class="price-label">Estimated Price:</div>
-		<div class="price-value">${calculated_price().toString(0)}</div>
+		<div class="price-value">${calculated_price.toString(0)}</div>
 	</div>
 </div>
 
@@ -141,22 +122,7 @@
 		padding-top: 0.25rem;
 	}
 
-	.radio-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.radio-label {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		cursor: pointer;
-		font-weight: 400;
-		color: inherit;
-	}
-
-	label[for], input[type="radio"] {
+	label[for] {
 		cursor: pointer;
 	}
 
@@ -194,7 +160,7 @@
 			justify-self: start;
 		}
 
-		.radio-group {
+		.form-row-radio :global(.radio-group) {
 			max-width: max-content;
 			min-width: min(100%, 220px);
 		}
