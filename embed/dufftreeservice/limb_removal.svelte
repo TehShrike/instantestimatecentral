@@ -21,11 +21,11 @@
 		exact('higher than 20 feet' as const),
 	)
 
-	const tree_trimming_data_validator: Validator<PricingArguments> = object({
+	const limb_removal_data_validator: Validator<PricingArguments> = object({
 		is_it_broken: is_boolean,
 		how_big_around_is_it: how_big_around_is_it_validator,
 		distance_from_ground: distance_from_ground_validator,
-		okay_if_it_falls: is_boolean,
+		branches_over_something: is_boolean,
 		easy_to_haul_out: is_boolean,
 	})
 
@@ -33,15 +33,15 @@
 		is_it_broken: false,
 		how_big_around_is_it: '3-5 inches',
 		distance_from_ground: 'under 15 feet',
-		okay_if_it_falls: true,
+		branches_over_something: false,
 		easy_to_haul_out: true,
 	}
 
-	let data = $state(get('tree_trimming_data', tree_trimming_data_validator, default_data))
+	let data = $state(get('limb_removal_data', limb_removal_data_validator, default_data))
 
 	const calculated_price = $derived(pricing(data))
 
-	$effect(() => set('tree_trimming_data', data))
+	$effect(() => set('limb_removal_data', data))
 </script>
 
 <div class="container">
@@ -78,8 +78,8 @@
 		</div>
 
 		<div class="form-row">
-			<label class="left" for="okay_if_it_falls">Is it over anything that can't handle a branch hitting it?</label>
-			<BooleanToggle bind:checked={data.okay_if_it_falls} id="okay_if_it_falls" />
+			<label class="left" for="branches_over_something">Is it over anything that can't handle a branch landing on it?</label>
+			<BooleanToggle bind:checked={data.branches_over_something} id="branches_over_something" />
 		</div>
 
 		<div class="form-row">
