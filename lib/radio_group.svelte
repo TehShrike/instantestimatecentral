@@ -23,6 +23,14 @@
 		gap: 0.5rem;
 	}
 
+	@media (max-width: 600px) {
+		.radio-group {
+			max-width: max-content;
+			min-width: min(100%, 220px);
+		}
+	}
+
+
 	.radio-label {
 		display: flex;
 		align-items: center;
