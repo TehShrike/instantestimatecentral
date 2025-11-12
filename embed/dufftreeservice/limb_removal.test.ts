@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import * as assert from 'node:assert'
 import fnum from '#lib/fnum.ts'
-import { pricing, type PricingArguments } from './tree_trimming.ts'
+import { pricing, type PricingArguments } from './limb_removal.ts'
 import { for_each } from '#lib/array.ts'
 
 const generate_all_cases = (): PricingArguments[] => {

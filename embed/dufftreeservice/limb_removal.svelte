@@ -1,7 +1,7 @@
-<svelte:options customElement="tree-trimming" />
+<svelte:options customElement="limb-removal" />
 
 <script lang="ts">
-	import { pricing, type PricingArguments } from './tree_trimming.ts'
+	import { pricing, type PricingArguments } from './limb_removal.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'

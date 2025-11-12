@@ -28,7 +28,7 @@
 		"dev:watch": "node esbuild.config.ts --watch",
 		"build": "run-p build:**",
 		"build:worker": "node esbuild.worker.ts",
-		"build:dufftreeservice:tree_trimming": "node esbuild.config.ts -- dufftreeservice/tree_trimming.svelte build/embed/dufftreeservice/tree_trimming.js",
+		"build:dufftreeservice:limb_removal": "node esbuild.config.ts -- dufftreeservice/limb_removal.svelte build/embed/dufftreeservice/limb_removal.js",
 		"build:www": "cp -r www build/",
 		"postinstall": "mkdir -p build"
 	},
