@@ -1,6 +1,5 @@
 import fnum, { greatest_of, increase_by_ratio } from '#lib/fnum.ts'
-import { exact, object, one_of, Validator } from '#lib/json_validator.ts'
-import { is_boolean } from '#lib/json_validator.ts'
+import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
 const MINIMUM_PRICE = fnum('300')

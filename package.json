@@ -29,6 +29,7 @@
 		"build": "run-p build:**",
 		"build:worker": "node esbuild.worker.ts",
 		"build:dufftreeservice:limb_removal": "node esbuild.config.ts -- dufftreeservice/limb_removal.svelte build/embed/dufftreeservice/limb_removal.js",
+		"build:dufftreeservice:tree_removal": "node esbuild.config.ts -- dufftreeservice/tree_removal.svelte build/embed/dufftreeservice/tree_removal.js",
 		"build:www": "cp -r www build/",
 		"postinstall": "mkdir -p build"
 	},

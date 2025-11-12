@@ -1,4 +1,5 @@
 import fnum, { increase_by_ratio } from '#lib/fnum.ts'
+import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 
 type TreeDiameter =
 	| '6-10 inches'
@@ -100,3 +101,31 @@ const cost_increase_ratio_for_fence = ({
 	fence satisfies 'no'
 	throw new Error(`Unexpected fence value: ${fence}`)
 }
+
+const tree_diameter_validator: Validator<PricingArguments['tree_diameter']> = one_of(
+	exact('6-10 inches' as const),
+	exact('11-15 inches' as const),
+	exact('16-20 inches' as const),
+	exact('21-25 inches' as const),
+	exact('26-32 inches' as const),
+	exact('33-40 inches' as const),
+)
+
+const branches_over_something_validator: Validator<PricingArguments['branches_over_something']> = one_of(
+	exact('nothing underneath' as const),
+	exact('some branches over something' as const),
+	exact('all big branches are over something' as const),
+)
+
+const fence_validator: Validator<PricingArguments['fence']> = one_of(
+	exact('no' as const),
+	exact('single gate' as const),
+	exact('double gate' as const),
+)
+
+export const validator: Validator<PricingArguments> = object({
+	tree_diameter: tree_diameter_validator,
+	branches_over_something: branches_over_something_validator,
+	fence: fence_validator,
+	adjacent_to_street_or_alley: is_boolean,
+})
