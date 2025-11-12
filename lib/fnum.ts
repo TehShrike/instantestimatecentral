@@ -12,3 +12,11 @@ export const greatest_of = (...numbers: readonly [FinancialNumber, ...FinancialN
 
 	return numbers.reduce((greatest, current) => greatest.gt(current) ? greatest : current)
 }
+
+export const increase_by_ratio = ({
+	value,
+	ratio,
+}:{
+	value: FinancialNumber
+	ratio: FinancialNumber
+}) => value.times(number('1').plus(ratio))

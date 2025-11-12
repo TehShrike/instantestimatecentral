@@ -1,4 +1,4 @@
-import fnum, { greatest_of } from '#lib/fnum.ts'
+import fnum, { greatest_of, increase_by_ratio } from '#lib/fnum.ts'
 import type { FinancialNumber } from 'financial-number'
 
 const MINIMUM_PRICE = fnum('300')
@@ -18,14 +18,6 @@ export type PricingArguments = {
 	okay_if_it_falls: boolean
 	easy_to_haul_out: boolean
 }
-
-const increase_by_ratio = ({
-	value,
-	ratio,
-}:{
-	value: FinancialNumber
-	ratio: FinancialNumber
-}) => value.times(fnum('1').plus(ratio))
 
 export const pricing = ({
 	is_it_broken,

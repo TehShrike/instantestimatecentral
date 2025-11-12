@@ -4,6 +4,7 @@
 	import { pricing, type PricingArguments } from './tree_trimming.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import { exact, is_boolean, one_of, type Validator } from '#lib/json_validator.ts'
+	import BooleanToggle from '#lib/boolean_toggle.svelte'
 
 	const hog_big_around_is_it_validator: Validator<PricingArguments['how_big_around_is_it']> = one_of(
 		exact('1-3 inches' as const),
@@ -46,7 +47,7 @@
 	<form class="pricing-form">
 		<div class="form-row">
 			<label class="left" for="is_it_broken">Is the limb broken?</label>
-			<input type="checkbox" id="is_it_broken" bind:checked={is_it_broken} />
+			<BooleanToggle bind:checked={is_it_broken} id="is_it_broken" />
 		</div>
 
 		<div class="form-row-radio">
@@ -95,18 +96,18 @@
 
 		<div class="form-row">
 			<label class="left" for="okay_if_it_falls">Is it over anything that can't handle a branch hitting it?</label>
-			<input type="checkbox" id="okay_if_it_falls" bind:checked={okay_if_it_falls} />
+			<BooleanToggle bind:checked={okay_if_it_falls} id="okay_if_it_falls" />
 		</div>
 
 		<div class="form-row">
 			<label class="left" for="easy_to_haul_out">Is it next to a street or an alley?</label>
-			<input type="checkbox" id="easy_to_haul_out" bind:checked={easy_to_haul_out} />
+			<BooleanToggle bind:checked={easy_to_haul_out} id="easy_to_haul_out" />
 		</div>
 	</form>
 
 	<div class="price-display">
 		<div class="price-label">Estimated Price:</div>
-		<div class="price-value">${calculated_price().toString()}</div>
+		<div class="price-value">${calculated_price().toString(0)}</div>
 	</div>
 </div>
 
@@ -138,13 +139,6 @@
 		font-weight: 500;
 		color: inherit;
 		padding-top: 0.25rem;
-	}
-
-	input[type="checkbox"] {
-		width: 1.25rem;
-		height: 1.25rem;
-		cursor: pointer;
-		margin-top: 0.25rem;
 	}
 
 	.radio-group {
@@ -206,7 +200,7 @@
 		}
 
 		.form-row {
-			grid-template-columns: 1fr 60px;
+			grid-template-columns: 1fr 70px;
 		}
 	}
 </style>
