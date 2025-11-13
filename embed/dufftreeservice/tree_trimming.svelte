@@ -60,9 +60,9 @@
 	<div class="left">What variety is it?</div>
 	<RadioGroup
 		options={[
+			{ label: 'Sycamore', value: 'sycamore' as const },
 			{ label: 'Other', value: 'other' as const },
 			{ label: 'Oak', value: 'oak' as const },
-			{ label: 'Sycamore', value: 'sycamore' as const },
 			{ label: 'Locust', value: 'locust' as const },
 		]}
 		bind:value={data.tree_variety}
