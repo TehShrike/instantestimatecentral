@@ -5,6 +5,7 @@
 	import { get, set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
+	import ButtonRadioGroup from '#lib/button_radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 
@@ -27,7 +28,7 @@
 		pruned_by_arborist_recently: 'toggle',
 		raise_canopy: 'toggle',
 		tree_variety: 'radio',
-		trim_type: 'radio',
+		trim_type: 'button_radio',
 	} as const
 </script>
 
@@ -60,8 +61,8 @@
 	<div class="left">What variety is it?</div>
 	<RadioGroup
 		options={[
-			{ label: 'Sycamore', value: 'sycamore' as const },
 			{ label: 'Other', value: 'other' as const },
+			{ label: 'Sycamore', value: 'sycamore' as const },
 			{ label: 'Oak', value: 'oak' as const },
 			{ label: 'Locust', value: 'locust' as const },
 		]}
@@ -70,12 +71,11 @@
 {/snippet}
 
 {#snippet trim_type()}
-	<div class="left">Type of trim</div>
-	<RadioGroup
+	<ButtonRadioGroup
 		options={[
-			{ label: 'Just the necessities (3-6 offending branches)', value: 'just the necessities' as const },
-			{ label: 'Normal (2" branches and up)', value: 'normal' as const },
-			{ label: 'Premium (1" branches and up)', value: 'premium' as const },
+			{ label: 'Just the necessities', description: '3-6 offending branches', value: 'just the necessities' as const },
+			{ label: 'Normal', description: '2" branches and up', value: 'normal' as const },
+			{ label: 'Premium', description: '1" branches and up', value: 'premium' as const },
 		]}
 		bind:value={data.trim_type}
 	/>
