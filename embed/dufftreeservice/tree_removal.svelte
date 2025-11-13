@@ -31,7 +31,7 @@
 </script>
 
 {#snippet tree_diameter()}
-	<div class="left">How big around is the tree at chest height?</div>
+	<div class="left">What is the diameter of the trunk at chest height?</div>
 	<RadioGroup
 		options={[
 			{ label: '6-10 inches', value: '6-10 inches' as const },
@@ -46,12 +46,12 @@
 {/snippet}
 
 {#snippet branches_over_something()}
-	<div class="left">Are its branches over anything that couldn't have a branch land on them?</div>
+	<div class="left">Are its branches over anything that you don't want a branch to land on?</div>
 	<RadioGroup
 		options={[
-			{ label: 'nothing underneath', value: 'nothing underneath' as const },
-			{ label: 'some branches over something', value: 'some branches over something' as const },
-			{ label: 'all big branches are over something', value: 'all big branches are over something' as const },
+			{ label: 'Nope', value: 'nothing underneath' as const },
+			{ label: 'Some branches', value: 'some branches over something' as const },
+			{ label: 'All big branches', value: 'all big branches are over something' as const },
 		]}
 		bind:value={data.branches_over_something}
 	/>
@@ -61,9 +61,9 @@
 	<div class="left">Is the tree inside a fence?</div>
 	<RadioGroup
 		options={[
-			{ label: 'no', value: 'no' as const },
-			{ label: 'single gate', value: 'single gate' as const },
-			{ label: 'double gate', value: 'double gate' as const },
+			{ label: 'No', value: 'no' as const },
+			{ label: 'Yes – single gate', value: 'single gate' as const },
+			{ label: 'Yes – double gate', value: 'double gate' as const },
 		]}
 		bind:value={data.fence}
 	/>
