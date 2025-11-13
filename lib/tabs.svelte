@@ -6,9 +6,9 @@
 		content: Snippet
 	}
 
-	let { tabs }: { tabs: Tab[] } = $props()
+	let { tabs, current_tab = $bindable(tabs[0]?.name) }: { tabs: Tab[]; current_tab?: string } = $props()
 
-	let selected_tab_index = $state(0)
+	const selected_tab_index = $derived(tabs.findIndex(tab => tab.name === current_tab))
 
 	const selected_tab = $derived(tabs[selected_tab_index])
 </script>
@@ -19,7 +19,7 @@
 			<button
 				class="tab-button"
 				data-selected={selected_tab_index === index}
-				onclick={() => selected_tab_index = index}
+				onclick={() => current_tab = tab.name}
 			>
 				{tab.name}
 			</button>

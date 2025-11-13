@@ -2,14 +2,21 @@
 
 <script lang="ts">
 	import Tabs from '#lib/tabs.svelte'
+	import { get, set } from '#lib/localstorage.ts'
+	import { is_string } from '#lib/json_validator.ts'
 	import LimbRemoval from './limb_removal.svelte'
 	import TreeRemoval from './tree_removal.svelte'
 	import TreeTrimming from './tree_trimming.svelte'
 	import TreePlanting from './tree_planting.svelte'
+
+	let current_tab = $state(get('all_estimates_current_tab', is_string, 'Limb Removal'))
+
+	$effect(() => set('all_estimates_current_tab', current_tab))
 </script>
 
 <div class="container">
 	<Tabs
+		bind:current_tab
 		tabs={[
 			{
 				name: 'Limb Removal',
