@@ -1,5 +1,7 @@
 <script lang="ts" generics="T extends string">
-	type Option = { label: string; description: string; value: T }
+	import type { FinancialNumber } from 'financial-number'
+
+	type Option = { label: string; description: string; value: T; price_difference?: FinancialNumber }
 
 	let { options, value = $bindable() }: { options: Option[]; value?: T } = $props()
 </script>
@@ -14,7 +16,14 @@
 			aria-checked={value === option.value}
 			onclick={() => value = option.value}
 		>
-			<strong>{option.label}</strong>
+			<strong>
+				{option.label}
+				{#if value !== option.value && option.price_difference}
+					<span class="price-diff">
+						{option.price_difference.gt('0') ? '+' : ''}{option.price_difference.toString(0)}
+					</span>
+				{/if}
+			</strong>
 			<small>{option.description}</small>
 		</button>
 	{/each}
@@ -65,12 +74,22 @@
 		font-weight: 600;
 		font-size: 1rem;
 		color: #2c3e50;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	.radio-button small {
 		font-size: 0.875rem;
 		color: #7f8c8d;
 		line-height: 1.4;
+	}
+
+	.price-diff {
+		font-size: 0.875rem;
+		font-weight: 600;
+		white-space: nowrap;
 	}
 
 	@media (max-width: 600px) {

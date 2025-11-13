@@ -8,6 +8,7 @@
 	import ButtonRadioGroup from '#lib/button_radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
+	import PricingWrapper from '#lib/pricing_wrapper.svelte'
 
 	const default_data: PricingArguments = {
 		tree_diameter: '11-15 inches',
@@ -21,6 +22,27 @@
 
 	const calculated_price = $derived(pricing(data))
 
+	const trim_type_options = $derived([
+		{
+			label: 'Just the necessities',
+			description: 'a half dozen or fewer offending branches',
+			value: 'just the necessities' as const,
+			price_difference: pricing({ ...data, trim_type: 'just the necessities' }).minus(calculated_price),
+		},
+		{
+			label: 'Normal',
+			description: '2" branches and larger',
+			value: 'normal' as const,
+			price_difference: pricing({ ...data, trim_type: 'normal' }).minus(calculated_price),
+		},
+		{
+			label: 'Premium',
+			description: '1" branches and larger',
+			value: 'premium' as const,
+			price_difference: pricing({ ...data, trim_type: 'premium' }).minus(calculated_price),
+		},
+	])
+
 	$effect(() => set('tree_trimming_data', data))
 
 	const row_types = {
@@ -33,7 +55,7 @@
 </script>
 
 {#snippet tree_diameter()}
-	<div class="left">What is the diameter of the trunk?</div>
+	<div class="left">What is the diameter of the trunk at chest height?</div>
 	<RadioGroup
 		options={[
 			{ label: '6-10 inches', value: '6-10 inches' as const },
@@ -72,16 +94,12 @@
 
 {#snippet trim_type()}
 	<ButtonRadioGroup
-		options={[
-			{ label: 'Just the necessities', description: '3-6 offending branches', value: 'just the necessities' as const },
-			{ label: 'Normal', description: '2" branches and up', value: 'normal' as const },
-			{ label: 'Premium', description: '1" branches and up', value: 'premium' as const },
-		]}
+		options={trim_type_options}
 		bind:value={data.trim_type}
 	/>
 {/snippet}
 
-<div class="container">
+<PricingWrapper>
 	<PricingForm {row_types}>
 		{#snippet row(field_name: keyof typeof row_types)}
 			{@render {
@@ -95,15 +113,4 @@
 	</PricingForm>
 
 	<EstimatedPriceDisplay price={calculated_price} />
-</div>
-
-<style>
-	.container {
-		max-width: 800px;
-	}
-
-	:global(:root) {
-		font-family: inherit;
-		color: inherit;
-	}
-</style>
+</PricingWrapper>

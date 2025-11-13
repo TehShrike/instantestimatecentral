@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import Tabs from '#lib/tabs.svelte'
+	import PricingWrapper from '#lib/pricing_wrapper.svelte'
 	import { get, set } from '#lib/localstorage.ts'
 	import { is_string } from '#lib/json_validator.ts'
 	import LimbRemoval from './limb_removal.svelte'
@@ -14,7 +15,7 @@
 	$effect(() => set('all_estimates_current_tab', current_tab))
 </script>
 
-<div class="container">
+<PricingWrapper>
 	<Tabs
 		bind:current_tab
 		tabs={[
@@ -36,7 +37,7 @@
 			},
 		]}
 	/>
-</div>
+</PricingWrapper>
 
 {#snippet limb_removal_content()}
 	<LimbRemoval />
@@ -55,13 +56,7 @@
 {/snippet}
 
 <style>
-	.container {
-		max-width: 800px;
+	:global(.pricing-wrapper) {
 		margin: 0 auto;
-	}
-
-	:global(:root) {
-		font-family: inherit;
-		color: inherit;
 	}
 </style>

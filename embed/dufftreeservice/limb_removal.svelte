@@ -7,6 +7,7 @@
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
+	import PricingWrapper from '#lib/pricing_wrapper.svelte'
 
 	const default_data: PricingArguments = {
 		is_it_broken: false,
@@ -72,7 +73,7 @@
 	<BooleanToggle bind:checked={data.easy_to_haul_out} id="easy_to_haul_out" />
 {/snippet}
 
-<div class="container">
+<PricingWrapper>
 	<PricingForm {row_types}>
 		{#snippet row(field_name: keyof typeof row_types)}
 			{@render {
@@ -86,15 +87,4 @@
 	</PricingForm>
 
 	<EstimatedPriceDisplay price={calculated_price} />
-</div>
-
-<style>
-	.container {
-		max-width: 800px;
-	}
-
-	:global(:root) {
-		font-family: inherit;
-		color: inherit;
-	}
-</style>
+</PricingWrapper>
