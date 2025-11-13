@@ -5,7 +5,8 @@
 		"lib": ["esnext"],
 		"types": [],
 		"paths": {
-			"#lib/*": ["../lib/*"]
+			"#lib/*": ["../lib/*"],
+			"#pricing/*": ["../pricing/*"]
 		},
 		"exactOptionalPropertyTypes": false
 	}

@@ -45,7 +45,7 @@ if (is_dev_mode) {
 	let html_content = readFileSync(html_path, 'utf-8')
 
 	html_content = html_content.replace(
-		/(<div class="content">)([\s\S]*?)(<\/div>)/,
+		/(<div id="dev-env-content">)([\s\S]*?)(<\/div>)/,
 		`$1\n\t\t\t<${custom_element_name}></${custom_element_name}>\n\t\t$3`
 	)
 

@@ -11,7 +11,8 @@
 		"url": "git+https://github.com/TehShrike/instantestimatecentral.git"
 	},
 	"imports": {
-		"#lib/*": "./lib/*"
+		"#lib/*": "./lib/*",
+		"#pricing/*": "./pricing/*"
 	},
 	"license": "UNLICENSED",
 	"author": "TehShrike",

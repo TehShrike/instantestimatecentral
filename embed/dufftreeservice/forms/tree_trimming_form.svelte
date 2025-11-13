@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pricing, validator, type PricingArguments } from './tree_trimming.ts'
+	import { pricing, validator, type PricingArguments } from '#pricing/dufftreeservice/tree_trimming.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
