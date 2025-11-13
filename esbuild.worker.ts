@@ -1,13 +1,20 @@
-import { build } from 'esbuild'
+import { build, context } from 'esbuild'
 
-const output_dir = 'build'
+const watch = process.argv.includes('--watch')
 
-await build({
+const build_options = {
 	entryPoints: ['worker/index.ts'],
 	bundle: true,
 	outfile: 'build/_worker.js',
 	format: 'esm',
 	target: 'es2020',
-})
+} as const
 
-console.log('Worker build complete')
+if (watch) {
+	const ctx = await context(build_options)
+	await ctx.watch()
+	console.log('Watching worker for changes...')
+} else {
+	await build(build_options)
+	console.log('Worker build complete')
+}

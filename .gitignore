@@ -8,5 +8,8 @@ node_modules/
 dev/build.*
 build/*
 tmp/*
+.wrangler/*
 
 .DS_Store
+
+.dev.vars
