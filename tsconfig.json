@@ -1,5 +1,5 @@
 {
-  "include": ["embed/**/*.ts", "embed/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte", "pricing/**/*.ts"],
+  "include": ["embed/**/*.ts", "embed/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte", "pricing/**/*.ts", "./*.ts"],
 	"exclude": ["node_modules/**", "build/**"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {

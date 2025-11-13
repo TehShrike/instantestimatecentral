@@ -6,9 +6,9 @@ const build_options = {
 	entryPoints: ['worker/index.ts'],
 	bundle: true,
 	outfile: 'build/_worker.js',
-	format: 'esm',
+	format: 'esm' as const,
 	target: 'es2020',
-} as const
+}
 
 if (watch) {
 	const ctx = await context(build_options)
