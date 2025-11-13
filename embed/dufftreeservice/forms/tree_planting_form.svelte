@@ -5,6 +5,7 @@
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
+	import ContactForm from '#lib/contact_form.svelte'
 
 	const default_data: PricingArguments = {
 		tree_size: '3 gallons',
@@ -21,6 +22,10 @@
 		tree_size: 'radio',
 		number_of_trees: 'number',
 	} as const
+
+	const handle_contact_submit = (contact_data: { name: string; email: string; phone: string; street_address: string; tree_variety?: string }) => {
+		console.log('Contact form submitted:', contact_data, 'Pricing data:', data, 'Price:', calculated_price.toString(2))
+	}
 </script>
 
 {#snippet number_of_trees()}
@@ -51,3 +56,8 @@
 </PricingForm>
 
 <EstimatedPriceDisplay price={calculated_price} />
+
+<ContactForm
+	onsubmit={handle_contact_submit}
+	additional_fields={[{ label: 'What variety?', field_name: 'tree_variety' }]}
+/>

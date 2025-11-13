@@ -1,5 +1,8 @@
+import { handle_request as executor_handle_request } from './executor.ts'
+
 interface Env {
 	ASSETS: Fetcher
+	RESEND_API_KEY: string
 }
 
 const prepend_path = (request: Request, path_prefix: string): Request => {
@@ -16,6 +19,10 @@ export default {
 		if (url.hostname === 'instantestimatecentral.pages.dev') {
 			const redirectUrl = `https://www.instantestimatecentral.com${url.pathname}${url.search}${url.hash}`
 			return Response.redirect(redirectUrl, 301)
+		}
+
+		if (url.hostname === 'executor.instantestimatecentral.com') {
+			return executor_handle_request(request, env)
 		}
 
 		if (url.hostname === 'embed.instantestimatecentral.com') {

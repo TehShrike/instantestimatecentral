@@ -5,6 +5,7 @@
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
+	import ContactForm from '#lib/contact_form.svelte'
 
 	const default_data: PricingArguments = {
 		tree_diameter: '11-15 inches',
@@ -26,6 +27,9 @@
 		adjacent_to_street_or_alley: 'toggle',
 	} as const
 
+	const handle_contact_submit = (contact_data: { name: string; email: string; phone: string; street_address: string }) => {
+		console.log('Contact form submitted:', contact_data, 'Pricing data:', data, 'Price:', calculated_price.toString(2))
+	}
 </script>
 
 {#snippet tree_diameter()}
@@ -84,3 +88,5 @@
 </PricingForm>
 
 <EstimatedPriceDisplay price={calculated_price} />
+
+<ContactForm onsubmit={handle_contact_submit} />
