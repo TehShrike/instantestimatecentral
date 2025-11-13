@@ -3,10 +3,10 @@ export type PricingLogic<T> = {
 	validator: Validator<T>
 }
 
-export type ServicePricingMap<T> = {
-	[key: string]: PricingLogic<T>
+export type ServicePricingMap = {
+	[key: string]: PricingLogic<any>
 }
 
-export type DomainNameToPricing<T> = {
-	[key: string]: ServicePricingMap<T>
+export type DomainNameToPricing = {
+	[key: string]: ServicePricingMap
 }
