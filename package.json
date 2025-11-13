@@ -35,6 +35,7 @@
 		"build:dufftreeservice:tree_removal": "node esbuild.config.ts -- dufftreeservice/tree_removal.svelte build/embed/dufftreeservice/tree_removal.js",
 		"build:dufftreeservice:tree_trimming": "node esbuild.config.ts -- dufftreeservice/tree_trimming.svelte build/embed/dufftreeservice/tree_trimming.js",
 		"build:dufftreeservice:tree_planting": "node esbuild.config.ts -- dufftreeservice/tree_planting.svelte build/embed/dufftreeservice/tree_planting.js",
+		"build:dufftreeservice:all_estimates": "node esbuild.config.ts -- dufftreeservice/all_estimates.svelte build/embed/dufftreeservice/all_estimates.js",
 		"build:www": "cp -r www build/",
 		"postinstall": "mkdir -p build"
 	},
