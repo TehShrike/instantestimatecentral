@@ -64,6 +64,8 @@
 	.tab-button[data-selected="true"] {
 		background: white;
 		color: #2c3e50;
+		border: 2px solid black;
+		border-bottom: none;
 	}
 
 	.tabs-content {
