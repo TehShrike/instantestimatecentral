@@ -5,10 +5,10 @@
 	import PricingWrapper from '#lib/pricing_wrapper.svelte'
 	import { get, set } from '#lib/localstorage.ts'
 	import { is_string } from '#lib/json_validator.ts'
-	import LimbRemoval from './limb_removal.svelte'
-	import TreeRemoval from './tree_removal.svelte'
-	import TreeTrimming from './tree_trimming.svelte'
-	import TreePlanting from './tree_planting.svelte'
+	import LimbRemovalForm from './forms/limb_removal_form.svelte'
+	import TreeRemovalForm from './forms/tree_removal_form.svelte'
+	import TreeTrimmingForm from './forms/tree_trimming_form.svelte'
+	import TreePlantingForm from './forms/tree_planting_form.svelte'
 
 	let current_tab = $state(get('all_estimates_current_tab', is_string, 'Limb Removal'))
 
@@ -40,23 +40,17 @@
 </PricingWrapper>
 
 {#snippet limb_removal_content()}
-	<LimbRemoval />
+	<LimbRemovalForm />
 {/snippet}
 
 {#snippet tree_removal_content()}
-	<TreeRemoval />
+	<TreeRemovalForm />
 {/snippet}
 
 {#snippet tree_trimming_content()}
-	<TreeTrimming />
+	<TreeTrimmingForm />
 {/snippet}
 
 {#snippet tree_planting_content()}
-	<TreePlanting />
+	<TreePlantingForm />
 {/snippet}
-
-<style>
-	:global(.pricing-wrapper) {
-		margin: 0 auto;
-	}
-</style>
