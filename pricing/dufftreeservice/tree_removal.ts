@@ -1,4 +1,4 @@
-import fnum from '#lib/fnum.ts'
+import fnum, { round_to_nearest_5 } from '#lib/fnum.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 
 type TreeDiameter =
@@ -50,7 +50,7 @@ export const pricing = ({
 		.plus(fence_increase)
 		.plus(not_adjacent_to_street_increase)
 
-	return total
+	return round_to_nearest_5(total)
 }
 
 const base_price_by_diameter = ({

@@ -1,4 +1,4 @@
-import fnum from '#lib/fnum.ts'
+import fnum, { round_to_nearest_5 } from '#lib/fnum.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
@@ -45,7 +45,7 @@ export const pricing = ({
 		.plus(pruned_by_arborist_discount)
 		.plus(variety_adjustment)
 
-	return total
+	return round_to_nearest_5(total)
 }
 
 const price_matrix: Record<TreeDiameter, Record<TrimType, string>> = {
