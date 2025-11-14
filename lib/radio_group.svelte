@@ -20,7 +20,7 @@
 	.radio-group {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 0.2rem;
 	}
 
 	@media (max-width: 600px) {
