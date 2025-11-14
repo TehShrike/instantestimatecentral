@@ -53,6 +53,7 @@
 		font-family: inherit;
 		color: #2c3e50;
 		background: #ecf0f1;
+		border: 2px solid transparent;
 		cursor: pointer;
 		transition: background-color 0.2s;
 	}
