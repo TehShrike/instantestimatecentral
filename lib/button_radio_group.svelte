@@ -16,15 +16,17 @@
 			aria-checked={value === option.value}
 			onclick={() => value = option.value}
 		>
-			<strong>
-				{option.label}
+			<div class="button-content">
+				<strong>
+					{option.label}
+				</strong>
+				<small>{option.description}</small>
+			</div>
+			<span class="price-diff" class:visible={value !== option.value && option.price_difference}>
 				{#if value !== option.value && option.price_difference}
-					<span class="price-diff">
-						{option.price_difference.gt('0') ? '+' : ''}{option.price_difference.toString(0)}
-					</span>
+					{option.price_difference.gt('0') ? '+' : ''}{option.price_difference.toString(0)}$
 				{/if}
-			</strong>
-			<small>{option.description}</small>
+			</span>
 		</button>
 	{/each}
 </div>
@@ -44,8 +46,9 @@
 	.radio-button {
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
 		gap: 0.5rem;
-		align-items: flex-start;
+		align-items: stretch;
 		padding: 1rem;
 		border: 2px solid #2c3e50;
 		border-radius: 8px;
@@ -53,6 +56,12 @@
 		cursor: pointer;
 		font-family: inherit;
 		text-align: left;
+	}
+
+	.button-content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 
 	.radio-button:focus {
@@ -90,6 +99,16 @@
 		font-size: 0.875rem;
 		font-weight: 600;
 		white-space: nowrap;
+		text-align: right;
+		min-height: 1.25rem;
+		margin-top: 0.5rem;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.price-diff.visible {
+		opacity: 1;
+		visibility: visible;
 	}
 
 	@media (max-width: 600px) {
