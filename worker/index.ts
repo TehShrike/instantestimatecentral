@@ -22,6 +22,8 @@ export default {
 		const url = new URL(request.url)
 		const subdomain = get_subdomain(url.hostname)
 
+		console.log('🔆 worker running, subdomain:', subdomain, 'full url:', url.toString())
+
 		if (url.hostname === 'instantestimatecentral.pages.dev') {
 			const redirectUrl = `https://www.instantestimatecentral.com${url.pathname}${url.search}${url.hash}`
 			return Response.redirect(redirectUrl, 301)
