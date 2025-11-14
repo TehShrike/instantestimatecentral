@@ -59,7 +59,7 @@ for (const component of components) {
 
 	const html = generate_html(custom_element_name, component.service_name, component.form_name)
 
-	const output_path = `build/demo/${component.service_name}/${component.form_name}.html`
+	const output_path = `build/www/demo/${component.service_name}/${component.form_name}.html`
 	await mkdir(dirname(output_path), { recursive: true })
 	await writeFile(output_path, html)
 

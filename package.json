@@ -37,9 +37,9 @@
 		"build": "run-p build:**",
 		"build:forms": "node esbuild.forms.ts",
 		"build:worker": "node esbuild.worker.ts",
-		"build:www": "cp -r www build/www/",
+		"build:www": "cp -r www build/",
 		"build:demo": "node generate_demo_pages.ts",
-		"postinstall": "mkdir -p build/www"
+		"postinstall": "mkdir -p build"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.0",
