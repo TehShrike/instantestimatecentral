@@ -36,7 +36,7 @@ const generate_html = (custom_element_name: string, service_name: string, form_n
 			<${custom_element_name}></${custom_element_name}>
 		</div>
 		<script type="module">
-			const script_url = \`https://embed.\${location.hostname}/${service_name}/${form_name}.js\`
+			const script_url = \`//embed.\${location.hostname}:\${location.port}/${service_name}/${form_name}.js\`
 			import(script_url)
 		</script>
 	</body>

@@ -33,13 +33,13 @@
 		"dev:worker:build": "node esbuild.worker.ts --watch",
 		"dev:worker:serve": "wrangler pages dev build --compatibility-date=2024-11-01 --port=8788",
 		"dev:worker": "run-p dev:worker:*",
-		"dev:open_browser": "open https://localhost:1337/demo/dufftreeservice/all_estimates.html",
+		"dev:open_browser": "open https://local.com:1337/demo/dufftreeservice/all_estimates",
 		"build": "run-p build:**",
 		"build:forms": "node esbuild.forms.ts",
 		"build:worker": "node esbuild.worker.ts",
-		"build:www": "cp -r www build/",
+		"build:www": "cp -r www build/www/",
 		"build:demo": "node generate_demo_pages.ts",
-		"postinstall": "mkdir -p build"
+		"postinstall": "mkdir -p build/www"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.0",

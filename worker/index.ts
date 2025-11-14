@@ -12,20 +12,26 @@ const prepend_path = (request: Request, path_prefix: string): Request => {
 	return new Request(url.toString(), new Request(request))
 }
 
+const get_subdomain = (hostname: string): string => {
+	const parts = hostname.split('.')
+	return parts.length > 2 ? (parts[0] ?? '') : ''
+}
+
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url)
+		const subdomain = get_subdomain(url.hostname)
 
 		if (url.hostname === 'instantestimatecentral.pages.dev') {
 			const redirectUrl = `https://www.instantestimatecentral.com${url.pathname}${url.search}${url.hash}`
 			return Response.redirect(redirectUrl, 301)
 		}
 
-		if (url.hostname === 'executor.instantestimatecentral.com') {
+		if (subdomain === 'executor') {
 			return executor_handle_request(request, env)
 		}
 
-		if (url.hostname === 'embed.instantestimatecentral.com') {
+		if (subdomain === 'embed') {
 			return env.ASSETS.fetch(prepend_path(request, '/embed'))
 		}
 
