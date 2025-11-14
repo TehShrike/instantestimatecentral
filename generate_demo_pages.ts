@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir } from 'fs/promises'
 import { dirname } from 'path'
 import { get_form_components } from '#lib/get_form_components.ts'
+import { for_each_async } from '#lib/array.ts'
 
 const extract_custom_element_name = (content: string): string | null => {
 	const match = content.match(/<svelte:options\s+customElement="([^"]+)"\s*\/>/)
@@ -49,13 +50,13 @@ const components = await get_form_components()
 
 console.log('Generating demo pages...')
 
-for (const component of components) {
+await for_each_async(components, async (component) => {
 	const content = await readFile(component.path, 'utf-8')
 	const custom_element_name = extract_custom_element_name(content)
 
 	if (!custom_element_name) {
 		console.warn(`Warning: Could not find customElement name in ${component.path}`)
-		continue
+		return
 	}
 
 	const html = generate_html(custom_element_name, component.service_name, component.form_name)
@@ -65,6 +66,6 @@ for (const component of components) {
 	await writeFile(output_path, html)
 
 	console.log(`  ${output_path}`)
-}
+})
 
 console.log('Demo pages generated')

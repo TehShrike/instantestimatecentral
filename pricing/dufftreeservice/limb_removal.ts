@@ -1,4 +1,5 @@
-import fnum, { greatest_of, round_to_nearest_5 } from '#lib/fnum.ts'
+import fnum, { greatest_of } from '#lib/fnum.ts'
+import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 
 const MINIMUM_PRICE = fnum('300')
@@ -48,7 +49,7 @@ export const pricing = ({
 		.plus(over_something_increase)
 		.plus(not_easy_to_haul_out_increase)
 
-	return round_to_nearest_5(greatest_of(MINIMUM_PRICE, total))
+	return round_estimate_price(greatest_of(MINIMUM_PRICE, total))
 }
 
 const can_we_get_it_without_climbing = ({

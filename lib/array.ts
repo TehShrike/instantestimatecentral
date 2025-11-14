@@ -6,6 +6,14 @@ export const for_each = <T>(arr: readonly T[], fn: (item: T, index: number) => v
 	}
 }
 
+export const for_each_async = async <T>(arr: readonly T[], fn: (item: T, index: number) => Promise<void>) => {
+	let i=0, len=arr.length;
+
+	for (; i < len; i++) {
+		await fn(arr[i] as T, i)
+	}
+}
+
 type Predicate<T> = (item: T) => boolean
 export const filter = <T>(arr: readonly T[], predicate: Predicate<T>) => {
 	const length = arr.length, res: T[] = []

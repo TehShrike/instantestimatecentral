@@ -3,6 +3,7 @@ import { mkdirSync } from 'fs'
 import type { CompileOptions } from "svelte/compiler";
 import sveltePlugin from 'esbuild-svelte'
 import { get_form_components } from '#lib/get_form_components.ts'
+import { for_each } from '#lib/array.ts'
 
 const is_watch = process.argv.includes('--watch')
 
@@ -14,15 +15,15 @@ if (components.length === 0) {
 }
 
 const entry_points: Record<string, string> = {}
-for (const component of components) {
+for_each(components, (component) => {
 	const output_key = `${component.service_name}/${component.form_name}`
 	entry_points[output_key] = component.path
-}
+})
 
 console.log('Building components:')
-for (const component of components) {
+for_each(components, (component) => {
 	console.log(`  ${component.path} -> build/embed/${component.service_name}/${component.form_name}.js`)
-}
+})
 
 mkdirSync('build/embed', { recursive: true })
 

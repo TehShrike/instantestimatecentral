@@ -12,20 +12,20 @@ const generate_all_cases = (): PricingArguments[] => {
 
 	const result: PricingArguments[] = []
 
-	for (const tree_diameter of tree_diameter_values) {
-		for (const branches_over_something of branches_over_something_values) {
-			for (const fence of fence_values) {
-				for (const adjacent_to_street_or_alley of adjacent_to_street_or_alley_values) {
+	for_each(tree_diameter_values, (tree_diameter) => {
+		for_each(branches_over_something_values, (branches_over_something) => {
+			for_each(fence_values, (fence) => {
+				for_each(adjacent_to_street_or_alley_values, (adjacent_to_street_or_alley) => {
 					result.push({
 						tree_diameter,
 						branches_over_something,
 						fence,
 						adjacent_to_street_or_alley,
 					})
-				}
-			}
-		}
-	}
+				})
+			})
+		})
+	})
 
 	return result
 }
@@ -43,6 +43,7 @@ test(`dufftreeservice tree removal pricing: ${cases.length} cases`, () => {
 			highest_price_args = arg
 		}
 		assert.ok(pricing(arg).gte('600'))
+		assert.ok(price.lt('8000'))
 	})
 
 	console.log(highest_price.toString(2), highest_price_args)

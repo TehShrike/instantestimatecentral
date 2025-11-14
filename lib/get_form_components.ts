@@ -1,5 +1,6 @@
 import { readdir, stat } from 'fs/promises'
 import { join } from 'path'
+import { for_each_async } from '#lib/array.ts'
 
 type FormComponent = {
 	path: string
@@ -12,21 +13,21 @@ export const get_form_components = async (): Promise<FormComponent[]> => {
 	const entries = await readdir(embed_dir)
 
 	const subdirs: string[] = []
-	for (const entry of entries) {
+	await for_each_async(entries, async (entry) => {
 		const full_path = join(embed_dir, entry)
 		const stats = await stat(full_path)
 		if (stats.isDirectory()) {
 			subdirs.push(entry)
 		}
-	}
+	})
 
 	const components: FormComponent[] = []
 
-	for (const subdir of subdirs) {
+	await for_each_async(subdirs, async (subdir) => {
 		const subdir_path = join(embed_dir, subdir)
 		const files = await readdir(subdir_path)
 
-		for (const file of files) {
+		await for_each_async(files, async (file) => {
 			if (file.endsWith('.svelte')) {
 				const file_path = join(subdir_path, file)
 				const file_stats = await stat(file_path)
@@ -38,8 +39,8 @@ export const get_form_components = async (): Promise<FormComponent[]> => {
 					})
 				}
 			}
-		}
-	}
+		})
+	})
 
 	return components
 }

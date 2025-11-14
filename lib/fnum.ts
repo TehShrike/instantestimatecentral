@@ -12,7 +12,3 @@ export const greatest_of = (...numbers: readonly [FinancialNumber, ...FinancialN
 
 	return numbers.reduce((greatest, current) => greatest.gt(current) ? greatest : current)
 }
-
-export const round_to_nearest_5 = (value: FinancialNumber): FinancialNumber => {
-	return value.times(number('0.2')).changePrecision(0).times(number('5'))
-}

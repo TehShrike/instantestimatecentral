@@ -13,11 +13,11 @@ const generate_all_cases = (): PricingArguments[] => {
 
 	const result: PricingArguments[] = []
 
-	for (const is_it_broken of is_it_broken_values) {
-		for (const how_big_around_is_it of how_big_around_is_it_values) {
-			for (const distance_from_ground of distance_from_ground_values) {
-				for (const branches_over_something of branches_over_something_values) {
-					for (const easy_to_haul_out of easy_to_haul_out_values) {
+	for_each(is_it_broken_values, (is_it_broken) => {
+		for_each(how_big_around_is_it_values, (how_big_around_is_it) => {
+			for_each(distance_from_ground_values, (distance_from_ground) => {
+				for_each(branches_over_something_values, (branches_over_something) => {
+					for_each(easy_to_haul_out_values, (easy_to_haul_out) => {
 						result.push({
 							is_it_broken,
 							how_big_around_is_it,
@@ -25,11 +25,11 @@ const generate_all_cases = (): PricingArguments[] => {
 							branches_over_something,
 							easy_to_haul_out,
 						})
-					}
-				}
-			}
-		}
-	}
+					})
+				})
+			})
+		})
+	})
 
 	return result
 }
