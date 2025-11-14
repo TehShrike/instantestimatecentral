@@ -198,18 +198,3 @@ import { greatest_of } from '#lib/fnum.ts'
 
 greatest_of(number('10'), number('20'), number('15')) // => FinancialNumber representing 20
 ```
-
-### `increase_by_ratio({ value, ratio })`
-
-Multiplies a value by (1 + ratio). Useful for percentage increases/decreases.
-
-```js
-import { increase_by_ratio } from '#lib/fnum.ts'
-
-// Increase by 15%
-increase_by_ratio({ value: number('100'), ratio: number('0.15') }) // => FinancialNumber representing 115
-
-// Decrease by 10%
-increase_by_ratio({ value: number('100'), ratio: number('-0.10') }) // => FinancialNumber representing 90
-```
-

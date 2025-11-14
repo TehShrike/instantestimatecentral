@@ -1,4 +1,4 @@
-import fnum, { increase_by_ratio } from '#lib/fnum.ts'
+import fnum from '#lib/fnum.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
@@ -28,13 +28,11 @@ export const pricing = ({
 	tree_variety,
 	trim_type,
 }: PricingArguments): FinancialNumber => {
-	const base_price = get_base_price({ tree_diameter, trim_type })
+	const subtotal = get_base_price({ tree_diameter, trim_type })
 
-	let subtotal = base_price
-
-	if (raise_canopy) {
-		subtotal = subtotal.plus(fnum('75'))
-	}
+	const raise_canopy_increase = raise_canopy
+		? fnum('75')
+		: fnum('0')
 
 	const pruned_by_arborist_discount = pruned_by_arborist_recently
 		? subtotal.times(fnum('-0.10'))
@@ -43,6 +41,7 @@ export const pricing = ({
 	const variety_adjustment = get_variety_adjustment({ tree_variety, subtotal })
 
 	const total = subtotal
+		.plus(raise_canopy_increase)
 		.plus(pruned_by_arborist_discount)
 		.plus(variety_adjustment)
 

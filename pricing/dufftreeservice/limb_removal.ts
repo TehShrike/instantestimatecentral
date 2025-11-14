@@ -1,4 +1,4 @@
-import fnum, { greatest_of, increase_by_ratio } from '#lib/fnum.ts'
+import fnum, { greatest_of } from '#lib/fnum.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 
 const MINIMUM_PRICE = fnum('300')
@@ -32,25 +32,16 @@ export const pricing = ({
 	const subtotal = base_price.plus(increase_price_based_just_on_size({ how_big_around_is_it, need_to_climb }))
 
 	const broken_branches_increase = is_it_broken
-		? increase_by_ratio({
-			value: subtotal,
-			ratio: cost_increase_ratio_for_broken_branches({ how_big_around_is_it }),
-		})
+		? subtotal.times(cost_increase_ratio_for_broken_branches({ how_big_around_is_it }))
 		: fnum('0')
 
 	const over_something_increase = branches_over_something
-		? increase_by_ratio({
-			value: subtotal,
-			ratio: cost_increase_ratio_if_its_over_something({ how_big_around_is_it }),
-		})
+		? subtotal.times(cost_increase_ratio_if_its_over_something({ how_big_around_is_it }))
 		: fnum('0')
 
 	const not_easy_to_haul_out_increase = easy_to_haul_out
 		? fnum('0')
-		: increase_by_ratio({
-			value: subtotal,
-			ratio: cost_increase_ratio_if_its_not_easy_to_haul_out({ how_big_around_is_it }),
-		})
+		: subtotal.times(cost_increase_ratio_if_its_not_easy_to_haul_out({ how_big_around_is_it }))
 
 	const total = subtotal
 		.plus(broken_branches_increase)

@@ -1,4 +1,4 @@
-import fnum, { increase_by_ratio } from '#lib/fnum.ts'
+import fnum from '#lib/fnum.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 
 type TreeDiameter =
@@ -34,25 +34,16 @@ export const pricing = ({
 	const branches_over_something_increase =
 		branches_over_something === 'nothing underneath'
 			? fnum('0')
-			: increase_by_ratio({
-				value: subtotal,
-				ratio: cost_increase_ratio_for_branches_over_something({ branches_over_something }),
-			})
+			: subtotal.times(cost_increase_ratio_for_branches_over_something({ branches_over_something }))
 
 	const fence_increase =
 		fence === 'no'
 			? fnum('0')
-			: increase_by_ratio({
-				value: subtotal,
-				ratio: cost_increase_ratio_for_fence({ fence }),
-			})
+			: subtotal.times(cost_increase_ratio_for_fence({ fence }))
 
 	const not_adjacent_to_street_increase = adjacent_to_street_or_alley
 		? fnum('0')
-		: increase_by_ratio({
-			value: subtotal,
-			ratio: fnum('0.3'),
-		})
+		: subtotal.times(fnum('0.3'))
 
 	const total = subtotal
 		.plus(branches_over_something_increase)
@@ -83,10 +74,11 @@ const cost_increase_ratio_for_branches_over_something = ({
 }: {
 	branches_over_something: BranchesOverSomething
 }) => {
+	if (branches_over_something === 'nothing underneath') return fnum('0')
 	if (branches_over_something === 'some branches over something') return fnum('0.15')
 	if (branches_over_something === 'all big branches are over something') return fnum('0.4')
 
-	branches_over_something satisfies 'nothing underneath'
+	branches_over_something satisfies never
 	throw new Error(`Unexpected branches_over_something value: ${branches_over_something}`)
 }
 
@@ -95,10 +87,11 @@ const cost_increase_ratio_for_fence = ({
 }: {
 	fence: Fence
 }) => {
+	if (fence === 'no') return fnum('0')
 	if (fence === 'single gate') return fnum('0.25')
 	if (fence === 'double gate') return fnum('0.1')
 
-	fence satisfies 'no'
+	fence satisfies never
 	throw new Error(`Unexpected fence value: ${fence}`)
 }
 
