@@ -4,9 +4,12 @@ export type PricingLogic<T> = {
 }
 
 export type ServicePricingMap = {
-	[key: string]: PricingLogic<any>
+	services: {
+		[service_name: string]: PricingLogic<any>
+	}
+	service_name_validator: Validator<keyof services>
 }
 
 export type DomainNameToPricing = {
-	[key: string]: ServicePricingMap
+	[domain_name: string]: ServicePricingMap
 }

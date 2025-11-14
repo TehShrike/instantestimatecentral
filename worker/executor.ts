@@ -1,5 +1,5 @@
-import pricing_map from '../pricing/index.ts'
-import { send_email } from '../lib/resend.ts'
+import domain_to_pricing_map, { domain_validator } from '#pricing/index.ts'
+import { send_email } from '#lib/resend.ts'
 import type { FinancialNumber } from 'financial-number'
 
 interface Env {
@@ -12,70 +12,63 @@ const cors_headers = {
 	'Access-Control-Allow-Headers': 'Content-Type',
 }
 
+const response = ({ body = null, status, headers = {} }: { body?: string | null, status: number, headers?: Record<string, string> }) => new Response(body, {
+	status,
+	headers: { ...cors_headers, ...headers },
+})
+
+const json_response = ({ body, status, headers = {} }: { body: any, status: number, headers?: Record<string, string> }) => response({
+	body: JSON.stringify(body),
+	status,
+	headers: { 'Content-Type': 'application/json', ...headers }
+})
+
+const error_response = ({ message, status = 400, headers = {} }: { message: string, status?: number, headers?: Record<string, string> }) => json_response({
+	body: { error: message },
+	status,
+	headers,
+})
+
 export const handle_request = async (request: Request, env: Env): Promise<Response> => {
 	const url = new URL(request.url)
 
 	if (request.method === 'OPTIONS') {
-		return new Response(null, {
+		return response({
 			status: 204,
-			headers: cors_headers,
 		})
 	}
 
 	if (url.pathname === '/send_email' && request.method === 'POST') {
 		const origin = request.headers.get('Origin')
 		if (!origin) {
-			return new Response(JSON.stringify({ error: 'Missing Origin header' }), {
-				status: 400,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
-			})
+			return error_response({ message: 'Missing Origin header' })
 		}
 
 		const domain = new URL(origin).hostname
 
-		const domain_pricing = pricing_map[domain as keyof typeof pricing_map]
-		if (!domain_pricing) {
-			return new Response(JSON.stringify({ error: `Unknown domain: ${domain}` }), {
-				status: 400,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
-			})
+		if (!domain_validator.is_valid(domain)) {
+			return error_response({ message: `Invalid domain: ${domain}` })
 		}
 
 		let body: any
 		try {
 			body = await request.json()
 		} catch (e) {
-			return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-				status: 400,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
-			})
+			return error_response({ message: 'Invalid JSON' })
 		}
 
 		const { service, args, contact } = body
 
-		if (typeof service !== 'string') {
-			return new Response(JSON.stringify({ error: 'Missing or invalid service' }), {
-				status: 400,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
-			})
+		const domain_services = domain_to_pricing_map[domain]
+
+		if (!domain_services.service_name_validator.is_valid(service)) {
+			return error_response({ message: 'Missing or invalid service' })
 		}
 
-		const service_pricing = domain_pricing[service as keyof typeof domain_pricing]
-		if (!service_pricing) {
-			return new Response(JSON.stringify({ error: `Unknown service: ${service}` }), {
-				status: 400,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
-			})
-		}
+		const service_pricing = domain_services.services[service]
 
-		const validator = service_pricing.validator as { is_valid: (input: unknown) => boolean; get_messages: (input: unknown, name: string) => string[] }
-		const is_valid = validator.is_valid(args)
-		if (!is_valid) {
-			const messages = validator.get_messages(args, 'args')
-			return new Response(JSON.stringify({ error: 'Invalid args', messages }), {
-				status: 400,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
-			})
+		if (!service_pricing.validator.is_valid(args)) {
+			return error_response({ message: 'Invalid pricing function arguments: ' + service_pricing.validator.get_messages(args, 'args').join(', ') })
 		}
 
 		const price = (service_pricing.pricing as (args: any) => FinancialNumber)(args)
@@ -104,21 +97,21 @@ export const handle_request = async (request: Request, env: Env): Promise<Respon
 				reply_to: contact.email,
 			})
 
-			return new Response(JSON.stringify({ success: true, email_id: email_result.id }), {
+			return json_response({
+				body: { success: true, email_id: email_result.id },
 				status: 200,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
 			})
 		} catch (error) {
 			console.error('Email sending error:', error)
-			return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+			return error_response({
+				message: 'Failed to send email',
 				status: 500,
-				headers: { 'Content-Type': 'application/json', ...cors_headers },
 			})
 		}
 	}
 
-	return new Response('Not Found', {
+	return response({
+		body: 'Not Found',
 		status: 404,
-		headers: cors_headers,
 	})
 }
