@@ -2,6 +2,8 @@ import fnum from '#lib/fnum.ts'
 import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 
+export const service_name = 'Tree Removal'
+
 type TreeDiameter =
 	| '6-10 inches'
 	| '11-15 inches'
@@ -17,7 +19,7 @@ type BranchesOverSomething =
 
 type Fence = 'no' | 'single gate' | 'double gate'
 
-export type PricingArguments = {
+export type TreeRemovalPricingArguments = {
 	tree_diameter: TreeDiameter
 	branches_over_something: BranchesOverSomething
 	fence: Fence
@@ -29,7 +31,7 @@ export const pricing = ({
 	branches_over_something,
 	fence,
 	adjacent_to_street_or_alley,
-}: PricingArguments) => {
+}: TreeRemovalPricingArguments) => {
 	const subtotal = base_price_by_diameter({ tree_diameter })
 
 	const branches_over_something_increase =
@@ -96,7 +98,7 @@ const cost_increase_ratio_for_fence = ({
 	throw new Error(`Unexpected fence value: ${fence}`)
 }
 
-const tree_diameter_validator: Validator<PricingArguments['tree_diameter']> = one_of(
+const tree_diameter_validator: Validator<TreeRemovalPricingArguments['tree_diameter']> = one_of(
 	exact('6-10 inches' as const),
 	exact('11-15 inches' as const),
 	exact('16-20 inches' as const),
@@ -105,21 +107,38 @@ const tree_diameter_validator: Validator<PricingArguments['tree_diameter']> = on
 	exact('33-40 inches' as const),
 )
 
-const branches_over_something_validator: Validator<PricingArguments['branches_over_something']> = one_of(
+const branches_over_something_validator: Validator<TreeRemovalPricingArguments['branches_over_something']> = one_of(
 	exact('nothing underneath' as const),
 	exact('some branches over something' as const),
 	exact('all big branches are over something' as const),
 )
 
-const fence_validator: Validator<PricingArguments['fence']> = one_of(
+const fence_validator: Validator<TreeRemovalPricingArguments['fence']> = one_of(
 	exact('no' as const),
 	exact('single gate' as const),
 	exact('double gate' as const),
 )
 
-export const validator: Validator<PricingArguments> = object({
+export const validator: Validator<TreeRemovalPricingArguments> = object({
 	tree_diameter: tree_diameter_validator,
 	branches_over_something: branches_over_something_validator,
 	fence: fence_validator,
 	adjacent_to_street_or_alley: is_boolean,
 })
+
+export const render_html = (args: TreeRemovalPricingArguments) => {
+	return `
+		<h2>${service_name}</h2>
+		<p>Tree diameter: <strong>${args.tree_diameter}</strong></p>
+		<p>Branches over something: <strong>${args.branches_over_something}</strong></p>
+		<p>Fence: <strong>${args.fence}</strong></p>
+		<p>Adjacent to street or alley: <strong>${args.adjacent_to_street_or_alley ? 'Yes' : 'No'}</strong></p>
+	`
+}
+
+export default {
+	pricing,
+	validator,
+	service_name,
+	render_html,
+} as const

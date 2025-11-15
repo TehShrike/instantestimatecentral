@@ -1,7 +1,7 @@
-<script lang="ts">
+<script lang="ts" generics="FieldName extends string">
 	type AdditionalField = {
 		label: string
-		field_name: string
+		field_name: FieldName
 	}
 
 	type ContactFormData = {
@@ -9,7 +9,9 @@
 		email: string
 		phone: string
 		street_address: string
-		[key: string]: string
+		extra: {
+			[key in FieldName]: string
+		}
 	}
 
 	let {
@@ -24,7 +26,9 @@
 	let email = $state('')
 	let phone = $state('')
 	let street_address = $state('')
-	let additional_values = $state<Record<string, string>>({})
+	let additional_values = $state<Record<FieldName, string>>(
+		Object.fromEntries(additional_fields.map(field => [field.field_name, ''])) as Record<FieldName, string>
+	)
 
 	const handle_submit = (event: Event) => {
 		event.preventDefault()
@@ -33,7 +37,7 @@
 			email,
 			phone,
 			street_address,
-			...additional_values,
+			extra: additional_values,
 		})
 	}
 </script>

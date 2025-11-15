@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pricing, validator, type PricingArguments } from '#pricing/dufftreeservice/tree_removal.ts'
+	import { pricing, validator, type TreeRemovalPricingArguments } from '#pricing/dufftreeservice/tree_removal.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
@@ -7,7 +7,7 @@
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 	import ContactForm from '#lib/contact_form.svelte'
 
-	const default_data: PricingArguments = {
+	const default_data: TreeRemovalPricingArguments = {
 		tree_diameter: '11-15 inches',
 		branches_over_something: 'nothing underneath',
 		fence: 'no',

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pricing, validator, type PricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
+	import { pricing, validator, type TreePlantingPricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import NumberInput from '#lib/number_input.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
@@ -7,7 +7,7 @@
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 	import ContactForm from '#lib/contact_form.svelte'
 
-	const default_data: PricingArguments = {
+	const default_data: TreePlantingPricingArguments = {
 		tree_size: '3 gallons',
 		number_of_trees: 1,
 	}

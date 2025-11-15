@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pricing, validator, type PricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
+	import { pricing, validator, type LimbRemovalPricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
@@ -7,7 +7,7 @@
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 	import ContactForm from '#lib/contact_form.svelte'
 
-	const default_data: PricingArguments = {
+	const default_data: LimbRemovalPricingArguments = {
 		is_it_broken: false,
 		how_big_around_is_it: '3-5 inches',
 		distance_from_ground: 'under 15 feet',

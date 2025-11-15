@@ -1,10 +1,10 @@
 import { type Validator } from '#lib/json_validator.ts'
-import { type DomainNameToPricing } from '#pricing/pricing.js'
+import { type DomainNameToCompany } from '#pricing/pricing.js'
 import dufftreeservice from './dufftreeservice/index.ts'
 
 const domain_to_pricing_map = {
 	'dufftreeservice.com': dufftreeservice,
-} as const satisfies DomainNameToPricing
+} as const satisfies DomainNameToCompany
 
 export default domain_to_pricing_map
 
