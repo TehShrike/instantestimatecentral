@@ -1,11 +1,11 @@
-import domain_to_pricing_map, { domain_validator } from '#pricing/index.ts'
+import domain_to_company_map, { domain_validator } from '#pricing/index.ts'
 import pipeline, { Result } from './effecty_middleware.ts'
 import { route } from './effecty_router.ts'
 import { send_email } from '#lib/resend.ts'
 import type { FinancialNumber } from 'financial-number'
 import * as jv from '#lib/json_validator.ts'
 import { Validator } from '#lib/json_validator.ts'
-import { error_response, response } from './response_helpers.ts'
+import { error_response, response, json_response } from './response_helpers.ts'
 
 interface Env {
 	RESEND_API_KEY: string
@@ -31,9 +31,9 @@ const handle_request = async (request: Request, env: Env) => {
 				return Result.failure(error_response({ message: `Invalid domain: ${domain}` }))
 			}
 
-			const domain_services = domain_to_pricing_map[domain]
+			const company = domain_to_company_map[domain]
 
-			return Result.success({...context, domain, domain_services})
+			return Result.success({...context, domain, company})
 		},
 		context => {
 			if (context.request.method === 'OPTIONS') {
@@ -54,27 +54,46 @@ const handle_request = async (request: Request, env: Env) => {
 		context => {
 			return route({
 				'/send_email': {
-					'POST': ({body, ...context}) => {
+					'POST': async ({body, company, ...context}) => {
 						if (!body_validator.is_valid(body)) {
 							return Result.failure(error_response({ message: body_validator.get_messages(body, 'body').join(', ') }))
 						}
-						const {service, args: pricing_args, contact} = body
+						const {service: service_name, args: pricing_args, contact} = body
 
-						if (!context.domain_services.service_name_validator.is_valid(service)) {
-							return Result.failure(error_response({ message: 'Invalid service name: ' + context.domain_services.service_name_validator.get_messages(service, 'body.service').join(', ') }))
+						if (!company.service_name_validator.is_valid(service_name)) {
+							return Result.failure(error_response({ message: 'Invalid service name: ' + company.service_name_validator.get_messages(service_name, 'body.service').join(', ') }))
 						}
 
-						const {validator} = context.domain_services.services[service]
+						const service = company.services[service_name as keyof typeof company.services]
 
-						if (!validator.is_valid(pricing_args)) {
-							return Result.failure(error_response({ message: 'Invalid pricing function arguments: ' + validator.get_messages(body.args, 'body.args').join(', ') }))
+						if (!service.validator.is_valid(pricing_args)) {
+							return Result.failure(error_response({ message: 'Invalid pricing function arguments: ' + service.validator.get_messages(body.args, 'body.args').join(', ') }))
 						}
 
-						const {pricing} = context.domain_services.services[service].pricing
+						if (!company.contact_validator.is_valid(contact)) {
+							return Result.failure(error_response({ message: 'Invalid contact: ' + company.contact_validator.get_messages(contact, 'body.contact').join(', ') }))
+						}
 
-						const price = pricing(pricing_args)
+						const price = service.pricing(pricing_args as any)
 
-						return Result.success({...context, price, body	})
+						const subject = company.render_subject(service, price)
+						const html = company.render_html({
+							service: service,
+							contact: contact as any,
+							price: price,
+							estimate_arguments: pricing_args as any
+						})
+
+						await send_email({
+							api_key: context.env.RESEND_API_KEY,
+							from: 'Instant Estimate Central <josh@instantestimatecentral.com>',
+							to: company.recipient_email_address,
+							subject,
+							html,
+						})
+
+						return Result.success(json_response({ body: { success: true }, status: 200 }))
+
 					}
 				}
 			}, context.url.pathname, context.request.method, context)
@@ -92,23 +111,5 @@ const body_validator = jv.object({
 	args: jv.object_values(is_anything),
 	contact: jv.object_values(is_anything),
 })
-
-const send_estimate_email = async ({
-	env,
-	price,
-	domain,
-	company_name,
-	service_name,
-	contact,
-	args
-}: {env: Pick<Env, 'RESEND_API_KEY'>, price: FinancialNumber, domain: string, company_name: string, service_name: string, contact: { name: string, email: string, phone: string, street_address: string }, args: Record<string, unknown>}) => {
-	return send_email({
-		api_key: env.RESEND_API_KEY,
-		from: 'Instant Estimate Central <josh@instantestimatecentral.com>',
-		to: ['me@joshduff.com'],
-		subject: company.render_subject(service, price),
-		html: company.render_html({service, contact, price, estimate_arguments: args}),
-	})
-}
 
 export default handle_request

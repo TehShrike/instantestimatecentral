@@ -1,6 +1,6 @@
 type ResendEmailRequest = {
 	from: string
-	to: string[]
+	to: string | string[]
 	subject: string
 	html: string
 	reply_to?: string
