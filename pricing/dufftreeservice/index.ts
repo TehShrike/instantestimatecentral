@@ -40,8 +40,30 @@ const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = 
 	company_name: 'Duff Tree Service',
 	recipient_email_address: 'me@joshduff.com',
 	contact_validator: contact_validator,
-	render_subject: (service: DuffTreeServices, estimate: FinancialNumber) => `🌲 💲${estimate.toString(0)} 🌳 New ${service.service_name} estimate request`,
-	render_html: ({service, contact, price, estimate_arguments}) => (service as Service<DuffTreeServiceEstimateArguments<ServiceProgrammaticName>>).render_html(estimate_arguments),
-} as const
+	render_subject: (service, estimate) => `🌲 💲${estimate.toString(0)} 🌳 New ${service.service_name} estimate request`,
+	render_html: ({service, contact, price, estimate_arguments}) => `
+	<h2>New Estimate Request</h2>
+	<p><strong>Service:</strong> ${service}</p>
+	<p><strong>Estimated Price:</strong> $${price.toString(2)}</p>
+	<br>
+	<br>
+	<br>
+	<h3>Contact Information</h3>
+	<p><strong>Name:</strong> ${contact.name}</p>
+	<p><strong>Email:</strong> ${contact.email}</p>
+	<p><strong>Phone:</strong> ${contact.phone}</p>
+	<p><strong>Address:</strong> ${contact.street_address}</p>
+	${
+		Object.entries(contact.extra).map(([key, value]) => `
+			<p><strong>${key}:</strong> ${value}</p>
+		`).join('')
+	}
+	<br>
+	<hr>
+	<br>
+	${service.render_html(estimate_arguments)}
+
+`,
+}
 
 export default company

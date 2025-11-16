@@ -23,8 +23,8 @@ export type Company<
 	company_name: string
 	recipient_email_address: string | string[]
 	contact_validator: Validator<ContactForm>
-	render_subject: <ServiceName extends ServiceName>(service: Services[ServiceName], estimate: FinancialNumber) => string
-	render_html:<ServiceName extends ServiceName>({service, contact, price, estimate_arguments}: {service: Services[ServiceName], contact: ContactForm, price: FinancialNumber, estimate_arguments: EstimateArguments<Services[ServiceName]>}) => string
+	render_subject: <SN extends ServiceName>(service: Services[SN], estimate: FinancialNumber) => string
+	render_html:<SN extends ServiceName>({service, contact, price, estimate_arguments}: {service: Services[SN], contact: ContactForm, price: FinancialNumber, estimate_arguments: EstimateArguments<Services[SN]>}) => string
 }
 
 export type DomainNameToCompany = {
