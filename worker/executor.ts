@@ -11,7 +11,7 @@ interface Env {
 	RESEND_API_KEY: string
 }
 
-const handle_request = async (request: Request, env: Env) => {
+const handle_request = async (request: Request, env: Env): Promise<Result<Response, Response | { message: string, stack?: string | null }, Response>> => {
 	const initial_context = {request, env, url: new URL(request.url)}
 
 	return pipeline(

@@ -34,11 +34,7 @@ export default {
 		if (subdomain === 'executor') {
 			const result = await executor_handle_request(request, env)
 			if (is_success(result) || is_interrupt(result)) {
-				if  (result.value instanceof Response) {
-					return result.value
-				} else {
-					return error_response({ ...error_to_string(result.value), status: 500 })
-				}
+				return result.value
 			}
 
 			if (result.value instanceof Response) {

@@ -42,8 +42,8 @@ export const is_interrupt = <SuccessValue, FailureValue, InterruptValue>(result:
 
 type Middleware<Input, SuccessValue, FailureValue, InterruptValue> = (a: Input) => Result<SuccessValue, FailureValue, InterruptValue> | Promise<Result<SuccessValue, FailureValue, InterruptValue>>
 
-const make_unexpected_error_result = (error_texts: {message: string, stack: string | null}) => Result.failure(error_texts)
-type UnexpectedErrorResult = ReturnType<typeof make_unexpected_error_result>
+type UnexpectedError = {message: string, stack: string | null}
+const make_unexpected_error_result = (error_texts: UnexpectedError) => Result.failure(error_texts)
 
 async function pipeline<
 	InitialValue,
@@ -62,7 +62,7 @@ async function pipeline<
 >(
 	initial: InitialValue,
 	m1: Middleware<InitialValue, S1, FailureValue, InterruptValue>
-): Promise<Result<S1, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S1, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -74,7 +74,7 @@ async function pipeline<
 	initial: InitialValue,
 	m1: Middleware<InitialValue, S1, FailureValue, InterruptValue>,
 	m2: Middleware<S1, S2, FailureValue, InterruptValue>
-): Promise<Result<S2, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S2, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -88,7 +88,7 @@ async function pipeline<
 	m1: Middleware<InitialValue, S1, FailureValue, InterruptValue>,
 	m2: Middleware<S1, S2, FailureValue, InterruptValue>,
 	m3: Middleware<S2, S3, FailureValue, InterruptValue>
-): Promise<Result<S3, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S3, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -104,7 +104,7 @@ async function pipeline<
 	m2: Middleware<S1, S2, FailureValue, InterruptValue>,
 	m3: Middleware<S2, S3, FailureValue, InterruptValue>,
 	m4: Middleware<S3, S4, FailureValue, InterruptValue>
-): Promise<Result<S4, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S4, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -122,7 +122,7 @@ async function pipeline<
 	m3: Middleware<S2, S3, FailureValue, InterruptValue>,
 	m4: Middleware<S3, S4, FailureValue, InterruptValue>,
 	m5: Middleware<S4, S5, FailureValue, InterruptValue>
-): Promise<Result<S5, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S5, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -142,7 +142,7 @@ async function pipeline<
 	m4: Middleware<S3, S4, FailureValue, InterruptValue>,
 	m5: Middleware<S4, S5, FailureValue, InterruptValue>,
 	m6: Middleware<S5, S6, FailureValue, InterruptValue>
-): Promise<Result<S6, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S6, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -164,7 +164,7 @@ async function pipeline<
 	m5: Middleware<S4, S5, FailureValue, InterruptValue>,
 	m6: Middleware<S5, S6, FailureValue, InterruptValue>,
 	m7: Middleware<S6, S7, FailureValue, InterruptValue>
-): Promise<Result<S7, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S7, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -188,7 +188,7 @@ async function pipeline<
 	m6: Middleware<S5, S6, FailureValue, InterruptValue>,
 	m7: Middleware<S6, S7, FailureValue, InterruptValue>,
 	m8: Middleware<S7, S8, FailureValue, InterruptValue>
-): Promise<Result<S8, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S8, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -214,7 +214,7 @@ async function pipeline<
 	m7: Middleware<S6, S7, FailureValue, InterruptValue>,
 	m8: Middleware<S7, S8, FailureValue, InterruptValue>,
 	m9: Middleware<S8, S9, FailureValue, InterruptValue>
-): Promise<Result<S9, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S9, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline<
 	InitialValue,
@@ -242,7 +242,7 @@ async function pipeline<
 	m8: Middleware<S7, S8, FailureValue, InterruptValue>,
 	m9: Middleware<S8, S9, FailureValue, InterruptValue>,
 	m10: Middleware<S9, S10, FailureValue, InterruptValue>
-): Promise<Result<S10, FailureValue | UnexpectedErrorResult, InterruptValue>>
+): Promise<Result<S10, FailureValue | UnexpectedError, InterruptValue>>
 
 async function pipeline(
 	initial: any,
