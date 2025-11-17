@@ -1,10 +1,5 @@
-<script lang="ts" generics="FieldName extends string">
-	type AdditionalField = {
-		label: string
-		field_name: FieldName
-	}
-
-	type ContactFormData = {
+<script lang="ts" module>
+	export type ContactFormData<FieldName extends string = string> = {
 		name: string
 		email: string
 		phone: string
@@ -13,12 +8,21 @@
 			[key in FieldName]: string
 		}
 	}
+</script>
+
+<script lang="ts" generics="FieldName extends string">
+	import ErrorDisplay from './error_display.svelte'
+
+	type AdditionalField = {
+		label: string
+		field_name: FieldName
+	}
 
 	let {
-		onsubmit,
+		submit,
 		additional_fields = [],
 	}: {
-		onsubmit: (data: ContactFormData) => void
+		submit: (data: ContactFormData) => Promise<void>
 		additional_fields?: AdditionalField[]
 	} = $props()
 
@@ -30,9 +34,11 @@
 		Object.fromEntries(additional_fields.map(field => [field.field_name, ''])) as Record<FieldName, string>
 	)
 
+	let submission_promise = $state<Promise<void> | null>(null)
+
 	const handle_submit = (event: Event) => {
 		event.preventDefault()
-		onsubmit({
+		submission_promise = submit({
 			name,
 			email,
 			phone,
@@ -76,7 +82,19 @@
 		We'll have an estimator come out in the next business day or two. Our office lady will give you a call in the next 1-2 business hours to schedule the estimator.
 	</p>
 
-	<button type="submit">Submit</button>
+	<button type="submit" disabled={$effect.pending() > 0}>
+		{#if $effect.pending() > 0}
+			Submitting...
+		{:else}
+			Submit
+		{/if}
+	</button>
+
+	{#await submission_promise then}
+		<div class="success-message">Message sent, we'll get back to you!</div>
+	{:catch error}
+		<ErrorDisplay {error} />
+	{/await}
 </form>
 
 <style>
@@ -152,5 +170,18 @@
 
 	button:active {
 		background-color: #21618c;
+	}
+
+	button:disabled {
+		background-color: #95a5a6;
+		cursor: not-allowed;
+	}
+
+	.success-message {
+		color: green;
+		margin-top: 1rem;
+		padding: 1rem;
+		background-color: #d4edda;
+		border-radius: 4px;
 	}
 </style>
