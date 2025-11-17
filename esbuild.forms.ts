@@ -32,6 +32,8 @@ const compiler_options: CompileOptions = {
 	customElement: true,
 }
 
+const api_host = is_watch ? 'https://embed.local.com:8788' : 'https://embed.instantestimatecentral.com'
+
 const build_options = {
 	entryPoints: entry_points,
 	bundle: true,
@@ -44,6 +46,9 @@ const build_options = {
 	],
 	format: 'esm' as const,
 	target: 'es2020',
+	define: {
+		'__API_HOST__': JSON.stringify(api_host),
+	},
 }
 
 if (is_watch) {

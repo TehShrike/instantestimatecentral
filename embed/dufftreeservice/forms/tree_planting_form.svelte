@@ -6,6 +6,10 @@
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 	import ContactForm from '#lib/contact_form.svelte'
+	import ErrorDisplay from '#lib/error_display.svelte'
+	import { post } from './fetch_executor.ts'
+
+	let error = $state<unknown>(null)
 
 	const default_data: TreePlantingPricingArguments = {
 		tree_size: '3 gallons',
@@ -23,8 +27,17 @@
 		number_of_trees: 'number',
 	} as const
 
-	const handle_contact_submit = (contact_data: { name: string; email: string; phone: string; street_address: string; tree_variety?: string }) => {
-		console.log('Contact form submitted:', contact_data, 'Pricing data:', data, 'Price:', calculated_price.toString(2))
+	const handle_contact_submit = async (contact_data: { name: string; email: string; phone: string; street_address: string; extra: Record<string, string> }) => {
+		try {
+			await post('/send_estimate_email', {
+				service: 'tree_planting',
+				args: data,
+				contact: contact_data,
+			})
+			error = null
+		} catch (err) {
+			error = err
+		}
 	}
 </script>
 
@@ -61,3 +74,5 @@
 	onsubmit={handle_contact_submit}
 	additional_fields={[{ label: 'What variety?', field_name: 'tree_variety' }]}
 />
+
+<ErrorDisplay {error} />

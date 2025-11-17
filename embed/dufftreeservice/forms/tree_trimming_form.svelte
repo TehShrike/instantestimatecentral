@@ -7,6 +7,10 @@
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 	import ContactForm from '#lib/contact_form.svelte'
+	import ErrorDisplay from '#lib/error_display.svelte'
+	import { post } from './fetch_executor.ts'
+
+	let error = $state<unknown>(null)
 
 	const default_data: TreeTrimmingPricingArguments = {
 		tree_diameter: '11-15 inches',
@@ -51,8 +55,17 @@
 		trim_type: 'button_radio',
 	} as const
 
-	const handle_contact_submit = (contact_data: { name: string; email: string; phone: string; street_address: string }) => {
-		console.log('Contact form submitted:', contact_data, 'Pricing data:', data, 'Price:', calculated_price.toString(2))
+	const handle_contact_submit = async (contact_data: { name: string; email: string; phone: string; street_address: string; extra: Record<string, string> }) => {
+		try {
+			await post('/send_estimate_email', {
+				service: 'tree_trimming',
+				args: data,
+				contact: contact_data,
+			})
+			error = null
+		} catch (err) {
+			error = err
+		}
 	}
 </script>
 
@@ -116,3 +129,5 @@
 <EstimatedPriceDisplay price={calculated_price} />
 
 <ContactForm onsubmit={handle_contact_submit} />
+
+<ErrorDisplay {error} />

@@ -53,7 +53,7 @@ const handle_request = async (request: Request, env: Env) => {
 		},
 		context => {
 			return route({
-				'/send_email': {
+				'/send_estimate_email': {
 					'POST': async ({body, company, ...context}) => {
 						if (!body_validator.is_valid(body)) {
 							return Result.failure(error_response({ message: body_validator.get_messages(body, 'body').join(', ') }))

@@ -30,6 +30,7 @@ export const futch = async(url: string, options: FutchOptions = {}) => {
 	const response = await fetch(url, init)
 
 	if (!response.ok) {
+		console.error('futch error', url, response.status, response.statusText)
 		return Promise.reject(response)
 	}
 
