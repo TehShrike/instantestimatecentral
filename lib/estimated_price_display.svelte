@@ -19,12 +19,29 @@
 		background: #ecf0f1;
 		border-radius: 8px;
 		margin-top: 2rem;
+
+		@media (max-width: 900px) {
+			padding: 1rem;
+		}
+
+		@media (max-width: 500px) {
+			padding: 0.75rem;
+			gap: 0.5rem;
+		}
 	}
 
 	.price-label {
 		font-weight: 600;
 		color: #2c3e50;
 		font-size: 1.25rem;
+
+		@media (max-width: 900px) {
+			font-size: 1.1rem;
+		}
+
+		@media (max-width: 500px) {
+			font-size: 1rem;
+		}
 	}
 
 	.price-value {
@@ -32,33 +49,12 @@
 		font-weight: 700;
 		color: #27ae60;
 		font-size: 1.5rem;
-	}
 
-	@media (max-width: 900px) {
-		.price-display {
-			padding: 1rem;
-		}
-
-		.price-label {
-			font-size: 1.1rem;
-		}
-
-		.price-value {
+		@media (max-width: 900px) {
 			font-size: 1.3rem;
 		}
-	}
 
-	@media (max-width: 500px) {
-		.price-display {
-			padding: 0.75rem;
-			gap: 0.5rem;
-		}
-
-		.price-label {
-			font-size: 1rem;
-		}
-
-		.price-value {
+		@media (max-width: 500px) {
 			font-size: 1.2rem;
 		}
 	}

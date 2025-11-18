@@ -25,7 +25,7 @@
 	.number-input {
 		width: 70px;
 		height: 36px;
-		padding: 0 8px;
+		padding: 0 4px;
 		border: 2px solid #d3d3d3;
 		border-radius: 4px;
 		font-size: 1rem;
@@ -33,6 +33,10 @@
 		text-align: center;
 		background-color: white;
 		color: inherit;
+
+		@media (max-width: 600px) {
+			width: 50px;
+		}
 	}
 
 	.number-input:focus {
