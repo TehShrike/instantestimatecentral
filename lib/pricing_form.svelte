@@ -26,6 +26,16 @@
 		gap: var(--vertical_gap);
 		margin-bottom: 2rem;
 		font-size: 1rem;
+
+		@media (max-width: 900px) {
+			font-size: 0.9rem;
+			--vertical_gap: 1rem;
+		}
+
+		@media (max-width: 600px) {
+			font-size: 0.85rem;
+			--vertical_gap: 0.75rem;
+		}
 	}
 
 	.form-row {
@@ -33,51 +43,37 @@
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
 		align-items: start;
-	}
 
-	.form-row[data-type="button_radio"] {
-		grid-template-columns: 1fr;
-	}
-
-	.form-row :global(.left) {
-		font-weight: 500;
-		color: inherit;
-		padding-top: 0.25rem;
-	}
-
-	.form-row :global(label[for]) {
-		cursor: pointer;
-	}
-
-	@media (max-width: 900px) {
-		.pricing-form {
-			font-size: 0.9rem;
-			--vertical_gap: 1rem;
-		}
-	}
-
-	@media (max-width: 600px) {
-		.pricing-form {
-			font-size: 0.85rem;
-			--vertical_gap: 0.75rem;
-		}
-
-		.form-row {
-			gap: 0.75rem;
-		}
-
-		.form-row[data-type="radio"] {
+		&[data-type="button_radio"] {
 			grid-template-columns: 1fr;
-			justify-items: center;
 		}
 
-		.form-row[data-type="radio"] :global(.left) {
-			justify-self: start;
+		:global(.left) {
+			font-weight: 500;
+			color: inherit;
+			padding-top: 0.25rem;
 		}
 
-		.form-row[data-type="toggle"],
-		.form-row[data-type="number"] {
-			grid-template-columns: 1fr 70px;
+		:global(label[for]) {
+			cursor: pointer;
+		}
+
+		@media (max-width: 600px) {
+			gap: 0.75rem;
+
+			&[data-type="radio"] {
+				grid-template-columns: 1fr;
+				justify-items: center;
+
+				:global(.left) {
+					justify-self: start;
+				}
+			}
+
+			&[data-type="toggle"],
+			&[data-type="number"] {
+				grid-template-columns: 1fr 70px;
+			}
 		}
 	}
 </style>

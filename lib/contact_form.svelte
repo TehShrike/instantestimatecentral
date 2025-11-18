@@ -109,21 +109,19 @@
 		margin-top: 2rem;
 		padding-top: 2rem;
 		border-top: 2px solid #ecf0f1;
+
+		@media (max-width: 600px) {
+			--gap: 0.5rem;
+		}
 	}
 
 	.inputs-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: var(--gap);
-	}
 
-	@media (max-width: 600px) {
-		.inputs-grid {
+		@media (max-width: 600px) {
 			grid-template-columns: 1fr;
-		}
-
-		form {
-			--gap: 0.5rem;
 		}
 	}
 
@@ -137,6 +135,14 @@
 		font-weight: 600;
 		color: #2c3e50;
 		font-size: 1rem;
+
+		@media (max-width: 900px) {
+			font-size: 0.9rem;
+		}
+
+		@media (max-width: 500px) {
+			font-size: 0.85rem;
+		}
 	}
 
 	input {
@@ -144,11 +150,20 @@
 		border: 1px solid #bdc3c7;
 		border-radius: 4px;
 		font-size: 1rem;
-	}
 
-	input:focus {
-		outline: none;
-		border-color: #3498db;
+		&:focus {
+			outline: none;
+			border-color: #3498db;
+		}
+
+		@media (max-width: 900px) {
+			font-size: 0.9rem;
+		}
+
+		@media (max-width: 500px) {
+			font-size: 0.85rem;
+			padding: 0.4rem;
+		}
 	}
 
 	.message {
@@ -159,6 +174,15 @@
 		font-size: 0.875rem;
 		line-height: 1.5;
 		color: #2c3e50;
+
+		@media (max-width: 900px) {
+			font-size: 0.8rem;
+		}
+
+		@media (max-width: 500px) {
+			font-size: 0.75rem;
+			padding: 0.75rem;
+		}
 	}
 
 	button {
@@ -171,58 +195,28 @@
 		font-weight: 600;
 		cursor: pointer;
 		transition: background-color 0.2s;
-	}
 
-	@media (max-width: 900px) {
-		label {
+		&:hover {
+			background-color: #2980b9;
+		}
+
+		&:active {
+			background-color: #21618c;
+		}
+
+		&:disabled {
+			background-color: #95a5a6;
+			cursor: not-allowed;
+		}
+
+		@media (max-width: 900px) {
 			font-size: 0.9rem;
 		}
 
-		input {
-			font-size: 0.9rem;
-		}
-
-		.message {
-			font-size: 0.8rem;
-		}
-
-		button {
-			font-size: 0.9rem;
-		}
-	}
-
-	@media (max-width: 500px) {
-		label {
-			font-size: 0.85rem;
-		}
-
-		input {
-			font-size: 0.85rem;
-			padding: 0.4rem;
-		}
-
-		.message {
-			font-size: 0.75rem;
-			padding: 0.75rem;
-		}
-
-		button {
+		@media (max-width: 500px) {
 			font-size: 0.85rem;
 			padding: 0.6rem 1rem;
 		}
-	}
-
-	button:hover {
-		background-color: #2980b9;
-	}
-
-	button:active {
-		background-color: #21618c;
-	}
-
-	button:disabled {
-		background-color: #95a5a6;
-		cursor: not-allowed;
 	}
 
 	.success-message {

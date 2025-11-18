@@ -59,34 +59,30 @@
 		cursor: pointer;
 		transition: background-color 0.2s;
 		text-align: center;
-	}
 
-	.tab-button:hover {
-		background: #dfe6e9;
-	}
+		&:hover {
+			background: #dfe6e9;
+		}
 
-	.tab-button[data-selected="true"] {
-		background: white;
-		color: #2c3e50;
-		border: 2px solid black;
-		border-bottom: none;
+		&[data-selected="true"] {
+			background: white;
+			color: #2c3e50;
+			border: 2px solid black;
+			border-bottom: none;
+		}
+
+		@media (max-width: 800px) {
+			font-size: 0.85rem;
+			padding: 0.6rem 0.25rem;
+		}
+
+		@media (max-width: 600px) {
+			font-size: 0.65rem;
+			padding: 0.5rem 0.15rem;
+		}
 	}
 
 	.tabs-content {
 		padding: 1rem 0;
-	}
-
-	@media (max-width: 800px) {
-		.tab-button {
-			font-size: 0.85rem;
-			padding: 0.6rem 0.25rem;
-		}
-	}
-
-	@media (max-width: 600px) {
-		.tab-button {
-			font-size: 0.65rem;
-			padding: 0.5rem 0.15rem;
-		}
 	}
 </style>

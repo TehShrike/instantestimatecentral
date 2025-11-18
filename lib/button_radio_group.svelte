@@ -36,11 +36,22 @@
 		display: flex;
 		flex-direction: row;
 		gap: 0.75rem;
+
+		& > * {
+			flex-basis: 0;
+			flex-grow: 1;
+		}
+
+		@media (max-width: 600px) {
+			flex-direction: column;
+			gap: 0.3rem;
+		}
 	}
 
-	.button-radio-group > * {
-		flex-basis: 0;
-		flex-grow: 1;
+	.button-content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 
 	.radio-button {
@@ -57,43 +68,62 @@
 		font-family: inherit;
 		text-align: left;
 		font-size: 1rem;
-	}
 
-	.button-content {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
+		&:focus {
+			outline: 2px solid #0074ff;
+			outline-offset: 2px;
+		}
 
-	.radio-button:focus {
-		outline: 2px solid #0074ff;
-		outline-offset: 2px;
-	}
+		&[data-active="true"] {
+			background-color: #0074ff;
+			border-color: #0074ff;
 
-	.radio-button[data-active="true"] {
-		background-color: #0074ff;
-		border-color: #0074ff;
-	}
+			strong,
+			small {
+				color: white;
+			}
+		}
 
-	.radio-button[data-active="true"] strong,
-	.radio-button[data-active="true"] small {
-		color: white;
-	}
+		strong {
+			font-weight: 600;
+			font-size: 1rem;
+			color: #2c3e50;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 0.5rem;
+		}
 
-	.radio-button strong {
-		font-weight: 600;
-		font-size: 1rem;
-		color: #2c3e50;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 0.5rem;
-	}
+		small {
+			font-size: 0.875rem;
+			color: #7f8c8d;
+			line-height: 1.4;
+		}
 
-	.radio-button small {
-		font-size: 0.875rem;
-		color: #7f8c8d;
-		line-height: 1.4;
+		@media (max-width: 900px) {
+			padding: 0.5rem 0.65rem;
+
+			strong {
+				font-size: 0.9rem;
+			}
+
+			small {
+				font-size: 0.8rem;
+			}
+		}
+
+		@media (max-width: 600px) {
+			padding: 0.5rem;
+			gap: 0;
+
+			strong {
+				font-size: 0.85rem;
+			}
+
+			small {
+				font-size: 0.75rem;
+			}
+		}
 	}
 
 	.price-diff {
@@ -104,47 +134,13 @@
 		min-height: 1.25rem;
 		opacity: 0;
 		visibility: hidden;
-	}
 
-	.price-diff.visible {
-		opacity: 1;
-		visibility: visible;
-	}
-
-	@media (max-width: 900px) {
-		.radio-button {
-			padding: 0.5rem 0.65rem;
+		&.visible {
+			opacity: 1;
+			visibility: visible;
 		}
 
-		.radio-button strong {
-			font-size: 0.9rem;
-		}
-
-		.radio-button small {
-			font-size: 0.8rem;
-		}
-	}
-
-	@media (max-width: 600px) {
-		.button-radio-group {
-			flex-direction: column;
-			gap: 0.3rem;
-		}
-
-		.radio-button {
-			padding: 0.5rem;
-			gap: 0;
-		}
-
-		.radio-button strong {
-			font-size: 0.85rem;
-		}
-
-		.radio-button small {
-			font-size: 0.75rem;
-		}
-
-		.price-diff {
+		@media (max-width: 600px) {
 			font-size: 0.75rem;
 		}
 	}

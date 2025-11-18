@@ -21,15 +21,12 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.2rem;
-	}
 
-	@media (max-width: 600px) {
-		.radio-group {
+		@media (max-width: 600px) {
 			max-width: max-content;
 			min-width: min(100%, 220px);
 		}
 	}
-
 
 	.radio-label {
 		display: flex;
