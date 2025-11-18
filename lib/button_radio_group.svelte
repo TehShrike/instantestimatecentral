@@ -56,6 +56,7 @@
 		cursor: pointer;
 		font-family: inherit;
 		text-align: left;
+		font-size: 1rem;
 	}
 
 	.button-content {
@@ -101,7 +102,6 @@
 		white-space: nowrap;
 		text-align: right;
 		min-height: 1.25rem;
-		margin-top: 0.5rem;
 		opacity: 0;
 		visibility: hidden;
 	}
@@ -111,9 +111,41 @@
 		visibility: visible;
 	}
 
+	@media (max-width: 900px) {
+		.radio-button {
+			padding: 0.5rem 0.65rem;
+		}
+
+		.radio-button strong {
+			font-size: 0.9rem;
+		}
+
+		.radio-button small {
+			font-size: 0.8rem;
+		}
+	}
+
 	@media (max-width: 600px) {
 		.button-radio-group {
 			flex-direction: column;
+			gap: 0.3rem;
+		}
+
+		.radio-button {
+			padding: 0.5rem;
+			gap: 0;
+		}
+
+		.radio-button strong {
+			font-size: 0.85rem;
+		}
+
+		.radio-button small {
+			font-size: 0.75rem;
+		}
+
+		.price-diff {
+			font-size: 0.75rem;
 		}
 	}
 </style>

@@ -8,6 +8,8 @@ export type Validator<T> = {
 	is_valid: PredicateFunction<T>
 	get_messages: MessageReturningFunction
 }
+
+export type InferValidator<T> = T extends Validator<infer U> ? U : never
 type NonOptionalPredicateFunction<T> = PredicateFunction<T extends undefined ? never : T>
 
 type NonOptionalValidator<T> = {

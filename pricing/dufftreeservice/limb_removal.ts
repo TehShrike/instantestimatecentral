@@ -1,6 +1,9 @@
 import fnum, { greatest_of } from '#lib/fnum.ts'
 import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
+import { Service } from '#pricing/pricing.js'
+
+export const service_name = 'Limb removal'
 
 const MINIMUM_PRICE = fnum('300')
 
@@ -12,7 +15,7 @@ type LimbWidth = '1-3 inches'
 
 type DistanceFromGround = 'under 15 feet' | '15-20 feet' | 'higher than 20 feet'
 
-export type PricingArguments = {
+export type LimbRemovalPricingArguments = {
 	is_it_broken: boolean
 	how_big_around_is_it: LimbWidth
 	distance_from_ground: DistanceFromGround
@@ -26,7 +29,7 @@ export const pricing = ({
 	distance_from_ground,
 	branches_over_something,
 	easy_to_haul_out,
-}: PricingArguments) => {
+}: LimbRemovalPricingArguments) => {
 	const need_to_climb = !can_we_get_it_without_climbing({ distance_from_ground, how_big_around_is_it })
 
 	const base_price = fnum('300')
@@ -166,7 +169,7 @@ const cost_increase_ratio_if_its_not_easy_to_haul_out = ({
 
 
 
-const how_big_around_is_it_validator: Validator<PricingArguments['how_big_around_is_it']> = one_of(
+const how_big_around_is_it_validator: Validator<LimbRemovalPricingArguments['how_big_around_is_it']> = one_of(
 	exact('1-3 inches' as const),
 	exact('3-5 inches' as const),
 	exact('6-9 inches' as const),
@@ -174,13 +177,13 @@ const how_big_around_is_it_validator: Validator<PricingArguments['how_big_around
 	exact('14+ inches' as const),
 )
 
-const distance_from_ground_validator: Validator<PricingArguments['distance_from_ground']> = one_of(
+const distance_from_ground_validator: Validator<LimbRemovalPricingArguments['distance_from_ground']> = one_of(
 	exact('under 15 feet' as const),
 	exact('15-20 feet' as const),
 	exact('higher than 20 feet' as const),
 )
 
-export const validator: Validator<PricingArguments> = object({
+export const validator: Validator<LimbRemovalPricingArguments> = object({
 	is_it_broken: is_boolean,
 	how_big_around_is_it: how_big_around_is_it_validator,
 	distance_from_ground: distance_from_ground_validator,
@@ -188,3 +191,21 @@ export const validator: Validator<PricingArguments> = object({
 	easy_to_haul_out: is_boolean,
 })
 
+export const render_html = (args: LimbRemovalPricingArguments) => {
+	return `
+		<h2>${service_name}</h2>
+		<p>Is the limb broken? <strong>${args.is_it_broken ? 'Yes' : 'No'}</strong></p>
+		<p>How big around is it? <strong>${args.how_big_around_is_it}</strong></p>
+		<p>Distance from ground? <strong>${args.distance_from_ground}</strong></p>
+		<p>Branches over something? <strong>${args.branches_over_something ? 'Yes' : 'No'}</strong></p>
+		<p>Easy to haul out? <strong>${args.easy_to_haul_out ? 'Yes' : 'No'}</strong></p>
+	`
+}
+
+
+export default {
+	pricing,
+	validator,
+	service_name,
+	render_html,
+} as const

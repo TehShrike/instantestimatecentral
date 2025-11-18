@@ -40,12 +40,14 @@
 
 	.tabs-header {
 		display: flex;
-		gap: 0.5rem;
+		gap: 0.25rem;
 		margin-bottom: 1rem;
+		width: 100%;
 	}
 
 	.tab-button {
-		padding: 0.75rem 1.5rem;
+		flex: 1;
+		padding: 0.75rem 0.25rem;
 		border: none;
 		border-radius: 8px 8px 0 0;
 		font-size: 1rem;
@@ -56,6 +58,7 @@
 		border: 2px solid transparent;
 		cursor: pointer;
 		transition: background-color 0.2s;
+		text-align: center;
 	}
 
 	.tab-button:hover {
@@ -71,5 +74,19 @@
 
 	.tabs-content {
 		padding: 1rem 0;
+	}
+
+	@media (max-width: 800px) {
+		.tab-button {
+			font-size: 0.85rem;
+			padding: 0.6rem 0.25rem;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.tab-button {
+			font-size: 0.65rem;
+			padding: 0.5rem 0.15rem;
+		}
 	}
 </style>

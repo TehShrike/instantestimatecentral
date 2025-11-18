@@ -8,7 +8,7 @@ const extract_custom_element_name = (content: string): string | null => {
 	return match?.[1] ?? null
 }
 
-const generate_html = (custom_element_name: string, service_name: string, form_name: string): string => {
+const generate_html = (custom_element_name: string, service_name: string, form_name: string, embed_host: string): string => {
 	return `<!DOCTYPE html>
 <html lang="en">
 
@@ -36,17 +36,16 @@ const generate_html = (custom_element_name: string, service_name: string, form_n
 		<div id="dev-env-content">
 			<${custom_element_name}></${custom_element_name}>
 		</div>
-		<script type="module">
-			const domain = location.hostname.split('.').slice(-2).join('.')
-			const script_url = \`//embed.\${domain}:\${location.port}/${service_name}/${form_name}.js\`
-			import(script_url)
-		</script>
+		<script type="module" src="//${embed_host}/${service_name}/${form_name}.js"></script>
 	</body>
 </html>
 `
 }
 
 const components = await get_form_components()
+
+const is_dev = process.argv.includes('--dev')
+const embed_host = is_dev ? 'embed.local.com:1337' : 'embed.instantestimatecentral.com'
 
 console.log('Generating demo pages...')
 
@@ -59,7 +58,7 @@ await for_each_async(components, async (component) => {
 		return
 	}
 
-	const html = generate_html(custom_element_name, component.service_name, component.form_name)
+	const html = generate_html(custom_element_name, component.service_name, component.form_name, embed_host)
 
 	const output_path = `build/www/demo/${component.service_name}/${component.form_name}.html`
 	await mkdir(dirname(output_path), { recursive: true })

@@ -3,6 +3,8 @@ import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
+export const service_name = 'Tree Trimming'
+
 type TreeDiameter = '6-10 inches'
 	| '11-15 inches'
 	| '16-20 inches'
@@ -14,7 +16,7 @@ type TrimType = 'just the necessities' | 'normal' | 'premium'
 
 type TreeVariety = 'oak' | 'sycamore' | 'locust' | 'other'
 
-export type PricingArguments = {
+export type TreeTrimmingPricingArguments = {
 	tree_diameter: TreeDiameter
 	pruned_by_arborist_recently: boolean
 	raise_canopy: boolean
@@ -28,7 +30,7 @@ export const pricing = ({
 	raise_canopy,
 	tree_variety,
 	trim_type,
-}: PricingArguments): FinancialNumber => {
+}: TreeTrimmingPricingArguments): FinancialNumber => {
 	const subtotal = get_base_price({ tree_diameter, trim_type })
 
 	const raise_canopy_increase = raise_canopy
@@ -114,7 +116,7 @@ const get_variety_adjustment = ({
 	throw new Error(`Unexpected tree variety: ${tree_variety}`)
 }
 
-const tree_diameter_validator: Validator<PricingArguments['tree_diameter']> = one_of(
+const tree_diameter_validator: Validator<TreeTrimmingPricingArguments['tree_diameter']> = one_of(
 	exact('6-10 inches' as const),
 	exact('11-15 inches' as const),
 	exact('16-20 inches' as const),
@@ -123,23 +125,41 @@ const tree_diameter_validator: Validator<PricingArguments['tree_diameter']> = on
 	exact('33-40 inches' as const),
 )
 
-const trim_type_validator: Validator<PricingArguments['trim_type']> = one_of(
+const trim_type_validator: Validator<TreeTrimmingPricingArguments['trim_type']> = one_of(
 	exact('just the necessities' as const),
 	exact('normal' as const),
 	exact('premium' as const),
 )
 
-const tree_variety_validator: Validator<PricingArguments['tree_variety']> = one_of(
+const tree_variety_validator: Validator<TreeTrimmingPricingArguments['tree_variety']> = one_of(
 	exact('oak' as const),
 	exact('sycamore' as const),
 	exact('locust' as const),
 	exact('other' as const),
 )
 
-export const validator: Validator<PricingArguments> = object({
+export const validator: Validator<TreeTrimmingPricingArguments> = object({
 	tree_diameter: tree_diameter_validator,
 	pruned_by_arborist_recently: is_boolean,
 	raise_canopy: is_boolean,
 	tree_variety: tree_variety_validator,
 	trim_type: trim_type_validator,
 })
+
+export const render_html = (args: TreeTrimmingPricingArguments) => {
+	return `
+		<h2>${service_name}</h2>
+		<p>Tree diameter: <strong>${args.tree_diameter}</strong></p>
+		<p>Pruned by arborist recently: <strong>${args.pruned_by_arborist_recently ? 'Yes' : 'No'}</strong></p>
+		<p>Raise canopy: <strong>${args.raise_canopy ? 'Yes' : 'No'}</strong></p>
+		<p>Tree variety: <strong>${args.tree_variety}</strong></p>
+		<p>Trim type: <strong>${args.trim_type}</strong></p>
+	`
+}
+
+export default {
+	pricing,
+	validator,
+	service_name,
+	render_html,
+} as const

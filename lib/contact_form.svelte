@@ -1,22 +1,28 @@
-<script lang="ts">
-	type AdditionalField = {
-		label: string
-		field_name: string
-	}
-
-	type ContactFormData = {
+<script lang="ts" module>
+	export type ContactFormData<FieldName extends string = string> = {
 		name: string
 		email: string
 		phone: string
 		street_address: string
-		[key: string]: string
+		extra: {
+			[key in FieldName]: string
+		}
+	}
+</script>
+
+<script lang="ts" generics="FieldName extends string">
+	import ErrorDisplay from './error_display.svelte'
+
+	type AdditionalField = {
+		label: string
+		field_name: FieldName
 	}
 
 	let {
-		onsubmit,
+		submit,
 		additional_fields = [],
 	}: {
-		onsubmit: (data: ContactFormData) => void
+		submit: (data: ContactFormData) => Promise<void>
 		additional_fields?: AdditionalField[]
 	} = $props()
 
@@ -24,16 +30,20 @@
 	let email = $state('')
 	let phone = $state('')
 	let street_address = $state('')
-	let additional_values = $state<Record<string, string>>({})
+	let additional_values = $state<Record<FieldName, string>>(
+		Object.fromEntries(additional_fields.map(field => [field.field_name, ''])) as Record<FieldName, string>
+	)
+
+	let submission_promise = $state<Promise<void> | null>(null)
 
 	const handle_submit = (event: Event) => {
 		event.preventDefault()
-		onsubmit({
+		submission_promise = submit({
 			name,
 			email,
 			phone,
 			street_address,
-			...additional_values,
+			extra: additional_values,
 		})
 	}
 </script>
@@ -72,14 +82,30 @@
 		We'll have an estimator come out in the next business day or two. Our office lady will give you a call in the next 1-2 business hours to schedule the estimator.
 	</p>
 
-	<button type="submit">Submit</button>
+
+	{#if submission_promise}
+		{#await submission_promise then}
+			<div class="success-message">Message sent, we'll get back to you!</div>
+		{:catch error}
+			<ErrorDisplay {error} />
+		{/await}
+	{/if}
+
+	<button type="submit" disabled={$effect.pending() > 0}>
+		{#if $effect.pending() > 0}
+			Submitting...
+		{:else}
+			Submit
+		{/if}
+	</button>
 </form>
 
 <style>
 	form {
+		--gap: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: var(--gap);
 		margin-top: 2rem;
 		padding-top: 2rem;
 		border-top: 2px solid #ecf0f1;
@@ -88,12 +114,16 @@
 	.inputs-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 1rem;
+		gap: var(--gap);
 	}
 
 	@media (max-width: 600px) {
 		.inputs-grid {
 			grid-template-columns: 1fr;
+		}
+
+		form {
+			--gap: 0.5rem;
 		}
 	}
 
@@ -106,6 +136,7 @@
 	label {
 		font-weight: 600;
 		color: #2c3e50;
+		font-size: 1rem;
 	}
 
 	input {
@@ -142,11 +173,63 @@
 		transition: background-color 0.2s;
 	}
 
+	@media (max-width: 900px) {
+		label {
+			font-size: 0.9rem;
+		}
+
+		input {
+			font-size: 0.9rem;
+		}
+
+		.message {
+			font-size: 0.8rem;
+		}
+
+		button {
+			font-size: 0.9rem;
+		}
+	}
+
+	@media (max-width: 500px) {
+		label {
+			font-size: 0.85rem;
+		}
+
+		input {
+			font-size: 0.85rem;
+			padding: 0.4rem;
+		}
+
+		.message {
+			font-size: 0.75rem;
+			padding: 0.75rem;
+		}
+
+		button {
+			font-size: 0.85rem;
+			padding: 0.6rem 1rem;
+		}
+	}
+
 	button:hover {
 		background-color: #2980b9;
 	}
 
 	button:active {
 		background-color: #21618c;
+	}
+
+	button:disabled {
+		background-color: #95a5a6;
+		cursor: not-allowed;
+	}
+
+	.success-message {
+		color: green;
+		margin-top: 1rem;
+		padding: 1rem;
+		background-color: #d4edda;
+		border-radius: 4px;
 	}
 </style>

@@ -1,9 +1,7 @@
-import { handle_request as executor_handle_request } from './executor.ts'
-
-interface Env {
-	ASSETS: Fetcher
-	RESEND_API_KEY: string
-}
+import executor_handle_request from './executor.ts'
+import { is_success, is_interrupt } from './effecty_middleware.ts'
+import { error_response, error_to_string } from './response_helpers.ts'
+import type { Env } from './environment.ts'
 
 const prepend_path = (request: Request, path_prefix: string): Request => {
 	const url = new URL(request.url)
@@ -30,7 +28,17 @@ export default {
 		}
 
 		if (subdomain === 'executor') {
-			return executor_handle_request(request, env)
+			const result = await executor_handle_request(request, env)
+			if (is_success(result) || is_interrupt(result)) {
+				return result.value
+			}
+
+			if (result.value instanceof Response) {
+				return result.value
+			} else {
+				console.error('Error in executor:', result.value)
+				return error_response({ ...error_to_string(result.value), status: 500 })
+			}
 		}
 
 		if (subdomain === 'embed') {

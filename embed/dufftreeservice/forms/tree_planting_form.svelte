@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { pricing, validator, type PricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
+	import { pricing, validator, type TreePlantingPricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import NumberInput from '#lib/number_input.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
-	import ContactForm from '#lib/contact_form.svelte'
+	import ContactForm, { type ContactFormData } from '#lib/contact_form.svelte'
+	import { post } from './fetch_executor.ts'
 
-	const default_data: PricingArguments = {
+	const default_data: TreePlantingPricingArguments = {
 		tree_size: '3 gallons',
 		number_of_trees: 1,
 	}
@@ -23,9 +24,11 @@
 		number_of_trees: 'number',
 	} as const
 
-	const handle_contact_submit = (contact_data: { name: string; email: string; phone: string; street_address: string; tree_variety?: string }) => {
-		console.log('Contact form submitted:', contact_data, 'Pricing data:', data, 'Price:', calculated_price.toString(2))
-	}
+	const handle_contact_submit = (contact_data: ContactFormData) => post('/send_estimate_email', {
+		service: 'tree_planting',
+		args: data,
+		contact: contact_data,
+	})
 </script>
 
 {#snippet number_of_trees()}
@@ -58,6 +61,6 @@
 <EstimatedPriceDisplay price={calculated_price} />
 
 <ContactForm
-	onsubmit={handle_contact_submit}
+	submit={handle_contact_submit}
 	additional_fields={[{ label: 'What variety?', field_name: 'tree_variety' }]}
 />

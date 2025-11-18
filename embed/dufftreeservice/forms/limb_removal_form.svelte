@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { pricing, validator, type PricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
+	import { pricing, validator, type LimbRemovalPricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
-	import ContactForm from '#lib/contact_form.svelte'
+	import ContactForm, { type ContactFormData } from '#lib/contact_form.svelte'
+	import { post } from './fetch_executor.ts'
 
-	const default_data: PricingArguments = {
+	const default_data: LimbRemovalPricingArguments = {
 		is_it_broken: false,
 		how_big_around_is_it: '3-5 inches',
 		distance_from_ground: 'under 15 feet',
@@ -29,9 +30,11 @@
 		easy_to_haul_out: 'toggle',
 	} as const
 
-	const handle_contact_submit = (contact_data: { name: string; email: string; phone: string; street_address: string }) => {
-		console.log('Contact form submitted:', contact_data, 'Pricing data:', data, 'Price:', calculated_price.toString(2))
-	}
+	const handle_contact_submit = (contact_data: ContactFormData) => post('/send_estimate_email', {
+		service: 'limb_removal',
+		args: data,
+		contact: contact_data,
+	})
 </script>
 
 {#snippet is_it_broken()}
@@ -89,4 +92,4 @@
 
 <EstimatedPriceDisplay price={calculated_price} />
 
-<ContactForm onsubmit={handle_contact_submit} />
+<ContactForm submit={handle_contact_submit} />
