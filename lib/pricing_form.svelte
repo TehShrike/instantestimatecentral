@@ -20,10 +20,12 @@
 
 <style>
 	.pricing-form {
+		--vertical_gap: 1.5rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: var(--vertical_gap);
 		margin-bottom: 2rem;
+		font-size: 1rem;
 	}
 
 	.form-row {
@@ -47,7 +49,23 @@
 		cursor: pointer;
 	}
 
+	@media (max-width: 900px) {
+		.pricing-form {
+			font-size: 0.9rem;
+			--vertical_gap: 1rem;
+		}
+	}
+
 	@media (max-width: 600px) {
+		.pricing-form {
+			font-size: 0.85rem;
+			--vertical_gap: 0.75rem;
+		}
+
+		.form-row {
+			gap: 0.75rem;
+		}
+
 		.form-row[data-type="radio"] {
 			grid-template-columns: 1fr;
 			justify-items: center;
