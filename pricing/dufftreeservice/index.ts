@@ -43,8 +43,8 @@ const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = 
 	render_subject: (service, estimate) => `🌲 💲${estimate.toString(0)} 🌳 New ${service.service_name} estimate request`,
 	render_html: ({service, contact, price, estimate_arguments}) => `
 	<h2>New Estimate Request</h2>
-	<p><strong>Service:</strong> ${service}</p>
-	<p><strong>Estimated Price:</strong> $${price.toString(2)}</p>
+	<p><strong>Service:</strong> ${service.service_name}</p>
+	<p><strong>Estimated Price:</strong> $${price.toString(0)}</p>
 	<br>
 	<br>
 	<br>

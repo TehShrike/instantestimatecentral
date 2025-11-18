@@ -2,38 +2,35 @@ import domain_to_company_map, { domain_validator } from '#pricing/index.ts'
 import pipeline, { Result } from './effecty_middleware.ts'
 import { route } from './effecty_router.ts'
 import { send_email } from '#lib/resend.ts'
-import type { FinancialNumber } from 'financial-number'
 import * as jv from '#lib/json_validator.ts'
 import { Validator } from '#lib/json_validator.ts'
-import { error_response, response, json_response } from './response_helpers.ts'
-
-interface Env {
-	RESEND_API_KEY: string
-}
+import { response, json_response, error_response } from './response_helpers.ts'
+import type { Env } from './environment.ts'
 
 const handle_request = async (request: Request, env: Env): Promise<Result<Response, Response | { message: string, stack?: string | null }, Response>> => {
 	const initial_context = {request, env, url: new URL(request.url)}
 
+	console.log('Handling request, method:', request.method, 'url:', request.url)
+
 	return pipeline(
 		initial_context,
 		async (context) => {
-			const origin = context.request.headers.get('Origin')
-			if (!origin) {
+			const request_origin = context.request.headers.get('Origin')
+			if (!request_origin) {
+				console.warn('Missing Origin header')
 				return Result.failure(error_response({ message: 'Missing Origin header' }))
 			}
 
-			return Result.success({...context, origin, domain: new URL(origin).hostname})
-		},
-		(context) => {
-			const domain = new URL(context.origin).hostname
+			const domain = new URL(request_origin).hostname
 
 			if (!domain_validator.is_valid(domain)) {
+				console.warn('Invalid domain:', domain)
 				return Result.failure(error_response({ message: `Invalid domain: ${domain}` }))
 			}
 
 			const company = domain_to_company_map[domain]
 
-			return Result.success({...context, domain, company})
+			return Result.success({...context, company })
 		},
 		context => {
 			if (context.request.method === 'OPTIONS') {
@@ -86,7 +83,8 @@ const handle_request = async (request: Request, env: Env): Promise<Result<Respon
 
 						await send_email({
 							api_key: context.env.RESEND_API_KEY,
-							from: 'Instant Estimate Central <josh@instantestimatecentral.com>',
+							from: 'Instant Estimate Central <estimate@estimate.instantestimatecentral.com>',
+							reply_to: `Josh <josh@instantestimatecentral.com>`,
 							to: company.recipient_email_address,
 							subject,
 							html,

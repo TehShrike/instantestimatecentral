@@ -5,6 +5,7 @@ import dufftreeservice from './dufftreeservice/index.ts'
 const domain_to_company_map = {
 	'dufftreeservice.com': dufftreeservice,
 	'www.dufftreeservice.com': dufftreeservice,
+	'example-customer-site.com': dufftreeservice,
 } as const satisfies DomainNameToCompany
 
 export default domain_to_company_map

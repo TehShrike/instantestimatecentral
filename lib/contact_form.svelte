@@ -82,6 +82,15 @@
 		We'll have an estimator come out in the next business day or two. Our office lady will give you a call in the next 1-2 business hours to schedule the estimator.
 	</p>
 
+
+	{#if submission_promise}
+		{#await submission_promise then}
+			<div class="success-message">Message sent, we'll get back to you!</div>
+		{:catch error}
+			<ErrorDisplay {error} />
+		{/await}
+	{/if}
+
 	<button type="submit" disabled={$effect.pending() > 0}>
 		{#if $effect.pending() > 0}
 			Submitting...
@@ -89,12 +98,6 @@
 			Submit
 		{/if}
 	</button>
-
-	{#await submission_promise then}
-		<div class="success-message">Message sent, we'll get back to you!</div>
-	{:catch error}
-		<ErrorDisplay {error} />
-	{/await}
 </form>
 
 <style>

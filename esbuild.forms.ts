@@ -32,7 +32,7 @@ const compiler_options: CompileOptions = {
 	customElement: true,
 }
 
-const api_host = is_watch ? 'https://embed.local.com:8788' : 'https://embed.instantestimatecentral.com'
+const api_host = is_watch ? 'https://executor.local.com:1337' : 'https://executor.instantestimatecentral.com'
 
 const build_options = {
 	entryPoints: entry_points,
