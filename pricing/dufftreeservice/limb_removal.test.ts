@@ -20,7 +20,7 @@ const generate_all_cases = (): LimbRemovalPricingArguments[] => {
 					for_each(easy_to_haul_out_values, (easy_to_haul_out) => {
 						result.push({
 							is_it_broken,
-							how_big_around_is_it,
+							limb_diameter: how_big_around_is_it,
 							distance_from_ground,
 							branches_over_something,
 							easy_to_haul_out,

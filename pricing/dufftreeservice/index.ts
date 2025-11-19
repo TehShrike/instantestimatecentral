@@ -16,14 +16,6 @@ export const services = {
 
 export const service_name_validator = object_key_validator(services)
 
-type ServiceProgrammaticName = keyof typeof services
-type DuffTreeServices = typeof services[ServiceProgrammaticName]
-type ServicePricingArguments = {
-	[service_name in ServiceProgrammaticName]: jv.InferValidator<typeof services[service_name]['validator']>
-}
-
-type DuffTreeServiceEstimateArguments<ServiceName extends ServiceProgrammaticName> = jv.InferValidator<typeof services[ServiceName]['validator']>
-
 const contact_validator = jv.object({
 	name: jv.is_string,
 	email: jv.is_string,
@@ -32,6 +24,7 @@ const contact_validator = jv.object({
 	extra: jv.object_values(jv.is_string),
 })
 
+type ServiceProgrammaticName = keyof typeof services
 type ContactForm = jv.InferValidator<typeof contact_validator>
 
 const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = {
@@ -40,13 +33,11 @@ const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = 
 	company_name: 'Duff Tree Service',
 	recipient_email_address: 'me@joshduff.com',
 	contact_validator: contact_validator,
-	render_subject: (service, estimate) => `🌲 💲${estimate.toString(0)} 🌳 New ${service.service_name} estimate request`,
+	render_subject: (service, estimate) => `🌲 💰${estimate.toString(0)} 🌳 ${service.service_name} estimate request`,
 	render_html: ({service, contact, price, estimate_arguments}) => `
 	<h2>New Estimate Request</h2>
 	<p><strong>Service:</strong> ${service.service_name}</p>
 	<p><strong>Estimated Price:</strong> $${price.toString(0)}</p>
-	<br>
-	<br>
 	<br>
 	<h3>Contact Information</h3>
 	<p><strong>Name:</strong> ${contact.name}</p>

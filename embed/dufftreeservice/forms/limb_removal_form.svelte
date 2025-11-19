@@ -10,7 +10,7 @@
 
 	const default_data: LimbRemovalPricingArguments = {
 		is_it_broken: false,
-		how_big_around_is_it: '3-5 inches',
+		limb_diameter: '3-5 inches',
 		distance_from_ground: 'under 15 feet',
 		branches_over_something: false,
 		easy_to_haul_out: true,
@@ -24,7 +24,7 @@
 
 	const row_types = {
 		is_it_broken: 'toggle',
-		how_big_around_is_it: 'radio',
+		limb_diameter: 'radio',
 		distance_from_ground: 'radio',
 		branches_over_something: 'toggle',
 		easy_to_haul_out: 'toggle',
@@ -42,8 +42,8 @@
 	<BooleanToggle bind:checked={data.is_it_broken} id="is_it_broken" />
 {/snippet}
 
-{#snippet how_big_around_is_it()}
-	<div class="left">How big around is it?</div>
+{#snippet how_big_is_it()}
+	<div class="left">How big is the branch (diameter near the trunk)?</div>
 	<RadioGroup
 		options={[
 			{ label: '1-3 inches', value: '1-3 inches' as const },
@@ -52,7 +52,7 @@
 			{ label: '10-13 inches', value: '10-13 inches' as const },
 			{ label: '14+ inches', value: '14+ inches' as const },
 		]}
-		bind:value={data.how_big_around_is_it}
+		bind:value={data.limb_diameter}
 	/>
 {/snippet}
 
@@ -82,7 +82,7 @@
 	{#snippet row(field_name: keyof typeof row_types)}
 		{@render {
 			is_it_broken,
-			how_big_around_is_it,
+			limb_diameter: how_big_is_it,
 			distance_from_ground,
 			branches_over_something,
 			easy_to_haul_out,
