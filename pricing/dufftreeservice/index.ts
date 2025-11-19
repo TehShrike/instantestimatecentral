@@ -31,7 +31,7 @@ const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = 
 	services,
 	service_name_validator,
 	company_name: 'Duff Tree Service',
-	recipient_email_address: 'andrew@dufftreeservice.com',
+	recipient_email_address: ['andrew@dufftreeservice.com', 'josh@instantestimatecentral.com'],
 	contact_validator: contact_validator,
 	render_subject: (service, estimate) => `🌲💰${estimate.toString(0)}$🌳 ${service.service_name} estimate request`,
 	render_html: ({service, contact, price, estimate_arguments}) => `
