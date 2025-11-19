@@ -13,8 +13,8 @@
 <script lang="ts" generics="FieldName extends string">
 	import ErrorDisplay from './error_display.svelte'
 	import { get, set } from '#lib/localstorage.ts'
-	import { object, is_string, object_values } from '#lib/json_validator.ts'
-
+	import { object, is_string } from '#lib/json_validator.ts'
+	import type { Validator } from './json_validator.ts'
 	type AdditionalField = {
 		label: string
 		field_name: FieldName
@@ -42,7 +42,7 @@
 		street_address: is_string,
 	})
 
-	const additional_values_validator = object_values(is_string)
+	const additional_values_validator = object(Object.fromEntries(additional_fields.map(field => [field.field_name, is_string]))) as Validator<Record<FieldName, string>>
 
 	const default_common_data: CommonContactData = {
 		name: '',
@@ -58,7 +58,7 @@
 	const additional_fields_key = 'contact_form_additional_' + additional_fields.map(f => f.field_name).sort().join('_')
 
 	let common_data = $state(get('contact_form_data', common_data_validator, default_common_data))
-	let additional_values = $state<Record<FieldName, string>>(
+	let additional_values = $state(
 		get(additional_fields_key, additional_values_validator, default_additional_values)
 	)
 
