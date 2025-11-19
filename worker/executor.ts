@@ -81,11 +81,16 @@ const handle_request = async (request: Request, env: Env): Promise<Result<Respon
 							estimate_arguments: pricing_args as any
 						})
 
+
+						const to = contact.email.toLowerCase() === 'me+iectest@joshduff.com'
+							? 'josh@instantestimatecentral.com'
+							: company.recipient_email_address
+
 						await send_email({
 							api_key: context.env.RESEND_API_KEY,
 							from: 'Instant Estimate Central <estimate@estimate.instantestimatecentral.com>',
 							reply_to: `Josh <josh@instantestimatecentral.com>`,
-							to: company.recipient_email_address,
+							to,
 							subject,
 							html,
 						})
