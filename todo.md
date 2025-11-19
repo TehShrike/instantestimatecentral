@@ -26,3 +26,8 @@ A description of the site, and the email address josh@instantestimatecentral.com
 ## Add inobtrusive link
 
 At the bottom right of every form, light text for Instant Estimate Central, linking to instantestimatecentral.com
+
+## Basic contact form validation
+
+- phone number should contain at least 7 digits
+- email address should contain an @ followed by a period at some point
