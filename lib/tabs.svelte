@@ -26,7 +26,7 @@
 		{/each}
 	</div>
 
-	<div class="tabs-content">
+	<div>
 		{#if selected_tab}
 			{@render selected_tab.content()}
 		{/if}
@@ -71,18 +71,9 @@
 			border-bottom: none;
 		}
 
-		@media (max-width: 800px) {
+		@media (max-width: 600px) {
 			font-size: 0.85rem;
 			padding: 0.6rem 0.25rem;
 		}
-
-		@media (max-width: 600px) {
-			font-size: 0.65rem;
-			padding: 0.5rem 0.15rem;
-		}
-	}
-
-	.tabs-content {
-		padding: 1rem 0;
 	}
 </style>

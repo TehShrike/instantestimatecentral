@@ -28,15 +28,23 @@
 	}
 
 	.toggle-display {
+		--width: 70px;
+		--height: 36px;
+		--toggle_height_and_width: calc(var(--height) - 8px);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: 70px;
-		height: 36px;
+		width: var(--width);
+		height: var(--height);
 		background-color: #d3d3d3;
-		border-radius: 18px;
+		border-radius: calc(var(--height) / 2);
 		padding: 0 4px;
 		cursor: pointer;
+
+		@media (max-width: 600px) {
+			--width: 55px;
+			--height: 28px;
+		}
 	}
 
 	.toggle-display[data-checked="true"] {
@@ -45,10 +53,15 @@
 
 	.toggle-text-yes,
 	.toggle-text-no {
-		font-size: 0.875rem;
+		font-size: 1rem;
 		font-weight: 600;
 		user-select: none;
 		padding: 0 6px;
+		max-width: calc(var(--width) - var(--toggle_height_and_width) - 12px);
+
+		@media (max-width: 600px) {
+			font-size: 0.75rem;
+		}
 	}
 
 	.toggle-text-yes {
@@ -60,8 +73,8 @@
 	}
 
 	.toggle-circle {
-		width: 28px;
-		height: 28px;
+		width: var(--toggle_height_and_width);
+		height: var(--toggle_height_and_width);
 		background-color: white;
 		border-radius: 50%;
 	}

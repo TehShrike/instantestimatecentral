@@ -21,7 +21,6 @@
 <style>
 	.error-display {
 		color: red;
-		margin-top: 1rem;
 		padding: 1rem;
 	}
 </style>

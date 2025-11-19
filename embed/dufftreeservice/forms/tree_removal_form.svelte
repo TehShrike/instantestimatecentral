@@ -6,6 +6,7 @@
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 	import ContactForm, { type ContactFormData } from '#lib/contact_form.svelte'
+	import VerticalRowWithGap from '#lib/vertical_row_with_gap.svelte'
 	import { post } from './fetch_executor.ts'
 
 	const default_data: TreeRemovalPricingArguments = {
@@ -79,17 +80,19 @@
 	<BooleanToggle bind:checked={data.adjacent_to_street_or_alley} id="adjacent_to_street_or_alley" />
 {/snippet}
 
-<PricingForm {row_types}>
-	{#snippet row(field_name: keyof typeof row_types)}
-		{@render {
-			tree_diameter,
-			branches_over_something,
-			fence,
-			adjacent_to_street_or_alley,
-		}[field_name]()}
-	{/snippet}
-</PricingForm>
+<VerticalRowWithGap gap="2rem">
+	<PricingForm {row_types}>
+		{#snippet row(field_name: keyof typeof row_types)}
+			{@render {
+				tree_diameter,
+				branches_over_something,
+				fence,
+				adjacent_to_street_or_alley,
+			}[field_name]()}
+		{/snippet}
+	</PricingForm>
 
-<EstimatedPriceDisplay price={calculated_price} />
+	<EstimatedPriceDisplay price={calculated_price} />
 
-<ContactForm submit={handle_contact_submit} />
+	<ContactForm submit={handle_contact_submit} />
+</VerticalRowWithGap>

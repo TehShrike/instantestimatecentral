@@ -76,7 +76,6 @@
 
 		&[data-active="true"] {
 			background-color: #0074ff;
-			border-color: #0074ff;
 
 			strong,
 			small {

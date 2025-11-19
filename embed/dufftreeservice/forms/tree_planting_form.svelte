@@ -6,6 +6,7 @@
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 	import ContactForm, { type ContactFormData } from '#lib/contact_form.svelte'
+	import VerticalRowWithGap from '#lib/vertical_row_with_gap.svelte'
 	import { post } from './fetch_executor.ts'
 
 	const default_data: TreePlantingPricingArguments = {
@@ -49,18 +50,20 @@
 	/>
 {/snippet}
 
-<PricingForm {row_types}>
-	{#snippet row(field_name: keyof typeof row_types)}
-		{@render {
-			number_of_trees,
-			tree_size,
-		}[field_name]()}
-	{/snippet}
-</PricingForm>
+<VerticalRowWithGap gap="2rem">
+	<PricingForm {row_types}>
+		{#snippet row(field_name: keyof typeof row_types)}
+			{@render {
+				number_of_trees,
+				tree_size,
+			}[field_name]()}
+		{/snippet}
+	</PricingForm>
 
-<EstimatedPriceDisplay price={calculated_price} />
+	<EstimatedPriceDisplay price={calculated_price} />
 
-<ContactForm
-	submit={handle_contact_submit}
-	additional_fields={[{ label: 'What variety?', field_name: 'tree_variety' }]}
-/>
+	<ContactForm
+		submit={handle_contact_submit}
+		additional_fields={[{ label: 'What variety?', field_name: 'tree_variety' }]}
+	/>
+</VerticalRowWithGap>

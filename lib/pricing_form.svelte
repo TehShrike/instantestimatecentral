@@ -24,17 +24,11 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--vertical_gap);
-		margin-bottom: 2rem;
 		font-size: 1rem;
 
-		@media (max-width: 900px) {
+		@media (max-width: 600px) {
 			font-size: 0.9rem;
 			--vertical_gap: 1rem;
-		}
-
-		@media (max-width: 600px) {
-			font-size: 0.85rem;
-			--vertical_gap: 0.75rem;
 		}
 	}
 
@@ -58,9 +52,12 @@
 			cursor: pointer;
 		}
 
-		@media (max-width: 600px) {
+		@media (max-width: 650px) {
 			gap: 0.75rem;
+			grid-template-columns: 1fr 200px;
+		}
 
+		@media (max-width: 500px) {
 			&[data-type="radio"] {
 				grid-template-columns: 1fr;
 				justify-items: center;
@@ -72,8 +69,9 @@
 
 			&[data-type="toggle"],
 			&[data-type="number"] {
-				grid-template-columns: 1fr 70px;
+				grid-template-columns: 1fr 100px;
 			}
+
 		}
 	}
 </style>

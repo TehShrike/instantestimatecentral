@@ -49,6 +49,10 @@
 </script>
 
 <form onsubmit={handle_submit}>
+	<p>
+		Want us to come out and give you a free quote?
+	</p>
+
 	<div class="inputs-grid">
 		<div class="form-group">
 			<label for="contact_name">Name</label>
@@ -79,7 +83,7 @@
 	</div>
 
 	<p class="message">
-		We'll have an estimator come out in the next business day or two. Our office lady will give you a call in the next 1-2 business hours to schedule the estimator.
+		Our office lady will give you a call in the next 1-2 business hours to schedule the visit.  An estimator will come out in the next business day or two.
 	</p>
 
 
@@ -101,14 +105,14 @@
 </form>
 
 <style>
+	p {
+		margin: 0;
+	}
 	form {
 		--gap: 1rem;
 		display: flex;
 		flex-direction: column;
 		gap: var(--gap);
-		margin-top: 2rem;
-		padding-top: 2rem;
-		border-top: 2px solid #ecf0f1;
 
 		@media (max-width: 600px) {
 			--gap: 0.5rem;
@@ -167,7 +171,6 @@
 	}
 
 	.message {
-		margin: 0.5rem 0;
 		padding: 1rem;
 		background-color: #ecf0f1;
 		border-radius: 4px;

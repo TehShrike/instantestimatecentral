@@ -18,7 +18,6 @@
 		padding: 1.5rem;
 		background: #ecf0f1;
 		border-radius: 8px;
-		margin-top: 2rem;
 
 		@media (max-width: 900px) {
 			padding: 1rem;
