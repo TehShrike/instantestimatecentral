@@ -1,4 +1,4 @@
-<svelte:options customElement="all-estimates" />
+<svelte:options customElement="all-services" />
 
 <script lang="ts">
 	import Tabs from '#lib/tabs.svelte'
@@ -10,9 +10,9 @@
 	import TreeTrimmingForm from './forms/tree_trimming_form.svelte'
 	import TreePlantingForm from './forms/tree_planting_form.svelte'
 
-	let current_tab = $state(get('all_estimates_current_tab', is_string, 'Limb Removal'))
+	let current_tab = $state(get('all_services_current_tab', is_string, 'Limb Removal'))
 
-	$effect(() => set('all_estimates_current_tab', current_tab))
+	$effect(() => set('all_services_current_tab', current_tab))
 </script>
 
 <PricingWrapper>
