@@ -138,14 +138,14 @@
 	label {
 		font-weight: 600;
 		color: #2c3e50;
-		font-size: 1rem;
+		font-size: 1em;
 
 		@media (max-width: 900px) {
-			font-size: 0.9rem;
+			font-size: 0.9em;
 		}
 
 		@media (max-width: 500px) {
-			font-size: 0.85rem;
+			font-size: 0.85em;
 		}
 	}
 
@@ -153,7 +153,7 @@
 		padding: 0.5rem;
 		border: 1px solid #bdc3c7;
 		border-radius: 4px;
-		font-size: 1rem;
+		font-size: 1em;
 
 		&:focus {
 			outline: none;
@@ -161,11 +161,11 @@
 		}
 
 		@media (max-width: 900px) {
-			font-size: 0.9rem;
+			font-size: 0.9em;
 		}
 
 		@media (max-width: 500px) {
-			font-size: 0.85rem;
+			font-size: 0.85em;
 			padding: 0.4rem;
 		}
 	}
@@ -174,16 +174,16 @@
 		padding: 1rem;
 		background-color: #ecf0f1;
 		border-radius: 4px;
-		font-size: 0.875rem;
+		font-size: 0.875em;
 		line-height: 1.5;
 		color: #2c3e50;
 
 		@media (max-width: 900px) {
-			font-size: 0.8rem;
+			font-size: 0.8em;
 		}
 
 		@media (max-width: 500px) {
-			font-size: 0.75rem;
+			font-size: 0.75em;
 			padding: 0.75rem;
 		}
 	}
@@ -194,7 +194,7 @@
 		color: white;
 		border: none;
 		border-radius: 4px;
-		font-size: 1rem;
+		font-size: 1em;
 		font-weight: 600;
 		cursor: pointer;
 		transition: background-color 0.2s;
@@ -213,11 +213,11 @@
 		}
 
 		@media (max-width: 900px) {
-			font-size: 0.9rem;
+			font-size: 0.9em;
 		}
 
 		@media (max-width: 500px) {
-			font-size: 0.85rem;
+			font-size: 0.85em;
 			padding: 0.6rem 1rem;
 		}
 	}

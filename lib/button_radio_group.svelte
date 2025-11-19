@@ -67,7 +67,7 @@
 		cursor: pointer;
 		font-family: inherit;
 		text-align: left;
-		font-size: 1rem;
+		font-size: 1em;
 
 		&:focus {
 			outline: 2px solid #0074ff;
@@ -85,7 +85,7 @@
 
 		strong {
 			font-weight: 600;
-			font-size: 1rem;
+			font-size: 1em;
 			color: #2c3e50;
 			display: flex;
 			justify-content: space-between;
@@ -94,7 +94,7 @@
 		}
 
 		small {
-			font-size: 0.875rem;
+			font-size: 0.875em;
 			color: #7f8c8d;
 			line-height: 1.4;
 		}
@@ -103,11 +103,11 @@
 			padding: 0.5rem 0.65rem;
 
 			strong {
-				font-size: 0.9rem;
+				font-size: 0.9em;
 			}
 
 			small {
-				font-size: 0.8rem;
+				font-size: 0.8em;
 			}
 		}
 
@@ -116,17 +116,17 @@
 			gap: 0;
 
 			strong {
-				font-size: 0.85rem;
+				font-size: 0.85em;
 			}
 
 			small {
-				font-size: 0.75rem;
+				font-size: 0.75em;
 			}
 		}
 	}
 
 	.price-diff {
-		font-size: 0.875rem;
+		font-size: 0.875em;
 		font-weight: 600;
 		white-space: nowrap;
 		text-align: right;
@@ -140,7 +140,7 @@
 		}
 
 		@media (max-width: 600px) {
-			font-size: 0.75rem;
+			font-size: 0.75em;
 		}
 	}
 </style>

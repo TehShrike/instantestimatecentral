@@ -24,10 +24,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--vertical_gap);
-		font-size: 1rem;
+		font-size: 1em;
 
 		@media (max-width: 600px) {
-			font-size: 0.9rem;
+			font-size: 0.9em;
 			--vertical_gap: 1rem;
 		}
 	}

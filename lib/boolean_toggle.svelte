@@ -53,14 +53,14 @@
 
 	.toggle-text-yes,
 	.toggle-text-no {
-		font-size: 1rem;
+		font-size: 1em;
 		font-weight: 600;
 		user-select: none;
 		padding: 0 6px;
 		max-width: calc(var(--width) - var(--toggle_height_and_width) - 12px);
 
 		@media (max-width: 600px) {
-			font-size: 0.75rem;
+			font-size: 0.75em;
 		}
 	}
 

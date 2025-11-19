@@ -32,14 +32,14 @@
 	.price-label {
 		font-weight: 600;
 		color: #2c3e50;
-		font-size: 1.25rem;
+		font-size: 1.25em;
 
 		@media (max-width: 900px) {
-			font-size: 1.1rem;
+			font-size: 1.1em;
 		}
 
 		@media (max-width: 500px) {
-			font-size: 1rem;
+			font-size: 1em;
 		}
 	}
 
@@ -47,14 +47,14 @@
 		text-align: right;
 		font-weight: 700;
 		color: #27ae60;
-		font-size: 1.5rem;
+		font-size: 1.5em;
 
 		@media (max-width: 900px) {
-			font-size: 1.3rem;
+			font-size: 1.3em;
 		}
 
 		@media (max-width: 500px) {
-			font-size: 1.2rem;
+			font-size: 1.2em;
 		}
 	}
 </style>

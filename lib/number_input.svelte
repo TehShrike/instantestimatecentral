@@ -28,7 +28,7 @@
 		padding: 0 4px;
 		border: 2px solid #d3d3d3;
 		border-radius: 4px;
-		font-size: 1rem;
+		font-size: 1em;
 		font-family: inherit;
 		text-align: center;
 		background-color: white;

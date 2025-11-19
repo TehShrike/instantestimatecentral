@@ -50,7 +50,7 @@
 		padding: 0.75rem 0.25rem;
 		border: none;
 		border-radius: 8px 8px 0 0;
-		font-size: 1rem;
+		font-size: 1em;
 		font-weight: 600;
 		font-family: inherit;
 		color: #2c3e50;
@@ -72,7 +72,7 @@
 		}
 
 		@media (max-width: 600px) {
-			font-size: 0.85rem;
+			font-size: 0.85em;
 			padding: 0.6rem 0.25rem;
 		}
 	}
