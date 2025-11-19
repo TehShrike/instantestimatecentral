@@ -12,10 +12,19 @@
 
 <script lang="ts" generics="FieldName extends string">
 	import ErrorDisplay from './error_display.svelte'
+	import { get, set } from '#lib/localstorage.ts'
+	import { object, is_string, object_values } from '#lib/json_validator.ts'
 
 	type AdditionalField = {
 		label: string
 		field_name: FieldName
+	}
+
+	type CommonContactData = {
+		name: string
+		email: string
+		phone: string
+		street_address: string
 	}
 
 	let {
@@ -26,23 +35,42 @@
 		additional_fields?: AdditionalField[]
 	} = $props()
 
-	let name = $state('')
-	let email = $state('')
-	let phone = $state('')
-	let street_address = $state('')
+	const common_data_validator = object({
+		name: is_string,
+		email: is_string,
+		phone: is_string,
+		street_address: is_string,
+	})
+
+	const additional_values_validator = object_values(is_string)
+
+	const default_common_data: CommonContactData = {
+		name: '',
+		email: '',
+		phone: '',
+		street_address: '',
+	}
+
+	const default_additional_values = Object.fromEntries(
+		additional_fields.map(field => [field.field_name, ''])
+	) as Record<FieldName, string>
+
+	const additional_fields_key = 'contact_form_additional_' + additional_fields.map(f => f.field_name).sort().join('_')
+
+	let common_data = $state(get('contact_form_data', common_data_validator, default_common_data))
 	let additional_values = $state<Record<FieldName, string>>(
-		Object.fromEntries(additional_fields.map(field => [field.field_name, ''])) as Record<FieldName, string>
+		get(additional_fields_key, additional_values_validator, default_additional_values)
 	)
 
 	let submission_promise = $state<Promise<void> | null>(null)
 
+	$effect(() => set('contact_form_data', common_data))
+	$effect(() => set(additional_fields_key, additional_values))
+
 	const handle_submit = (event: Event) => {
 		event.preventDefault()
 		submission_promise = submit({
-			name,
-			email,
-			phone,
-			street_address,
+			...common_data,
 			extra: additional_values,
 		})
 	}
@@ -56,22 +84,22 @@
 	<div class="inputs-grid">
 		<div class="form-group">
 			<label for="contact_name">Name</label>
-			<input type="text" id="contact_name" bind:value={name} required />
+			<input type="text" id="contact_name" bind:value={common_data.name} required />
 		</div>
 
 		<div class="form-group">
 			<label for="contact_email">Email address</label>
-			<input type="email" id="contact_email" bind:value={email} required />
+			<input type="email" id="contact_email" bind:value={common_data.email} required />
 		</div>
 
 		<div class="form-group">
 			<label for="contact_phone">Phone number</label>
-			<input type="tel" id="contact_phone" bind:value={phone} required />
+			<input type="tel" id="contact_phone" bind:value={common_data.phone} required />
 		</div>
 
 		<div class="form-group">
 			<label for="contact_street_address">Street address</label>
-			<input type="text" id="contact_street_address" bind:value={street_address} required />
+			<input type="text" id="contact_street_address" bind:value={common_data.street_address} required />
 		</div>
 
 		{#each additional_fields as field}
