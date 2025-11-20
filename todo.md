@@ -40,3 +40,7 @@ At the bottom right of every form, light text for Instant Estimate Central, link
 
 - phone number should contain at least 7 digits
 - email address should contain an @ followed by a period at some point
+
+## Auto inflation calculator
+
+Every company needs a start date (and probably a customizable inflation rate?).  Prices should automatically increase based on the amount of time since the start date.
