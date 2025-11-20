@@ -1,6 +1,11 @@
-## Test on Andrew's site
+## Andrew's site next steps
 
-first locally, then deploy and watch the logs
+- logo centered left, menu on the right
+- change the lower sections: text on the left, picture on the right
+
+## Another UI issue
+
+If one tab has multiple lines and one doesn't, switching between them changes the height of the form.  ugh
 
 ## legible to llms
 
