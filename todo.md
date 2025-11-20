@@ -3,9 +3,13 @@
 - logo centered left, menu on the right
 - change the lower sections: text on the left, picture on the right
 
-## Another UI issue
+## UI issue: jitter switching between tabs
 
 If one tab has multiple lines and one doesn't, switching between them changes the height of the form.  ugh
+
+## UI issue: on Andrew's site, still see horizontal scroolbars on my phone
+
+Because the site is bringing its own horizontal padding, the tabs still don't squish small enough on my iPhone mini
 
 ## legible to llms
 
