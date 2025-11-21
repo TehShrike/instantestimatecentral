@@ -66,6 +66,7 @@
 	}
 
 	let form_is_valid = $derived(__IS_DEV__ || turnstile_token !== null)
+	const TURNSTILE_DISABLED_FOR_NOW = true
 </script>
 
 <form onsubmit={handle_submit}>
@@ -106,7 +107,7 @@
 		Our office lady will give you a call in the next 1-2 business hours to schedule the visit.  An estimator will come out in the next business day or two.
 	</p>
 
-	{#if !__IS_DEV__}
+	{#if !__IS_DEV__ && !TURNSTILE_DISABLED_FOR_NOW}
 		<CloudflareTurnstile bind:token={turnstile_token} />
 	{/if}
 

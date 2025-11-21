@@ -77,7 +77,8 @@ const handle_request = async (request: Request, env: Env): Promise<Result<Respon
 						const {service: service_name, args: pricing_args, contact, turnstile_token} = body
 
 						try {
-							if (context.env.ENVIRONMENT !== 'local') {
+							const TURNSTILE_DISABLED_FOR_NOW = true
+							if (context.env.ENVIRONMENT !== 'local' && !TURNSTILE_DISABLED_FOR_NOW) {
 								console.log('Validating turnstile token:', turnstile_token)
 								// If turnstile_token is null, still validate with CF – if CF is down, it's acceptable to not have a valid token
 								const turnstile_result = await validate_turnstile(turnstile_token || 'none', context.env.CF_TURNSTILE_SECRET_KEY)
