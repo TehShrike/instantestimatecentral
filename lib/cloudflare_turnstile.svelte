@@ -36,11 +36,13 @@
 	let widget_id: string | null = null
 
 	const render_widget = () => {
+		console.log('Rendering Turnstile widget')
 		assert(window.turnstile)
 
 		widget_id = window.turnstile.render(container, {
 			sitekey: __CF_TURNSTILE_SITE_KEY__,
 			callback: (response_token: string) => {
+				console.log('Got back Turnstile response token', response_token)
 				token = response_token
 			},
 			'error-callback': () => {
