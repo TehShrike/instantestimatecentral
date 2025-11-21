@@ -1,4 +1,15 @@
+## Andrew's site next steps
 
+- logo centered left, menu on the right
+- change the lower sections: text on the left, picture on the right
+
+## UI issue: jitter switching between tabs
+
+If one tab has multiple lines and one doesn't, switching between them changes the height of the form.  ugh
+
+## UI issue: on Andrew's site, still see horizontal scroolbars on my phone
+
+Because the site is bringing its own horizontal padding, the tabs still don't squish small enough on my iPhone mini
 
 ## Log sends
 
@@ -33,3 +44,7 @@ At the bottom right of every form, light text for Instant Estimate Central, link
 
 - phone number should contain at least 7 digits
 - email address should contain an @ followed by a period at some point
+
+## Auto inflation calculator
+
+Every company needs a start date (and probably a customizable inflation rate?).  Prices should automatically increase based on the amount of time since the start date.
