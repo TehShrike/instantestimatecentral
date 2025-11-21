@@ -12,10 +12,13 @@
 	.pricing-wrapper {
 		max-width: 800px;
 		box-sizing: border-box;
-		padding: 0 1rem;
 
-		@media (max-width: 500px) {
-			padding: 0 0.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+
+		@media (max-width: 600px) {
+			gap: 1rem;
 		}
 	}
 

@@ -28,6 +28,7 @@ const generate_html = (custom_element_name: string, service_name: string, form_n
 				align-items: center;
 				width: 100%;
 				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+				padding-bottom: 200px;
 			}
 		</style>
 	</head>

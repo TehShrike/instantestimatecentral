@@ -1,3 +1,13 @@
+<script lang="ts" module>
+	export const default_data: TreeTrimmingPricingArguments = {
+		tree_diameter: '11-15 inches',
+		pruned_by_arborist_recently: false,
+		raise_canopy: false,
+		tree_variety: 'other',
+		trim_type: 'normal',
+	}
+</script>
+
 <script lang="ts">
 	import { pricing, validator, type TreeTrimmingPricingArguments } from '#pricing/dufftreeservice/tree_trimming.ts'
 	import { get, set } from '#lib/localstorage.ts'
@@ -6,44 +16,33 @@
 	import ButtonRadioGroup from '#lib/button_radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
-	import ContactForm, { type ContactFormData } from '#lib/contact_form.svelte'
-	import VerticalRowWithGap from '#lib/vertical_row_with_gap.svelte'
-	import { post } from './fetch_executor.ts'
 
-	const default_data: TreeTrimmingPricingArguments = {
-		tree_diameter: '11-15 inches',
-		pruned_by_arborist_recently: false,
-		raise_canopy: false,
-		tree_variety: 'other',
-		trim_type: 'normal',
-	}
+	let { pricing_args = $bindable(get('tree_trimming_data', validator, default_data)) }: { pricing_args?: TreeTrimmingPricingArguments | undefined } = $props()
 
-	let data = $state(get('tree_trimming_data', validator, default_data))
-
-	const calculated_price = $derived(pricing(data))
+	const calculated_price = $derived(pricing(pricing_args))
 
 	const trim_type_options = $derived([
 		{
 			label: 'Just the necessities',
 			description: 'a half dozen or fewer offending branches',
 			value: 'just the necessities' as const,
-			price_difference: pricing({ ...data, trim_type: 'just the necessities' }).minus(calculated_price),
+			price_difference: pricing({ ...pricing_args, trim_type: 'just the necessities' }).minus(calculated_price),
 		},
 		{
 			label: 'Normal',
 			description: '2" branches and larger',
 			value: 'normal' as const,
-			price_difference: pricing({ ...data, trim_type: 'normal' }).minus(calculated_price),
+			price_difference: pricing({ ...pricing_args, trim_type: 'normal' }).minus(calculated_price),
 		},
 		{
 			label: 'Premium',
 			description: '1" branches and larger',
 			value: 'premium' as const,
-			price_difference: pricing({ ...data, trim_type: 'premium' }).minus(calculated_price),
+			price_difference: pricing({ ...pricing_args, trim_type: 'premium' }).minus(calculated_price),
 		},
 	])
 
-	$effect(() => set('tree_trimming_data', data))
+	$effect(() => set('tree_trimming_data', pricing_args))
 
 	const row_types = {
 		tree_diameter: 'radio',
@@ -52,12 +51,6 @@
 		tree_variety: 'radio',
 		trim_type: 'button_radio',
 	} as const
-
-	const handle_contact_submit = (contact_data: ContactFormData) => post('/send_estimate_email', {
-		service: 'tree_trimming',
-		args: data,
-		contact: contact_data,
-	})
 </script>
 
 {#snippet tree_diameter()}
@@ -71,18 +64,18 @@
 			{ label: '26-32 inches', value: '26-32 inches' as const },
 			{ label: '33-40 inches', value: '33-40 inches' as const },
 		]}
-		bind:value={data.tree_diameter}
+		bind:value={pricing_args.tree_diameter}
 	/>
 {/snippet}
 
 {#snippet pruned_by_arborist_recently()}
 	<label class="left" for="pruned_by_arborist_recently">Has it been pruned by an arborist in the last 3 years?</label>
-	<BooleanToggle bind:checked={data.pruned_by_arborist_recently} id="pruned_by_arborist_recently" />
+	<BooleanToggle bind:checked={pricing_args.pruned_by_arborist_recently} id="pruned_by_arborist_recently" />
 {/snippet}
 
 {#snippet raise_canopy()}
 	<label class="left" for="raise_canopy">Do you want the canopy raised?</label>
-	<BooleanToggle bind:checked={data.raise_canopy} id="raise_canopy" />
+	<BooleanToggle bind:checked={pricing_args.raise_canopy} id="raise_canopy" />
 {/snippet}
 
 {#snippet tree_variety()}
@@ -94,31 +87,27 @@
 			{ label: 'Oak', value: 'oak' as const },
 			{ label: 'Locust', value: 'locust' as const },
 		]}
-		bind:value={data.tree_variety}
+		bind:value={pricing_args.tree_variety}
 	/>
 {/snippet}
 
 {#snippet trim_type()}
 	<ButtonRadioGroup
 		options={trim_type_options}
-		bind:value={data.trim_type}
+		bind:value={pricing_args.trim_type}
 	/>
 {/snippet}
 
-<VerticalRowWithGap gap="2rem">
-	<PricingForm {row_types}>
-		{#snippet row(field_name: keyof typeof row_types)}
-			{@render {
-				tree_diameter,
-				pruned_by_arborist_recently,
-				raise_canopy,
-				tree_variety,
-				trim_type,
-			}[field_name]()}
-		{/snippet}
-	</PricingForm>
+<PricingForm {row_types}>
+	{#snippet row(field_name: keyof typeof row_types)}
+		{@render {
+			tree_diameter,
+			pruned_by_arborist_recently,
+			raise_canopy,
+			tree_variety,
+			trim_type,
+		}[field_name]()}
+	{/snippet}
+</PricingForm>
 
-	<EstimatedPriceDisplay price={calculated_price} />
-
-	<ContactForm submit={handle_contact_submit} />
-</VerticalRowWithGap>
+<EstimatedPriceDisplay price={calculated_price} />

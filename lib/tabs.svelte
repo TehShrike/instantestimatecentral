@@ -1,14 +1,23 @@
-<script lang="ts">
-	import type { Snippet } from 'svelte'
-
-	type Tab = {
+<script lang="ts" module>
+	export type Tab<Identifier extends any> = {
 		name: string
 		content: Snippet
+		identifier: Identifier
 	}
+</script>
 
-	let { tabs, current_tab = $bindable(tabs[0]?.name) }: { tabs: Tab[]; current_tab?: string } = $props()
+<script lang="ts" generics="Identifier extends any">
+	import type { Snippet } from 'svelte'
 
-	const selected_tab_index = $derived(tabs.findIndex(tab => tab.name === current_tab))
+	let {
+		tabs,
+		current_tab_identifier = $bindable(tabs[0]?.identifier),
+	}: {
+		tabs: Tab<Identifier>[]
+		current_tab_identifier?: Identifier
+	} = $props()
+
+	const selected_tab_index = $derived(tabs.findIndex(tab => tab.identifier === current_tab_identifier))
 
 	const selected_tab = $derived(tabs[selected_tab_index])
 </script>
@@ -19,7 +28,7 @@
 			<button
 				class="tab-button"
 				data-selected={selected_tab_index === index}
-				onclick={() => current_tab = tab.name}
+				onclick={() => current_tab_identifier = tab.identifier}
 			>
 				{tab.name}
 			</button>

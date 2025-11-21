@@ -198,3 +198,11 @@ import { greatest_of } from '#lib/fnum.ts'
 
 greatest_of(number('10'), number('20'), number('15')) // => FinancialNumber representing 20
 ```
+
+# HTML and CSS
+
+Don't use margin for adding whitespace between elements, use `display: flex` and a `gap` on the parent element.
+
+# Iteration
+
+Use the functions in lib/array.ts when possible.  Avoid using for..of for iteration if an array function with a callback can be used instead.

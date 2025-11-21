@@ -7,6 +7,25 @@ import { Validator } from '#lib/json_validator.ts'
 import { response, json_response, error_response } from './response_helpers.ts'
 import type { Env } from './environment.ts'
 
+const validate_turnstile = async (token: string, secret_key: string): Promise<{ success: boolean; error?: string }> => {
+	const form_data = new FormData()
+	form_data.append('secret', secret_key)
+	form_data.append('response', token)
+
+	const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+		method: 'POST',
+		body: form_data,
+	})
+
+	const outcome = await result.json() as { success: boolean; 'error-codes'?: string[] }
+
+	if (!outcome.success) {
+		return { success: false, error: outcome['error-codes']?.join(', ') || 'Unknown error' }
+	}
+
+	return { success: true }
+}
+
 const handle_request = async (request: Request, env: Env): Promise<Result<Response, Response | { message: string, stack?: string | null }, Response>> => {
 	const initial_context = {request, env, url: new URL(request.url)}
 
@@ -55,7 +74,22 @@ const handle_request = async (request: Request, env: Env): Promise<Result<Respon
 						if (!body_validator.is_valid(body)) {
 							return Result.failure(error_response({ message: body_validator.get_messages(body, 'body').join(', ') }))
 						}
-						const {service: service_name, args: pricing_args, contact} = body
+						const {service: service_name, args: pricing_args, contact, turnstile_token} = body
+
+						try {
+							if (context.env.ENVIRONMENT !== 'local') {
+								console.log('Validating turnstile token:', turnstile_token)
+								// If turnstile_token is null, still validate with CF – if CF is down, it's acceptable to not have a valid token
+								const turnstile_result = await validate_turnstile(turnstile_token || 'none', context.env.CF_TURNSTILE_SECRET_KEY)
+								if (!turnstile_result.success) {
+									return Result.failure(error_response({ message: 'Security verification failed: ' + (turnstile_result.error || 'Unknown error') + '\nPlease make sure the captcha was successfully completed.' }))
+								}
+							}
+						} catch (error) {
+							console.error('Error validating turnstile:', error instanceof Error ? error.message : String(error))
+							// Don't fail out – if the request to turnstile fails, we'll give the user the benefit of the doubt
+							// TODO: report error to Sentry?
+						}
 
 						if (!company.service_name_validator.is_valid(service_name)) {
 							return Result.failure(error_response({ message: 'Invalid service name: ' + company.service_name_validator.get_messages(service_name, 'body.service').join(', ') }))
@@ -82,9 +116,11 @@ const handle_request = async (request: Request, env: Env): Promise<Result<Respon
 						})
 
 
-						const to = contact.email.toLowerCase() === 'me+iectest@joshduff.com'
+						const to = context.env.ENVIRONMENT === 'local'
 							? 'josh@instantestimatecentral.com'
-							: company.recipient_email_address
+							: contact.email.toLowerCase() === 'me+iectest@joshduff.com'
+								? 'josh@instantestimatecentral.com'
+								: company.recipient_email_address
 
 						await send_email({
 							api_key: context.env.RESEND_API_KEY,
@@ -113,6 +149,7 @@ const body_validator = jv.object({
 	service: jv.is_string,
 	args: jv.object_values(is_anything),
 	contact: jv.object_values(is_anything),
+	turnstile_token: jv.one_of(jv.is_string, jv.is_null),
 })
 
 export default handle_request

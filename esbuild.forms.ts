@@ -1,5 +1,5 @@
 import { build, context } from 'esbuild'
-import { mkdirSync } from 'fs'
+import { mkdirSync, readFileSync } from 'fs'
 import type { CompileOptions } from "svelte/compiler";
 import sveltePlugin from 'esbuild-svelte'
 import { get_form_components } from '#lib/get_form_components.ts'
@@ -27,12 +27,14 @@ for_each(components, (component) => {
 
 mkdirSync('build/embed', { recursive: true })
 
+const dev = is_watch
 const compiler_options: CompileOptions = {
-	dev: is_watch,
+	dev,
 	customElement: true,
 }
 
-const api_host = is_watch ? 'https://executor.local.com:1337' : 'https://executor.instantestimatecentral.com'
+const CF_TURNSTILE_SITE_KEY='0x4AAAAAACB5D9NkFrU62jG9'
+const api_host = dev ? 'https://executor.local.com:1337' : 'https://executor.instantestimatecentral.com'
 
 const build_options = {
 	entryPoints: entry_points,
@@ -48,6 +50,8 @@ const build_options = {
 	target: 'es2020',
 	define: {
 		'__API_HOST__': JSON.stringify(api_host),
+		'__CF_TURNSTILE_SITE_KEY__': JSON.stringify(CF_TURNSTILE_SITE_KEY),
+		'__IS_DEV__': JSON.stringify(dev),
 	},
 }
 

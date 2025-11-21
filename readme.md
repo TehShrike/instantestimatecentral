@@ -5,6 +5,7 @@
 ```
 RESEND_API_KEY=
 ENVIRONMENT=local
+CF_TURNSTILE_SECRET_KEY=
 ```
 
 ## `/etc/hosts`

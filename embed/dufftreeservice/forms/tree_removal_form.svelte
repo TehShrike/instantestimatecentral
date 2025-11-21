@@ -1,3 +1,12 @@
+<script lang="ts" module>
+	export const default_data: TreeRemovalPricingArguments = {
+		tree_diameter: '11-15 inches',
+		branches_over_something: 'nothing underneath',
+		fence: 'no',
+		adjacent_to_street_or_alley: true,
+	}
+</script>
+
 <script lang="ts">
 	import { pricing, validator, type TreeRemovalPricingArguments } from '#pricing/dufftreeservice/tree_removal.ts'
 	import { get, set } from '#lib/localstorage.ts'
@@ -5,22 +14,12 @@
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
-	import ContactForm, { type ContactFormData } from '#lib/contact_form.svelte'
-	import VerticalRowWithGap from '#lib/vertical_row_with_gap.svelte'
-	import { post } from './fetch_executor.ts'
 
-	const default_data: TreeRemovalPricingArguments = {
-		tree_diameter: '11-15 inches',
-		branches_over_something: 'nothing underneath',
-		fence: 'no',
-		adjacent_to_street_or_alley: true,
-	}
+	let { pricing_args = $bindable(get('tree_removal_data', validator, default_data)) }: { pricing_args?: TreeRemovalPricingArguments | undefined } = $props()
 
-	let data = $state(get('tree_removal_data', validator, default_data))
+	const calculated_price = $derived(pricing(pricing_args))
 
-	const calculated_price = $derived(pricing(data))
-
-	$effect(() => set('tree_removal_data', data))
+	$effect(() => set('tree_removal_data', pricing_args))
 
 	const row_types = {
 		tree_diameter: 'radio',
@@ -28,12 +27,6 @@
 		fence: 'radio',
 		adjacent_to_street_or_alley: 'toggle',
 	} as const
-
-	const handle_contact_submit = (contact_data: ContactFormData) => post('/send_estimate_email', {
-		service: 'tree_removal',
-		args: data,
-		contact: contact_data,
-	})
 </script>
 
 {#snippet tree_diameter()}
@@ -47,7 +40,7 @@
 			{ label: '26-32 inches', value: '26-32 inches' as const },
 			{ label: '33-40 inches', value: '33-40 inches' as const },
 		]}
-		bind:value={data.tree_diameter}
+		bind:value={pricing_args.tree_diameter}
 	/>
 {/snippet}
 
@@ -59,7 +52,7 @@
 			{ label: 'Some branches', value: 'some branches over something' as const },
 			{ label: 'All big branches', value: 'all big branches are over something' as const },
 		]}
-		bind:value={data.branches_over_something}
+		bind:value={pricing_args.branches_over_something}
 	/>
 {/snippet}
 
@@ -71,28 +64,24 @@
 			{ label: 'Yes – single gate', value: 'single gate' as const },
 			{ label: 'Yes – double gate', value: 'double gate' as const },
 		]}
-		bind:value={data.fence}
+		bind:value={pricing_args.fence}
 	/>
 {/snippet}
 
 {#snippet adjacent_to_street_or_alley()}
 	<label class="left" for="adjacent_to_street_or_alley">Is the tree adjacent to a street or alley?</label>
-	<BooleanToggle bind:checked={data.adjacent_to_street_or_alley} id="adjacent_to_street_or_alley" />
+	<BooleanToggle bind:checked={pricing_args.adjacent_to_street_or_alley} id="adjacent_to_street_or_alley" />
 {/snippet}
 
-<VerticalRowWithGap gap="2rem">
-	<PricingForm {row_types}>
-		{#snippet row(field_name: keyof typeof row_types)}
-			{@render {
-				tree_diameter,
-				branches_over_something,
-				fence,
-				adjacent_to_street_or_alley,
-			}[field_name]()}
-		{/snippet}
-	</PricingForm>
+<PricingForm {row_types}>
+	{#snippet row(field_name: keyof typeof row_types)}
+		{@render {
+			tree_diameter,
+			branches_over_something,
+			fence,
+			adjacent_to_street_or_alley,
+		}[field_name]()}
+	{/snippet}
+</PricingForm>
 
-	<EstimatedPriceDisplay price={calculated_price} />
-
-	<ContactForm submit={handle_contact_submit} />
-</VerticalRowWithGap>
+<EstimatedPriceDisplay price={calculated_price} />

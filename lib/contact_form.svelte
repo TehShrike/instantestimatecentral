@@ -1,38 +1,26 @@
 <script lang="ts" module>
-	export type ContactFormData<FieldName extends string = string> = {
-		name: string
-		email: string
-		phone: string
-		street_address: string
-		extra: {
-			[key in FieldName]: string
-		}
+	declare const __IS_DEV__: boolean
+
+	export type AdditionalField<FieldName extends string = string> = {
+		label: string
+		field_name: FieldName
 	}
 </script>
 
 <script lang="ts" generics="FieldName extends string">
 	import ErrorDisplay from './error_display.svelte'
+	import CloudflareTurnstile from './cloudflare_turnstile.svelte'
 	import { get, set } from '#lib/localstorage.ts'
 	import { object, is_string } from '#lib/json_validator.ts'
+	import type { ContactForm } from '#lib/contact_form.d.ts'
 	import type { Validator } from './json_validator.ts'
-	type AdditionalField = {
-		label: string
-		field_name: FieldName
-	}
-
-	type CommonContactData = {
-		name: string
-		email: string
-		phone: string
-		street_address: string
-	}
 
 	let {
 		submit,
 		additional_fields = [],
 	}: {
-		submit: (data: ContactFormData) => Promise<void>
-		additional_fields?: AdditionalField[]
+		submit: (data: ContactForm<FieldName>, turnstile_token: string | null) => Promise<void>
+		additional_fields?: AdditionalField<FieldName>[]
 	} = $props()
 
 	const common_data_validator = object({
@@ -44,7 +32,7 @@
 
 	const additional_values_validator = object(Object.fromEntries(additional_fields.map(field => [field.field_name, is_string]))) as Validator<Record<FieldName, string>>
 
-	const default_common_data: CommonContactData = {
+	const default_common_data: Pick<ContactForm<FieldName>, 'name' | 'email' | 'phone' | 'street_address'> = {
 		name: '',
 		email: '',
 		phone: '',
@@ -63,17 +51,21 @@
 	)
 
 	let submission_promise = $state<Promise<void> | null>(null)
+	let turnstile_token = $state<string | null>(null)
 
 	$effect(() => set('contact_form_data', common_data))
 	$effect(() => set(additional_fields_key, additional_values))
 
 	const handle_submit = (event: Event) => {
 		event.preventDefault()
+
 		submission_promise = submit({
 			...common_data,
 			extra: additional_values,
-		})
+		}, turnstile_token)
 	}
+
+	let form_is_valid = $derived(__IS_DEV__ || turnstile_token !== null)
 </script>
 
 <form onsubmit={handle_submit}>
@@ -114,6 +106,9 @@
 		Our office lady will give you a call in the next 1-2 business hours to schedule the visit.  An estimator will come out in the next business day or two.
 	</p>
 
+	{#if !__IS_DEV__}
+		<CloudflareTurnstile bind:token={turnstile_token} />
+	{/if}
 
 	{#if submission_promise}
 		{#await submission_promise then}
@@ -123,7 +118,7 @@
 		{/await}
 	{/if}
 
-	<button type="submit" disabled={$effect.pending() > 0}>
+	<button type="submit" disabled={$effect.pending() > 0 || !form_is_valid}>
 		{#if $effect.pending() > 0}
 			Submitting...
 		{:else}

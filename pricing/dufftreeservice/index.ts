@@ -24,8 +24,8 @@ const contact_validator = jv.object({
 	extra: jv.object_values(jv.is_string),
 })
 
-type ServiceProgrammaticName = keyof typeof services
-type ContactForm = jv.InferValidator<typeof contact_validator>
+export type ServiceProgrammaticName = keyof typeof services
+export type ContactForm = jv.InferValidator<typeof contact_validator>
 
 const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = {
 	services,

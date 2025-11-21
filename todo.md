@@ -1,6 +1,8 @@
-## Test on Andrew's site
 
-first locally, then deploy and watch the logs
+
+## Log sends
+
+There needs to be a mysql database, Digital Ocean I imagine, and it should be logged whenever we attempt to send an email, and when we successfully send an email, and all the details.
 
 ## legible to llms
 
