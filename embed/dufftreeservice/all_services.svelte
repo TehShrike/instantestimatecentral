@@ -17,6 +17,7 @@
 	import type { TreePlantingPricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
 	import type { ServiceProgrammaticName } from '#pricing/dufftreeservice/index.ts'
 	import { service_name_validator } from '#pricing/dufftreeservice/index.ts'
+	import VerticalColumnWithGap from '#lib/vertical_column_with_gap.svelte'
 
 	const additional_contact_form_fields: Partial<Record<ServiceProgrammaticName, AdditionalField<string>[]>> = {
 		tree_planting: tree_planting_additional_contact_form_fields,
@@ -76,17 +77,25 @@
 </PricingWrapper>
 
 {#snippet limb_removal_content()}
-	<LimbRemovalForm bind:pricing_args={pricing_args.limb_removal} />
+	<VerticalColumnWithGap>
+		<LimbRemovalForm bind:pricing_args={pricing_args.limb_removal} />
+	</VerticalColumnWithGap>
 {/snippet}
 
 {#snippet tree_removal_content()}
-	<TreeRemovalForm bind:pricing_args={pricing_args.tree_removal} />
+	<VerticalColumnWithGap>
+		<TreeRemovalForm bind:pricing_args={pricing_args.tree_removal} />
+	</VerticalColumnWithGap>
 {/snippet}
 
 {#snippet tree_trimming_content()}
-	<TreeTrimmingForm bind:pricing_args={pricing_args.tree_trimming} />
+	<VerticalColumnWithGap>
+		<TreeTrimmingForm bind:pricing_args={pricing_args.tree_trimming} />
+	</VerticalColumnWithGap>
 {/snippet}
 
 {#snippet tree_planting_content()}
-	<TreePlantingForm bind:pricing_args={pricing_args.tree_planting} />
+	<VerticalColumnWithGap>
+		<TreePlantingForm bind:pricing_args={pricing_args.tree_planting} />
+	</VerticalColumnWithGap>
 {/snippet}
