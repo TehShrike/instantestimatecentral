@@ -57,7 +57,6 @@
 	.tab-button {
 		flex: 1;
 		padding: 0.75rem 0.25rem;
-		border: none;
 		border-radius: 8px 8px 0 0;
 		font-size: 1em;
 		font-weight: 600;
@@ -65,6 +64,7 @@
 		color: #2c3e50;
 		background: #ecf0f1;
 		border: 2px solid transparent;
+		border-bottom: none;
 		cursor: pointer;
 		transition: background-color 0.2s;
 		text-align: center;
