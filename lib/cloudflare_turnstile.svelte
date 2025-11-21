@@ -36,7 +36,7 @@
 	let widget_id: string | null = null
 
 	const render_widget = () => {
-		console.log('Rendering Turnstile widget')
+		console.log('Rendering Turnstile widget with sitkey', __CF_TURNSTILE_SITE_KEY__, 'to element', container)
 		assert(window.turnstile)
 
 		widget_id = window.turnstile.render(container, {
