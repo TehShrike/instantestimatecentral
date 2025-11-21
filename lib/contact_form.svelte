@@ -65,8 +65,8 @@
 		}, turnstile_token)
 	}
 
-	let form_is_valid = $derived(__IS_DEV__ || turnstile_token !== null)
 	const TURNSTILE_DISABLED_FOR_NOW = true
+	let form_is_valid = $derived(__IS_DEV__ || TURNSTILE_DISABLED_FOR_NOW || turnstile_token !== null)
 </script>
 
 <form onsubmit={handle_submit}>
