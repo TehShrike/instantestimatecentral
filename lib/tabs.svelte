@@ -20,10 +20,14 @@
 	const selected_tab_index = $derived(tabs.findIndex(tab => tab.identifier === current_tab_identifier))
 
 	const selected_tab = $derived(tabs[selected_tab_index])
+
+	let container_width = $state(0)
+	let pixels_per_tab = $derived(container_width / tabs.length)
+	let need_to_wrap = $derived(pixels_per_tab <= 100)
 </script>
 
-<div class="tabs-container">
-	<div class="tabs-header">
+<div class="tabs-container" bind:clientWidth={container_width}>
+	<div class="tabs-header" data-need-to-wrap={need_to_wrap}>
 		{#each tabs as tab, index}
 			<button
 				class="tab-button"
@@ -45,13 +49,19 @@
 <style>
 	.tabs-container {
 		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 
 	.tabs-header {
 		display: flex;
 		gap: 0.25rem;
-		margin-bottom: 1rem;
 		width: 100%;
+
+		&[data-need-to-wrap="true"] {
+			flex-wrap: wrap;
+		}
 	}
 
 	.tab-button {
@@ -68,6 +78,7 @@
 		cursor: pointer;
 		transition: background-color 0.2s;
 		text-align: center;
+		flex-basis: 40%;
 
 		&:hover {
 			background: #dfe6e9;
