@@ -1,16 +1,3 @@
-## Andrew's site next steps
-
-- logo centered left, menu on the right
-- change the lower sections: text on the left, picture on the right
-
-## UI issue: jitter switching between tabs
-
-If one tab has multiple lines and one doesn't, switching between them changes the height of the form.  ugh
-
-## UI issue: on Andrew's site, still see horizontal scroolbars on my phone
-
-Because the site is bringing its own horizontal padding, the tabs still don't squish small enough on my iPhone mini
-
 ## Log sends
 
 There needs to be a mysql database, Digital Ocean I imagine, and it should be logged whenever we attempt to send an email, and when we successfully send an email, and all the details.
@@ -21,7 +8,7 @@ page on the site that spits out json-ld or [whatever the json schema stuff](http
 
 ## captcha
 
-Need to drop Cloudflare Turnstile or whatever it is into the forms.
+Turnstile doesn't work, try [Altcha](https://altcha.org/open-source-captcha/)
 
 ## testing improvement
 
