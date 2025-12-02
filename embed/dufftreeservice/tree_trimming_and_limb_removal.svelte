@@ -15,22 +15,25 @@
 	import VerticalColumnWithGap from '#lib/vertical_column_with_gap.svelte'
 	import { one_of, exact } from '#lib/json_validator.ts'
 
-	const tabs: Tab<ServiceProgrammaticName>[] = [{
-		name: 'Tree Trimming',
-		content: tree_trimming_content,
-		identifier: 'tree_trimming',
-	}, {
-		name: 'Limb Removal',
-		content: limb_removal_content,
-		identifier: 'limb_removal',
-	}]
+	const tabs: Tab<ServiceProgrammaticName>[] = [
+		{
+			name: 'Tree Trimming',
+			content: tree_trimming_content,
+			identifier: 'tree_trimming',
+		},
+		{
+			name: 'Limb Removal',
+			content: limb_removal_content,
+			identifier: 'limb_removal',
+		},
+	]
 
 	let current_tab_identifier = $state<Extract<ServiceProgrammaticName, 'tree_trimming' | 'limb_removal'>>(
 		get(
 			'tree_trimming_and_limb_removal_current_tab_identifier',
 			one_of(exact('tree_trimming' as const), exact('limb_removal' as const)),
-			'tree_trimming'
-		)
+			'tree_trimming',
+		),
 	)
 
 	let pricing_args = $state<{
@@ -41,21 +44,19 @@
 		tree_trimming: tree_trimming_default_data,
 	})
 
-	const on_submit = (contact: ContactFormData<string>, turnstile_token: string | null) => send_estimate_email({
-		service_name: current_tab_identifier,
-		pricing_args: pricing_args[current_tab_identifier],
-		contact,
-		turnstile_token,
-	})
+	const on_submit = (contact: ContactFormData<string>, turnstile_token: string | null) =>
+		send_estimate_email({
+			service_name: current_tab_identifier,
+			pricing_args: pricing_args[current_tab_identifier],
+			contact,
+			turnstile_token,
+		})
 
 	$effect(() => set('all_services_current_tab_identifier', current_tab_identifier))
 </script>
 
 <PricingWrapper>
-	<Tabs
-		bind:current_tab_identifier
-		tabs={tabs}
-	/>
+	<Tabs bind:current_tab_identifier {tabs} />
 	<ContactForm submit={on_submit} />
 </PricingWrapper>
 

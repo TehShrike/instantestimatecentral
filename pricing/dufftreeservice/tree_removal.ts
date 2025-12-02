@@ -4,13 +4,7 @@ import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_val
 
 export const service_name = 'Tree Removal'
 
-type TreeDiameter =
-	| '6-10 inches'
-	| '11-15 inches'
-	| '16-20 inches'
-	| '21-25 inches'
-	| '26-32 inches'
-	| '33-40 inches'
+type TreeDiameter = '6-10 inches' | '11-15 inches' | '16-20 inches' | '21-25 inches' | '26-32 inches' | '33-40 inches'
 
 type BranchesOverSomething =
 	| 'nothing underneath'
@@ -39,14 +33,9 @@ export const pricing = ({
 			? fnum('0')
 			: subtotal.times(cost_increase_ratio_for_branches_over_something({ branches_over_something }))
 
-	const fence_increase =
-		fence === 'no'
-			? fnum('0')
-			: subtotal.times(cost_increase_ratio_for_fence({ fence }))
+	const fence_increase = fence === 'no' ? fnum('0') : subtotal.times(cost_increase_ratio_for_fence({ fence }))
 
-	const not_adjacent_to_street_increase = adjacent_to_street_or_alley
-		? fnum('0')
-		: subtotal.times(fnum('0.3'))
+	const not_adjacent_to_street_increase = adjacent_to_street_or_alley ? fnum('0') : subtotal.times(fnum('0.3'))
 
 	const total = subtotal
 		.plus(branches_over_something_increase)
@@ -56,11 +45,7 @@ export const pricing = ({
 	return round_estimate_price(total)
 }
 
-const base_price_by_diameter = ({
-	tree_diameter,
-}: {
-	tree_diameter: TreeDiameter
-}) => {
+const base_price_by_diameter = ({ tree_diameter }: { tree_diameter: TreeDiameter }) => {
 	if (tree_diameter === '6-10 inches') return fnum('600')
 	if (tree_diameter === '11-15 inches') return fnum('900')
 	if (tree_diameter === '16-20 inches') return fnum('1200')
@@ -85,11 +70,7 @@ const cost_increase_ratio_for_branches_over_something = ({
 	throw new Error(`Unexpected branches_over_something value: ${branches_over_something}`)
 }
 
-const cost_increase_ratio_for_fence = ({
-	fence,
-}: {
-	fence: Fence
-}) => {
+const cost_increase_ratio_for_fence = ({ fence }: { fence: Fence }) => {
 	if (fence === 'no') return fnum('0')
 	if (fence === 'single gate') return fnum('0.25')
 	if (fence === 'double gate') return fnum('0.1')

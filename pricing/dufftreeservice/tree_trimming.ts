@@ -5,12 +5,7 @@ import type { FinancialNumber } from 'financial-number'
 
 export const service_name = 'Tree Trimming'
 
-type TreeDiameter = '6-10 inches'
-	| '11-15 inches'
-	| '16-20 inches'
-	| '21-25 inches'
-	| '26-32 inches'
-	| '33-40 inches'
+type TreeDiameter = '6-10 inches' | '11-15 inches' | '16-20 inches' | '21-25 inches' | '26-32 inches' | '33-40 inches'
 
 type TrimType = 'just the necessities' | 'normal' | 'premium'
 
@@ -33,20 +28,13 @@ export const pricing = ({
 }: TreeTrimmingPricingArguments): FinancialNumber => {
 	const subtotal = get_base_price({ tree_diameter, trim_type })
 
-	const raise_canopy_increase = raise_canopy
-		? fnum('75')
-		: fnum('0')
+	const raise_canopy_increase = raise_canopy ? fnum('75') : fnum('0')
 
-	const pruned_by_arborist_discount = pruned_by_arborist_recently
-		? subtotal.times(fnum('-0.10'))
-		: fnum('0')
+	const pruned_by_arborist_discount = pruned_by_arborist_recently ? subtotal.times(fnum('-0.10')) : fnum('0')
 
 	const variety_adjustment = get_variety_adjustment({ tree_variety, subtotal })
 
-	const total = subtotal
-		.plus(raise_canopy_increase)
-		.plus(pruned_by_arborist_discount)
-		.plus(variety_adjustment)
+	const total = subtotal.plus(raise_canopy_increase).plus(pruned_by_arborist_discount).plus(variety_adjustment)
 
 	return round_estimate_price(total)
 }
@@ -54,33 +42,33 @@ export const pricing = ({
 const price_matrix: Record<TreeDiameter, Record<TrimType, string>> = {
 	'6-10 inches': {
 		'just the necessities': '300',
-		'normal': '500',
-		'premium': '700',
+		normal: '500',
+		premium: '700',
 	},
 	'11-15 inches': {
 		'just the necessities': '500',
-		'normal': '800',
-		'premium': '1050',
+		normal: '800',
+		premium: '1050',
 	},
 	'16-20 inches': {
 		'just the necessities': '600',
-		'normal': '900',
-		'premium': '1200',
+		normal: '900',
+		premium: '1200',
 	},
 	'21-25 inches': {
 		'just the necessities': '700',
-		'normal': '1150',
-		'premium': '1500',
+		normal: '1150',
+		premium: '1500',
 	},
 	'26-32 inches': {
 		'just the necessities': '800',
-		'normal': '1300',
-		'premium': '2000',
+		normal: '1300',
+		premium: '2000',
 	},
 	'33-40 inches': {
 		'just the necessities': '900',
-		'normal': '1500',
-		'premium': '2450',
+		normal: '1500',
+		premium: '2450',
 	},
 }
 

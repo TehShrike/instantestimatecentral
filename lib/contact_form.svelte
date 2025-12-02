@@ -30,7 +30,9 @@
 		street_address: is_string,
 	})
 
-	const additional_values_validator = object(Object.fromEntries(additional_fields.map(field => [field.field_name, is_string]))) as Validator<Record<FieldName, string>>
+	const additional_values_validator = object(
+		Object.fromEntries(additional_fields.map((field) => [field.field_name, is_string])),
+	) as Validator<Record<FieldName, string>>
 
 	const default_common_data: Pick<ContactForm<FieldName>, 'name' | 'email' | 'phone' | 'street_address'> = {
 		name: '',
@@ -40,15 +42,18 @@
 	}
 
 	const default_additional_values = Object.fromEntries(
-		additional_fields.map(field => [field.field_name, ''])
+		additional_fields.map((field) => [field.field_name, '']),
 	) as Record<FieldName, string>
 
-	const additional_fields_key = 'contact_form_additional_' + additional_fields.map(f => f.field_name).sort().join('_')
+	const additional_fields_key =
+		'contact_form_additional_' +
+		additional_fields
+			.map((f) => f.field_name)
+			.sort()
+			.join('_')
 
 	let common_data = $state(get('contact_form_data', common_data_validator, default_common_data))
-	let additional_values = $state(
-		get(additional_fields_key, additional_values_validator, default_additional_values)
-	)
+	let additional_values = $state(get(additional_fields_key, additional_values_validator, default_additional_values))
 
 	let submission_promise = $state<Promise<void> | null>(null)
 	let turnstile_token = $state<string | null>(null)
@@ -59,10 +64,13 @@
 	const handle_submit = (event: Event) => {
 		event.preventDefault()
 
-		submission_promise = submit({
-			...common_data,
-			extra: additional_values,
-		}, turnstile_token)
+		submission_promise = submit(
+			{
+				...common_data,
+				extra: additional_values,
+			},
+			turnstile_token,
+		)
 	}
 
 	const TURNSTILE_DISABLED_FOR_NOW = true
@@ -70,9 +78,7 @@
 </script>
 
 <form onsubmit={handle_submit}>
-	<p>
-		Want us to come out and give you a free quote?
-	</p>
+	<p>Want us to come out and give you a free quote?</p>
 
 	<div class="inputs-grid">
 		<div class="form-group">
@@ -104,7 +110,8 @@
 	</div>
 
 	<p class="message">
-		Our office lady will give you a call in the next 1-2 business hours to schedule the visit.  An estimator will come out in the next business day or two.
+		Our office lady will give you a call in the next 1-2 business hours to schedule the visit. An estimator will come
+		out in the next business day or two.
 	</p>
 
 	{#if !__IS_DEV__ && !TURNSTILE_DISABLED_FOR_NOW}

@@ -2,12 +2,7 @@
 	let { checked = $bindable(false), id }: { checked?: boolean; id?: string } = $props()
 </script>
 
-<input
-	type="checkbox"
-	class="toggle-input"
-	bind:checked
-	{id}
-/>
+<input type="checkbox" class="toggle-input" bind:checked {id} />
 <label for={id} class="toggle-display" data-checked={checked}>
 	{#if checked}
 		<span class="toggle-text-yes">Yes</span>
@@ -47,7 +42,7 @@
 		}
 	}
 
-	.toggle-display[data-checked="true"] {
+	.toggle-display[data-checked='true'] {
 		background-color: #0074ff;
 	}
 

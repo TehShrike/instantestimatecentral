@@ -7,11 +7,7 @@ export const service_name = 'Limb removal'
 
 const MINIMUM_PRICE = fnum('300')
 
-type LimbDiameter = '1-3 inches'
-	| '3-5 inches'
-	| '6-9 inches'
-	| '10-13 inches'
-	| '14+ inches'
+type LimbDiameter = '1-3 inches' | '3-5 inches' | '6-9 inches' | '10-13 inches' | '14+ inches'
 
 type DistanceFromGround = 'under 15 feet' | '15-20 feet' | 'higher than 20 feet'
 
@@ -62,11 +58,9 @@ const can_we_get_it_without_climbing = ({
 	distance_from_ground: DistanceFromGround
 	limb_diameter: LimbDiameter
 }) => {
-	if (distance_from_ground === 'under 15 feet')
-		return limb_diameter === '1-3 inches' || limb_diameter === '3-5 inches'
+	if (distance_from_ground === 'under 15 feet') return limb_diameter === '1-3 inches' || limb_diameter === '3-5 inches'
 
-	if (distance_from_ground === '15-20 feet')
-		return limb_diameter === '1-3 inches'
+	if (distance_from_ground === '15-20 feet') return limb_diameter === '1-3 inches'
 
 	return false
 }
@@ -78,54 +72,36 @@ const increase_price_based_just_on_size = ({
 	limb_diameter: LimbDiameter
 	need_to_climb: boolean
 }) => {
-	if (!need_to_climb && limb_diameter === '3-5 inches')
-		return fnum('150')
+	if (!need_to_climb && limb_diameter === '3-5 inches') return fnum('150')
 
 	if (need_to_climb) {
-		if (limb_diameter === '1-3 inches')
-			return fnum('150')
+		if (limb_diameter === '1-3 inches') return fnum('150')
 
-		if (limb_diameter === '3-5 inches')
-			return fnum('200')
+		if (limb_diameter === '3-5 inches') return fnum('200')
 
-		if (limb_diameter === '6-9 inches')
-			return fnum('500')
+		if (limb_diameter === '6-9 inches') return fnum('500')
 	}
 
-	if (limb_diameter === '10-13 inches')
-		return fnum('600')
+	if (limb_diameter === '10-13 inches') return fnum('600')
 
-	if (limb_diameter === '14+ inches')
-		return fnum('1100')
+	if (limb_diameter === '14+ inches') return fnum('1100')
 
 	return fnum('0')
 }
 
-const cost_increase_ratio_for_broken_branches = ({
-	limb_diameter,
-}: {
-	limb_diameter: LimbDiameter
-}) => {
-	if (limb_diameter === '3-5 inches')
-		return fnum('0.15')
+const cost_increase_ratio_for_broken_branches = ({ limb_diameter }: { limb_diameter: LimbDiameter }) => {
+	if (limb_diameter === '3-5 inches') return fnum('0.15')
 
-	if (limb_diameter === '6-9 inches')
-		return fnum('0.25')
+	if (limb_diameter === '6-9 inches') return fnum('0.25')
 
-	if (limb_diameter === '10-13 inches')
-		return fnum('0.3')
+	if (limb_diameter === '10-13 inches') return fnum('0.3')
 
-	if (limb_diameter === '14+ inches')
-		return fnum('0.4')
+	if (limb_diameter === '14+ inches') return fnum('0.4')
 
 	return fnum('0')
 }
 
-const cost_increase_ratio_if_its_over_something = ({
-	limb_diameter,
-}: {
-	limb_diameter: LimbDiameter
-}) => {
+const cost_increase_ratio_if_its_over_something = ({ limb_diameter }: { limb_diameter: LimbDiameter }) => {
 	if (limb_diameter === '3-5 inches') {
 		return fnum('0.1')
 	}
@@ -141,11 +117,7 @@ const cost_increase_ratio_if_its_over_something = ({
 	return fnum('0')
 }
 
-const cost_increase_ratio_if_its_not_easy_to_haul_out = ({
-	limb_diameter,
-}: {
-	limb_diameter: LimbDiameter
-}) => {
+const cost_increase_ratio_if_its_not_easy_to_haul_out = ({ limb_diameter }: { limb_diameter: LimbDiameter }) => {
 	if (limb_diameter === '6-9 inches') {
 		return fnum('0.25')
 	}
@@ -160,14 +132,6 @@ const cost_increase_ratio_if_its_not_easy_to_haul_out = ({
 
 	return fnum('0')
 }
-
-
-
-
-
-
-
-
 
 const limb_diameter_validator: Validator<LimbRemovalPricingArguments['limb_diameter']> = one_of(
 	exact('1-3 inches' as const),
@@ -201,7 +165,6 @@ export const render_html = (args: LimbRemovalPricingArguments) => {
 		<p>Easy to haul out? <strong>${args.easy_to_haul_out ? 'Yes' : 'No'}</strong></p>
 	`
 }
-
 
 export default {
 	pricing,

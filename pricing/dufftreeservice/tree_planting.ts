@@ -11,16 +11,11 @@ export type TreePlantingPricingArguments = {
 	number_of_trees: number
 }
 
-export const pricing = ({
-	tree_size,
-	number_of_trees,
-}: TreePlantingPricingArguments): FinancialNumber => {
+export const pricing = ({ tree_size, number_of_trees }: TreePlantingPricingArguments): FinancialNumber => {
 	const base_price_per_tree = get_base_price_per_tree(tree_size)
 	const discount_ratio = get_discount_ratio(number_of_trees)
 
-	const total = base_price_per_tree
-		.times(fnum(number_of_trees.toString()))
-		.times(fnum('1').minus(discount_ratio))
+	const total = base_price_per_tree.times(fnum(number_of_trees.toString())).times(fnum('1').minus(discount_ratio))
 
 	return total
 }

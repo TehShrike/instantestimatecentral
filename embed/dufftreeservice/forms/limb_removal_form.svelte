@@ -16,7 +16,9 @@
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 
-	let { pricing_args = $bindable(get('limb_removal_data', validator, default_data)) }: { pricing_args?: LimbRemovalPricingArguments | undefined } = $props()
+	let {
+		pricing_args = $bindable(get('limb_removal_data', validator, default_data)),
+	}: { pricing_args?: LimbRemovalPricingArguments | undefined } = $props()
 
 	const calculated_price = $derived(pricing(pricing_args))
 
@@ -63,7 +65,9 @@
 {/snippet}
 
 {#snippet branches_over_something()}
-	<label class="left" for="branches_over_something">Is it over anything that can't handle a branch landing on it?</label>
+	<label class="left" for="branches_over_something">
+		Is it over anything that can't handle a branch landing on it?
+	</label>
 	<BooleanToggle bind:checked={pricing_args.branches_over_something} id="branches_over_something" />
 {/snippet}
 

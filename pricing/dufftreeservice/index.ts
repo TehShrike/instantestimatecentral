@@ -34,7 +34,7 @@ const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = 
 	recipient_email_address: ['andrew@dufftreeservice.com', 'josh@instantestimatecentral.com'],
 	contact_validator: contact_validator,
 	render_subject: (service, estimate) => `🌲💰${estimate.toString(0)}$🌳 ${service.service_name} estimate request`,
-	render_html: ({service, contact, price, estimate_arguments}) => `
+	render_html: ({ service, contact, price, estimate_arguments }) => `
 	<h2>New Estimate Request</h2>
 	<p><strong>Service:</strong> ${service.service_name}</p>
 	<p><strong>Estimated Price:</strong> $${price.toString(0)}</p>
@@ -44,11 +44,13 @@ const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = 
 	<p><strong>Email:</strong> ${contact.email}</p>
 	<p><strong>Phone:</strong> ${contact.phone}</p>
 	<p><strong>Address:</strong> ${contact.street_address}</p>
-	${
-		Object.entries(contact.extra).map(([key, value]) => `
+	${Object.entries(contact.extra)
+		.map(
+			([key, value]) => `
 			<p><strong>${key}:</strong> ${value}</p>
-		`).join('')
-	}
+		`,
+		)
+		.join('')}
 	<br>
 	<hr>
 	<br>

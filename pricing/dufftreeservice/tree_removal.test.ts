@@ -5,8 +5,19 @@ import { pricing, type TreeRemovalPricingArguments } from './tree_removal.ts'
 import { for_each } from '#lib/array.ts'
 
 const generate_all_cases = (): TreeRemovalPricingArguments[] => {
-	const tree_diameter_values = ['6-10 inches', '11-15 inches', '16-20 inches', '21-25 inches', '26-32 inches', '33-40 inches'] as const
-	const branches_over_something_values = ['nothing underneath', 'some branches over something', 'all big branches are over something'] as const
+	const tree_diameter_values = [
+		'6-10 inches',
+		'11-15 inches',
+		'16-20 inches',
+		'21-25 inches',
+		'26-32 inches',
+		'33-40 inches',
+	] as const
+	const branches_over_something_values = [
+		'nothing underneath',
+		'some branches over something',
+		'all big branches are over something',
+	] as const
 	const fence_values = ['no', 'single gate', 'double gate'] as const
 	const adjacent_to_street_or_alley_values = [true, false]
 

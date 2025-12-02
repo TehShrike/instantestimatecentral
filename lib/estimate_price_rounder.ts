@@ -13,4 +13,5 @@ export const round_to_nearest_50 = (value: FinancialNumber): FinancialNumber => 
 	return value.times(number('0.02')).changePrecision(0).times(number('50'))
 }
 
-export default (price: FinancialNumber): FinancialNumber => price.lt('1000') ? round_to_nearest_10(price) : round_to_nearest_50(price)
+export default (price: FinancialNumber): FinancialNumber =>
+	price.lt('1000') ? round_to_nearest_10(price) : round_to_nearest_50(price)

@@ -10,14 +10,15 @@ const send_estimate_email = <Service extends ServiceProgrammaticName, FieldName 
 	turnstile_token,
 }: {
 	service_name: Service
-	pricing_args: EstimateArguments<typeof services[Service]>
+	pricing_args: EstimateArguments<(typeof services)[Service]>
 	contact: ContactForm<FieldName>
 	turnstile_token: string | null
-}) => post('/send_estimate_email', {
-	service: service_name,
-	args: pricing_args,
-	contact,
-	turnstile_token,
-})
+}) =>
+	post('/send_estimate_email', {
+		service: service_name,
+		args: pricing_args,
+		contact,
+		turnstile_token,
+	})
 
 export default send_estimate_email

@@ -24,7 +24,7 @@ test('round_to_nearest_5 with numbers 10 to 20', () => {
 		assert.strictEqual(
 			result.toString(),
 			expected,
-			`round_to_nearest_5(${input}) should equal ${expected}, got ${result.toString()}`
+			`round_to_nearest_5(${input}) should equal ${expected}, got ${result.toString()}`,
 		)
 	})
 })
@@ -59,7 +59,7 @@ test('round_to_nearest_10 with numbers 100 to 120', () => {
 		assert.strictEqual(
 			result.toString(),
 			expected,
-			`round_to_nearest_10(${input}) should equal ${expected}, got ${result.toString()}`
+			`round_to_nearest_10(${input}) should equal ${expected}, got ${result.toString()}`,
 		)
 	})
 })
@@ -154,7 +154,7 @@ test('round_to_nearest_50 with numbers 100 to 180', () => {
 		assert.strictEqual(
 			result.toString(),
 			expected,
-			`round_to_nearest_50(${input}) should equal ${expected}, got ${result.toString()}`
+			`round_to_nearest_50(${input}) should equal ${expected}, got ${result.toString()}`,
 		)
 	})
 })

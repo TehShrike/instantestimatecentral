@@ -44,7 +44,10 @@ test(`dufftreeservice tree planting pricing: ${cases.length} cases`, () => {
 		}
 
 		assert.ok(price.gte('100'), `Price should be at least $100, got ${price.toString()} for ${JSON.stringify(arg)}`)
-		assert.ok(price.lt('10000'), `Price should be less than $10,000, got ${price.toString()} for ${JSON.stringify(arg)}`)
+		assert.ok(
+			price.lt('10000'),
+			`Price should be less than $10,000, got ${price.toString()} for ${JSON.stringify(arg)}`,
+		)
 	})
 
 	console.log('Highest:', highest_price.toString(2), highest_price_args)

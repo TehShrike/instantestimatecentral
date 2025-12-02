@@ -37,7 +37,7 @@
 		color: inherit;
 	}
 
-	input[type="radio"] {
+	input[type='radio'] {
 		cursor: pointer;
 	}
 </style>

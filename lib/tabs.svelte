@@ -17,7 +17,7 @@
 		current_tab_identifier?: Identifier
 	} = $props()
 
-	const selected_tab_index = $derived(tabs.findIndex(tab => tab.identifier === current_tab_identifier))
+	const selected_tab_index = $derived(tabs.findIndex((tab) => tab.identifier === current_tab_identifier))
 
 	const selected_tab = $derived(tabs[selected_tab_index])
 
@@ -32,7 +32,7 @@
 			<button
 				class="tab-button"
 				data-selected={selected_tab_index === index}
-				onclick={() => current_tab_identifier = tab.identifier}
+				onclick={() => (current_tab_identifier = tab.identifier)}
 			>
 				{tab.name}
 			</button>
@@ -59,7 +59,7 @@
 		gap: 0.25rem;
 		width: 100%;
 
-		&[data-need-to-wrap="true"] {
+		&[data-need-to-wrap='true'] {
 			flex-wrap: wrap;
 		}
 	}
@@ -84,7 +84,7 @@
 			background: #dfe6e9;
 		}
 
-		&[data-selected="true"] {
+		&[data-selected='true'] {
 			background: white;
 			color: #2c3e50;
 			border: 2px solid black;

@@ -10,12 +10,13 @@
 
 	let pricing_args = $state<TreePlantingPricingArguments>(default_data)
 
-	const on_submit = (contact: ContactFormData, turnstile_token: string | null) => send_estimate_email({
-		service_name: 'tree_planting',
-		pricing_args,
-		contact,
-		turnstile_token,
-	})
+	const on_submit = (contact: ContactFormData, turnstile_token: string | null) =>
+		send_estimate_email({
+			service_name: 'tree_planting',
+			pricing_args,
+			contact,
+			turnstile_token,
+		})
 </script>
 
 <PricingWrapper>

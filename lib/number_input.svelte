@@ -12,14 +12,7 @@
 	} = $props()
 </script>
 
-<input
-	type="number"
-	class="number-input"
-	bind:value
-	{id}
-	{min}
-	{max}
-/>
+<input type="number" class="number-input" bind:value {id} {min} {max} />
 
 <style>
 	.number-input {

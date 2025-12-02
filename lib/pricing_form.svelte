@@ -38,7 +38,7 @@
 		gap: 1rem;
 		align-items: start;
 
-		&[data-type="button_radio"] {
+		&[data-type='button_radio'] {
 			grid-template-columns: 1fr;
 		}
 
@@ -58,7 +58,7 @@
 		}
 
 		@media (max-width: 500px) {
-			&[data-type="radio"] {
+			&[data-type='radio'] {
 				grid-template-columns: 1fr;
 				justify-items: center;
 
@@ -67,11 +67,10 @@
 				}
 			}
 
-			&[data-type="toggle"],
-			&[data-type="number"] {
+			&[data-type='toggle'],
+			&[data-type='number'] {
 				grid-template-columns: 1fr 100px;
 			}
-
 		}
 	}
 </style>

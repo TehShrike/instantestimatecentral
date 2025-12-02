@@ -17,7 +17,7 @@ const validate_turnstile = async (token: string, secret_key: string): Promise<{ 
 		body: form_data,
 	})
 
-	const outcome = await result.json() as { success: boolean; 'error-codes'?: string[] }
+	const outcome = (await result.json()) as { success: boolean; 'error-codes'?: string[] }
 
 	if (!outcome.success) {
 		return { success: false, error: outcome['error-codes']?.join(', ') || 'Unknown error' }
@@ -26,8 +26,11 @@ const validate_turnstile = async (token: string, secret_key: string): Promise<{ 
 	return { success: true }
 }
 
-const handle_request = async (request: Request, env: Env): Promise<Result<Response, Response | { message: string, stack?: string | null }, Response>> => {
-	const initial_context = {request, env, url: new URL(request.url)}
+const handle_request = async (
+	request: Request,
+	env: Env,
+): Promise<Result<Response, Response | { message: string; stack?: string | null }, Response>> => {
+	const initial_context = { request, env, url: new URL(request.url) }
 
 	console.log('Handling request, method:', request.method, 'url:', request.url)
 
@@ -49,94 +52,125 @@ const handle_request = async (request: Request, env: Env): Promise<Result<Respon
 
 			const company = domain_to_company_map[domain]
 
-			return Result.success({...context, company })
+			return Result.success({ ...context, company })
 		},
-		context => {
+		(context) => {
 			if (context.request.method === 'OPTIONS') {
 				return Result.interrupt(response({ status: 204 }))
 			}
 
 			return Result.success(context)
 		},
-		async context => {
+		async (context) => {
 			try {
 				const body = await request.json()
 
-				return Result.success({...context, body})
+				return Result.success({ ...context, body })
 			} catch (e) {
 				return Result.failure(error_response({ message: 'Invalid JSON' }))
 			}
 		},
-		context => {
-			return route({
-				'/send_estimate_email': {
-					'POST': async ({body, company, ...context}) => {
-						if (!body_validator.is_valid(body)) {
-							return Result.failure(error_response({ message: body_validator.get_messages(body, 'body').join(', ') }))
-						}
-						const {service: service_name, args: pricing_args, contact, turnstile_token} = body
-
-						try {
-							const TURNSTILE_DISABLED_FOR_NOW = true
-							if (context.env.ENVIRONMENT !== 'local' && !TURNSTILE_DISABLED_FOR_NOW) {
-								console.log('Validating turnstile token:', turnstile_token)
-								// If turnstile_token is null, still validate with CF – if CF is down, it's acceptable to not have a valid token
-								const turnstile_result = await validate_turnstile(turnstile_token || 'none', context.env.CF_TURNSTILE_SECRET_KEY)
-								if (!turnstile_result.success) {
-									return Result.failure(error_response({ message: 'Security verification failed: ' + (turnstile_result.error || 'Unknown error') + '\nPlease make sure the captcha was successfully completed.' }))
-								}
+		(context) => {
+			return route(
+				{
+					'/send_estimate_email': {
+						POST: async ({ body, company, ...context }) => {
+							if (!body_validator.is_valid(body)) {
+								return Result.failure(error_response({ message: body_validator.get_messages(body, 'body').join(', ') }))
 							}
-						} catch (error) {
-							console.error('Error validating turnstile:', error instanceof Error ? error.message : String(error))
-							// Don't fail out – if the request to turnstile fails, we'll give the user the benefit of the doubt
-							// TODO: report error to Sentry?
-						}
+							const { service: service_name, args: pricing_args, contact, turnstile_token } = body
 
-						if (!company.service_name_validator.is_valid(service_name)) {
-							return Result.failure(error_response({ message: 'Invalid service name: ' + company.service_name_validator.get_messages(service_name, 'body.service').join(', ') }))
-						}
+							try {
+								const TURNSTILE_DISABLED_FOR_NOW = true
+								if (context.env.ENVIRONMENT !== 'local' && !TURNSTILE_DISABLED_FOR_NOW) {
+									console.log('Validating turnstile token:', turnstile_token)
+									// If turnstile_token is null, still validate with CF – if CF is down, it's acceptable to not have a valid token
+									const turnstile_result = await validate_turnstile(
+										turnstile_token || 'none',
+										context.env.CF_TURNSTILE_SECRET_KEY,
+									)
+									if (!turnstile_result.success) {
+										return Result.failure(
+											error_response({
+												message:
+													'Security verification failed: ' +
+													(turnstile_result.error || 'Unknown error') +
+													'\nPlease make sure the captcha was successfully completed.',
+											}),
+										)
+									}
+								}
+							} catch (error) {
+								console.error('Error validating turnstile:', error instanceof Error ? error.message : String(error))
+								// Don't fail out – if the request to turnstile fails, we'll give the user the benefit of the doubt
+								// TODO: report error to Sentry?
+							}
 
-						const service = company.services[service_name as keyof typeof company.services]
+							if (!company.service_name_validator.is_valid(service_name)) {
+								return Result.failure(
+									error_response({
+										message:
+											'Invalid service name: ' +
+											company.service_name_validator.get_messages(service_name, 'body.service').join(', '),
+									}),
+								)
+							}
 
-						if (!service.validator.is_valid(pricing_args)) {
-							return Result.failure(error_response({ message: 'Invalid pricing function arguments: ' + service.validator.get_messages(body.args, 'body.args').join(', ') }))
-						}
+							const service = company.services[service_name as keyof typeof company.services]
 
-						if (!company.contact_validator.is_valid(contact)) {
-							return Result.failure(error_response({ message: 'Invalid contact: ' + company.contact_validator.get_messages(contact, 'body.contact').join(', ') }))
-						}
+							if (!service.validator.is_valid(pricing_args)) {
+								return Result.failure(
+									error_response({
+										message:
+											'Invalid pricing function arguments: ' +
+											service.validator.get_messages(body.args, 'body.args').join(', '),
+									}),
+								)
+							}
 
-						const price = service.pricing(pricing_args as any)
+							if (!company.contact_validator.is_valid(contact)) {
+								return Result.failure(
+									error_response({
+										message:
+											'Invalid contact: ' + company.contact_validator.get_messages(contact, 'body.contact').join(', '),
+									}),
+								)
+							}
 
-						const subject = company.render_subject(service, price)
-						const html = company.render_html({
-							service: service,
-							contact: contact as any,
-							price: price,
-							estimate_arguments: pricing_args as any
-						})
+							const price = service.pricing(pricing_args as any)
 
+							const subject = company.render_subject(service, price)
+							const html = company.render_html({
+								service: service,
+								contact: contact as any,
+								price: price,
+								estimate_arguments: pricing_args as any,
+							})
 
-						const to = context.env.ENVIRONMENT === 'local'
-							? 'josh@instantestimatecentral.com'
-							: contact.email.toLowerCase() === 'me+iectest@joshduff.com'
-								? 'josh@instantestimatecentral.com'
-								: company.recipient_email_address
+							const to =
+								context.env.ENVIRONMENT === 'local'
+									? 'josh@instantestimatecentral.com'
+									: contact.email.toLowerCase() === 'me+iectest@joshduff.com'
+										? 'josh@instantestimatecentral.com'
+										: company.recipient_email_address
 
-						await send_email({
-							api_key: context.env.RESEND_API_KEY,
-							from: 'Instant Estimate Central <estimate@estimate.instantestimatecentral.com>',
-							reply_to: `Josh <josh@instantestimatecentral.com>`,
-							to,
-							subject,
-							html,
-						})
+							await send_email({
+								api_key: context.env.RESEND_API_KEY,
+								from: 'Instant Estimate Central <estimate@estimate.instantestimatecentral.com>',
+								reply_to: `Josh <josh@instantestimatecentral.com>`,
+								to,
+								subject,
+								html,
+							})
 
-						return Result.success(json_response({ body: { success: true }, status: 200 }))
-
-					}
-				}
-			}, context.url.pathname, context.request.method, context)
+							return Result.success(json_response({ body: { success: true }, status: 200 }))
+						},
+					},
+				},
+				context.url.pathname,
+				context.request.method,
+				context,
+			)
 		},
 	)
 }

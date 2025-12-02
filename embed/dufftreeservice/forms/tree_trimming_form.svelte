@@ -17,7 +17,9 @@
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 
-	let { pricing_args = $bindable(get('tree_trimming_data', validator, default_data)) }: { pricing_args?: TreeTrimmingPricingArguments | undefined } = $props()
+	let {
+		pricing_args = $bindable(get('tree_trimming_data', validator, default_data)),
+	}: { pricing_args?: TreeTrimmingPricingArguments | undefined } = $props()
 
 	const calculated_price = $derived(pricing(pricing_args))
 
@@ -92,10 +94,7 @@
 {/snippet}
 
 {#snippet trim_type()}
-	<ButtonRadioGroup
-		options={trim_type_options}
-		bind:value={pricing_args.trim_type}
-	/>
+	<ButtonRadioGroup options={trim_type_options} bind:value={pricing_args.trim_type} />
 {/snippet}
 
 <PricingForm {row_types}>

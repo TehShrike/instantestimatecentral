@@ -14,7 +14,7 @@
 			class="radio-button"
 			data-active={value === option.value}
 			aria-checked={value === option.value}
-			onclick={() => value = option.value}
+			onclick={() => (value = option.value)}
 		>
 			<div class="button-content">
 				<strong>
@@ -74,7 +74,7 @@
 			outline-offset: 2px;
 		}
 
-		&[data-active="true"] {
+		&[data-active='true'] {
 			background-color: #0074ff;
 
 			strong,

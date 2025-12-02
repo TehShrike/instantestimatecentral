@@ -4,10 +4,11 @@ type FutchOptions = RequestInit & { body?: any }
 
 const build_init = (options: FutchOptions) => {
 	const has_body = 'body' in options && options.body !== undefined
-	const headers = has_body ? {
-			'content-type': JSON_CONTENT_TYPE,
-			...options.headers,
-		}
+	const headers = has_body
+		? {
+				'content-type': JSON_CONTENT_TYPE,
+				...options.headers,
+			}
 		: options.headers || {}
 
 	const init = {
@@ -25,7 +26,7 @@ const build_init = (options: FutchOptions) => {
 	return init
 }
 
-export const futch = async(url: string, options: FutchOptions = {}) => {
+export const futch = async (url: string, options: FutchOptions = {}) => {
 	const init = build_init(options)
 	const response = await fetch(url, init)
 

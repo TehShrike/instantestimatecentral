@@ -10,5 +10,5 @@ export const greatest_of = (...numbers: readonly [FinancialNumber, ...FinancialN
 	assert(numbers.length > 0, 'At least one number is required')
 	if (numbers.length === 1) return numbers[0]
 
-	return numbers.reduce((greatest, current) => greatest.gt(current) ? greatest : current)
+	return numbers.reduce((greatest, current) => (greatest.gt(current) ? greatest : current))
 }

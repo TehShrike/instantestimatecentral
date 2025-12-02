@@ -6,7 +6,5 @@ export interface Env {
 }
 
 export const determine_embed_origin = (environment: Env['ENVIRONMENT']): string => {
-	return environment === 'local'
-		? 'https://embed.local.com:1337'
-		: 'https://embed.instantestimatecentral.com'
+	return environment === 'local' ? 'https://embed.local.com:1337' : 'https://embed.instantestimatecentral.com'
 }

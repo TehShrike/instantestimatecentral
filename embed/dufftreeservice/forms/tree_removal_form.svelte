@@ -15,7 +15,9 @@
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 
-	let { pricing_args = $bindable(get('tree_removal_data', validator, default_data)) }: { pricing_args?: TreeRemovalPricingArguments | undefined } = $props()
+	let {
+		pricing_args = $bindable(get('tree_removal_data', validator, default_data)),
+	}: { pricing_args?: TreeRemovalPricingArguments | undefined } = $props()
 
 	const calculated_price = $derived(pricing(pricing_args))
 

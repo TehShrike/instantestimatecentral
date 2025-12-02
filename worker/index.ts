@@ -48,5 +48,5 @@ export default {
 		console.log('🍏 redirecting to ASSETS binding', prepend_path(request, '/www').url)
 
 		return env.ASSETS.fetch(prepend_path(request, '/www'))
-	}
+	},
 }

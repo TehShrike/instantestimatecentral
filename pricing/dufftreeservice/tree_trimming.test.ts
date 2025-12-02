@@ -5,7 +5,14 @@ import { pricing, type TreeTrimmingPricingArguments } from './tree_trimming.ts'
 import { for_each } from '#lib/array.ts'
 
 const generate_all_cases = (): TreeTrimmingPricingArguments[] => {
-	const tree_diameter_values = ['6-10 inches', '11-15 inches', '16-20 inches', '21-25 inches', '26-32 inches', '33-40 inches'] as const
+	const tree_diameter_values = [
+		'6-10 inches',
+		'11-15 inches',
+		'16-20 inches',
+		'21-25 inches',
+		'26-32 inches',
+		'33-40 inches',
+	] as const
 	const pruned_by_arborist_recently_values = [true, false]
 	const raise_canopy_values = [true, false]
 	const tree_variety_values = ['oak', 'sycamore', 'locust', 'other'] as const
