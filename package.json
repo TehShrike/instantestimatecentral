@@ -57,6 +57,6 @@
 		"wrangler": "^4.48.0"
 	},
 	"dependencies": {
-		"financial-number": "^4.0.4"
+		"financial-number": "^5.0.0"
 	}
 }

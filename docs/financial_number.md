@@ -56,26 +56,26 @@ They return true or false.
 
 ### Other utility methods
 
-#### `numberValue.changePrecision(newPrecision, [roundingStrategy])`
+#### `numberValue.changeDecimalPlaces(decimalPlaces, [roundingStrategy])`
 
-Takes a new precision, and an optional rounding strategy. Returns a new number object.
+Takes a new decimal places value, and an optional rounding strategy. Returns a new number object.
 
 ```js
-number('14.556').changePrecision(2, number.trim).toString() // => '14.55'
+number('14.556').changeDecimalPlaces(2, number.trim).toString() // => '14.55'
 ```
 
-#### `numberValue.toString([displayPrecision, [roundingStrategy]])`
+#### `numberValue.toString([decimalPlaces, [roundingStrategy]])`
 
-Returns a string representation of the number for display or storage. You can specify the precision and rounding strategy to be passed to `changePrecision` if you like - by default, the number will display at its current precision.
+Returns a string representation of the number for display or storage. You can specify the decimal places and rounding strategy to be passed to `changeDecimalPlaces` if you like - by default, the number will display at its current decimal places.
 
 ```js
 number('99.99').toString() // => '99.99'
 ```
 
-#### `numberValue.getPrecision()`
+#### `numberValue.getDecimalPlaces()`
 
 ```js
-number('99.99').getPrecision() // => 2
+number('99.99').getDecimalPlaces() // => 2n
 ```
 
 #### `numberValue.isNegative()`

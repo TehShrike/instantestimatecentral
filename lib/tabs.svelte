@@ -9,6 +9,7 @@
 <script lang="ts" generics="Identifier extends any">
 	import type { Snippet } from 'svelte'
 
+	// svelte-ignore state_referenced_locally
 	let {
 		tabs,
 		current_tab_identifier = $bindable(tabs[0]?.identifier),

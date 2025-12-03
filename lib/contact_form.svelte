@@ -30,6 +30,7 @@
 		street_address: is_string,
 	})
 
+	// svelte-ignore state_referenced_locally
 	const additional_values_validator = object(
 		Object.fromEntries(additional_fields.map((field) => [field.field_name, is_string])),
 	) as Validator<Record<FieldName, string>>
@@ -41,10 +42,12 @@
 		street_address: '',
 	}
 
+	// svelte-ignore state_referenced_locally
 	const default_additional_values = Object.fromEntries(
 		additional_fields.map((field) => [field.field_name, '']),
 	) as Record<FieldName, string>
 
+	// svelte-ignore state_referenced_locally
 	const additional_fields_key =
 		'contact_form_additional_' +
 		additional_fields
