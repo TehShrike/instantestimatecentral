@@ -37,6 +37,10 @@ Key languages: typescript/ts, javascript/js, python/py, c, cpp, rust, go, java, 
 
 Use ast-grep instead of grep/rg when you need structural code matching.
 
+# Tests
+
+See [docs/tests.md](docs/tests.md)
+
 # financial-number Library
 
 See [docs/financial_number.md](docs/financial_number.md)
