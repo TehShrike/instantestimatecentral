@@ -6,12 +6,11 @@
 	import ContactForm, { type AdditionalField } from '#lib/contact_form.svelte'
 	import type { ContactForm as ContactFormData } from '#lib/contact_form.d.ts'
 	import { get, set } from '#lib/localstorage.ts'
-	import LimbRemovalForm, { default_data as limb_removal_default_data } from './forms/limb_removal_form.svelte'
-	import TreeTrimmingForm, { default_data as tree_trimming_default_data } from './forms/tree_trimming_form.svelte'
+	import LimbRemovalForm from './forms/limb_removal_form.svelte'
+	import TreeTrimmingForm from './forms/tree_trimming_form.svelte'
 	import send_estimate_email from './send_estimate_email.ts'
-	import type { LimbRemovalPricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
-	import type { TreeTrimmingPricingArguments } from '#pricing/dufftreeservice/tree_trimming.ts'
-	import type { ServiceProgrammaticName } from '#pricing/dufftreeservice/index.ts'
+	import { get_limb_removal_initial_args, get_tree_trimming_initial_args } from './get_initial_args.ts'
+	import { services, type ServiceProgrammaticName } from '#pricing/dufftreeservice/index.ts'
 	import VerticalColumnWithGap from '#lib/vertical_column_with_gap.svelte'
 	import { one_of, exact } from '#lib/json_validator.ts'
 
@@ -36,12 +35,9 @@
 		),
 	)
 
-	let pricing_args = $state<{
-		limb_removal: LimbRemovalPricingArguments
-		tree_trimming: TreeTrimmingPricingArguments
-	}>({
-		limb_removal: limb_removal_default_data,
-		tree_trimming: tree_trimming_default_data,
+	let pricing_args = $state({
+		limb_removal: get_limb_removal_initial_args(),
+		tree_trimming: get_tree_trimming_initial_args(),
 	})
 
 	const on_submit = (contact: ContactFormData<string>, turnstile_token: string | null) =>
@@ -62,12 +58,12 @@
 
 {#snippet limb_removal_content()}
 	<VerticalColumnWithGap>
-		<LimbRemovalForm bind:pricing_args={pricing_args.limb_removal} />
+		<LimbRemovalForm pricing={services.limb_removal.pricing} bind:pricing_args={pricing_args.limb_removal} />
 	</VerticalColumnWithGap>
 {/snippet}
 
 {#snippet tree_trimming_content()}
 	<VerticalColumnWithGap>
-		<TreeTrimmingForm bind:pricing_args={pricing_args.tree_trimming} />
+		<TreeTrimmingForm pricing={services.tree_trimming.pricing} bind:pricing_args={pricing_args.tree_trimming} />
 	</VerticalColumnWithGap>
 {/snippet}

@@ -1,23 +1,23 @@
 <script lang="ts" module>
 	export const additional_contact_form_fields = [{ label: 'What variety?', field_name: 'tree_variety' }]
-
-	export const default_data: TreePlantingPricingArguments = {
-		tree_size: '3 gallons',
-		number_of_trees: 1,
-	}
 </script>
 
 <script lang="ts">
-	import { pricing, validator, type TreePlantingPricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
-	import { get, set } from '#lib/localstorage.ts'
+	import type { TreePlantingPricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
+	import type { FinancialNumber } from 'financial-number'
+	import { set } from '#lib/localstorage.ts'
 	import NumberInput from '#lib/number_input.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 
 	let {
-		pricing_args = $bindable(get('tree_planting_data', validator, default_data)),
-	}: { pricing_args?: TreePlantingPricingArguments | undefined } = $props()
+		pricing,
+		pricing_args = $bindable(),
+	}: {
+		pricing: (args: TreePlantingPricingArguments) => FinancialNumber
+		pricing_args: TreePlantingPricingArguments
+	} = $props()
 
 	const calculated_price = $derived(pricing(pricing_args))
 

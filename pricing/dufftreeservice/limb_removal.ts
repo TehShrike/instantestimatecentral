@@ -165,9 +165,18 @@ export const render_html = (args: LimbRemovalPricingArguments) => {
 	`
 }
 
+export const default_pricing_args: LimbRemovalPricingArguments = {
+	is_it_broken: false,
+	limb_diameter: '3-5 inches',
+	distance_from_ground: 'under 15 feet',
+	branches_over_something: false,
+	easy_to_haul_out: true,
+}
+
 export default {
 	pricing,
 	validator,
 	service_name,
 	render_html,
+	default_pricing_args,
 } as const

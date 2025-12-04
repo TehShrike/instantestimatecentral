@@ -62,9 +62,15 @@ export const render_html = (args: TreePlantingPricingArguments) => {
 	`
 }
 
+export const default_pricing_args: TreePlantingPricingArguments = {
+	tree_size: '3 gallons',
+	number_of_trees: 1,
+}
+
 export default {
 	pricing,
 	validator,
 	service_name,
 	render_html,
+	default_pricing_args,
 } as const

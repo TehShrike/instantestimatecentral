@@ -117,9 +117,17 @@ export const render_html = (args: TreeRemovalPricingArguments) => {
 	`
 }
 
+export const default_pricing_args: TreeRemovalPricingArguments = {
+	tree_diameter: '11-15 inches',
+	branches_over_something: 'nothing underneath',
+	fence: 'no',
+	adjacent_to_street_or_alley: true,
+}
+
 export default {
 	pricing,
 	validator,
 	service_name,
 	render_html,
+	default_pricing_args,
 } as const

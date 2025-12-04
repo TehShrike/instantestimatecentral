@@ -6,20 +6,20 @@
 	import ContactForm, { type AdditionalField } from '#lib/contact_form.svelte'
 	import type { ContactForm as ContactFormData } from '#lib/contact_form.d.ts'
 	import { get, set } from '#lib/localstorage.ts'
-	import LimbRemovalForm, { default_data as limb_removal_default_data } from './forms/limb_removal_form.svelte'
-	import TreeRemovalForm, { default_data as tree_removal_default_data } from './forms/tree_removal_form.svelte'
-	import TreeTrimmingForm, { default_data as tree_trimming_default_data } from './forms/tree_trimming_form.svelte'
+	import LimbRemovalForm from './forms/limb_removal_form.svelte'
+	import TreeRemovalForm from './forms/tree_removal_form.svelte'
+	import TreeTrimmingForm from './forms/tree_trimming_form.svelte'
 	import TreePlantingForm, {
 		additional_contact_form_fields as tree_planting_additional_contact_form_fields,
-		default_data as tree_planting_default_data,
 	} from './forms/tree_planting_form.svelte'
 	import send_estimate_email from './send_estimate_email.ts'
-	import type { LimbRemovalPricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
-	import type { TreeRemovalPricingArguments } from '#pricing/dufftreeservice/tree_removal.ts'
-	import type { TreeTrimmingPricingArguments } from '#pricing/dufftreeservice/tree_trimming.ts'
-	import type { TreePlantingPricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
-	import type { ServiceProgrammaticName } from '#pricing/dufftreeservice/index.ts'
-	import { service_name_validator } from '#pricing/dufftreeservice/index.ts'
+	import {
+		get_limb_removal_initial_args,
+		get_tree_removal_initial_args,
+		get_tree_trimming_initial_args,
+		get_tree_planting_initial_args,
+	} from './get_initial_args.ts'
+	import { services, service_name_validator, type ServiceProgrammaticName } from '#pricing/dufftreeservice/index.ts'
 	import VerticalColumnWithGap from '#lib/vertical_column_with_gap.svelte'
 
 	const additional_contact_form_fields: Partial<Record<ServiceProgrammaticName, AdditionalField<string>[]>> = {
@@ -53,16 +53,11 @@
 		get('all_services_current_tab_identifier', service_name_validator, 'limb_removal'),
 	)
 
-	let pricing_args = $state<{
-		limb_removal: LimbRemovalPricingArguments
-		tree_removal: TreeRemovalPricingArguments
-		tree_trimming: TreeTrimmingPricingArguments
-		tree_planting: TreePlantingPricingArguments
-	}>({
-		limb_removal: limb_removal_default_data,
-		tree_removal: tree_removal_default_data,
-		tree_trimming: tree_trimming_default_data,
-		tree_planting: tree_planting_default_data,
+	let pricing_args = $state({
+		limb_removal: get_limb_removal_initial_args(),
+		tree_removal: get_tree_removal_initial_args(),
+		tree_trimming: get_tree_trimming_initial_args(),
+		tree_planting: get_tree_planting_initial_args(),
 	})
 
 	const on_submit = (contact: ContactFormData<string>, turnstile_token: string | null) =>
@@ -83,24 +78,24 @@
 
 {#snippet limb_removal_content()}
 	<VerticalColumnWithGap>
-		<LimbRemovalForm bind:pricing_args={pricing_args.limb_removal} />
+		<LimbRemovalForm pricing={services.limb_removal.pricing} bind:pricing_args={pricing_args.limb_removal} />
 	</VerticalColumnWithGap>
 {/snippet}
 
 {#snippet tree_removal_content()}
 	<VerticalColumnWithGap>
-		<TreeRemovalForm bind:pricing_args={pricing_args.tree_removal} />
+		<TreeRemovalForm pricing={services.tree_removal.pricing} bind:pricing_args={pricing_args.tree_removal} />
 	</VerticalColumnWithGap>
 {/snippet}
 
 {#snippet tree_trimming_content()}
 	<VerticalColumnWithGap>
-		<TreeTrimmingForm bind:pricing_args={pricing_args.tree_trimming} />
+		<TreeTrimmingForm pricing={services.tree_trimming.pricing} bind:pricing_args={pricing_args.tree_trimming} />
 	</VerticalColumnWithGap>
 {/snippet}
 
 {#snippet tree_planting_content()}
 	<VerticalColumnWithGap>
-		<TreePlantingForm bind:pricing_args={pricing_args.tree_planting} />
+		<TreePlantingForm pricing={services.tree_planting.pricing} bind:pricing_args={pricing_args.tree_planting} />
 	</VerticalColumnWithGap>
 {/snippet}

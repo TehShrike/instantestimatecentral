@@ -1,16 +1,7 @@
-<script lang="ts" module>
-	export const default_data: TreeTrimmingPricingArguments = {
-		tree_diameter: '11-15 inches',
-		pruned_by_arborist_recently: false,
-		raise_canopy: false,
-		tree_variety: 'other',
-		trim_type: 'normal',
-	}
-</script>
-
 <script lang="ts">
-	import { pricing, validator, type TreeTrimmingPricingArguments } from '#pricing/dufftreeservice/tree_trimming.ts'
-	import { get, set } from '#lib/localstorage.ts'
+	import type { TreeTrimmingPricingArguments } from '#pricing/dufftreeservice/tree_trimming.ts'
+	import type { FinancialNumber } from 'financial-number'
+	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
 	import ButtonRadioGroup from '#lib/button_radio_group.svelte'
@@ -18,8 +9,12 @@
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 
 	let {
-		pricing_args = $bindable(get('tree_trimming_data', validator, default_data)),
-	}: { pricing_args?: TreeTrimmingPricingArguments | undefined } = $props()
+		pricing,
+		pricing_args = $bindable(),
+	}: {
+		pricing: (args: TreeTrimmingPricingArguments) => FinancialNumber
+		pricing_args: TreeTrimmingPricingArguments
+	} = $props()
 
 	const calculated_price = $derived(pricing(pricing_args))
 

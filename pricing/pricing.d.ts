@@ -3,6 +3,7 @@ export type Service<EstimateArgs> = {
 	validator: Validator<EstimateArgs>
 	service_name: string
 	render_html: (estimate_arguments: EstimateArgs) => string
+	default_pricing_args: EstimateArgs
 }
 
 export type ServiceNameToService<ServiceName extends string, ServiceArgs> = {

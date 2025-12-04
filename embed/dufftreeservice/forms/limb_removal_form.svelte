@@ -1,24 +1,19 @@
-<script lang="ts" module>
-	export const default_data: LimbRemovalPricingArguments = {
-		is_it_broken: false,
-		limb_diameter: '3-5 inches',
-		distance_from_ground: 'under 15 feet',
-		branches_over_something: false,
-		easy_to_haul_out: true,
-	}
-</script>
-
 <script lang="ts">
-	import { pricing, validator, type LimbRemovalPricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
-	import { get, set } from '#lib/localstorage.ts'
+	import type { LimbRemovalPricingArguments } from '#pricing/dufftreeservice/limb_removal.ts'
+	import type { FinancialNumber } from 'financial-number'
+	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
 	import RadioGroup from '#lib/radio_group.svelte'
 	import PricingForm from '#lib/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
 
 	let {
-		pricing_args = $bindable(get('limb_removal_data', validator, default_data)),
-	}: { pricing_args?: LimbRemovalPricingArguments | undefined } = $props()
+		pricing,
+		pricing_args = $bindable(),
+	}: {
+		pricing: (args: LimbRemovalPricingArguments) => FinancialNumber
+		pricing_args: LimbRemovalPricingArguments
+	} = $props()
 
 	const calculated_price = $derived(pricing(pricing_args))
 

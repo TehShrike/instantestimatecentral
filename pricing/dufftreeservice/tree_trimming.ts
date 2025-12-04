@@ -145,9 +145,18 @@ export const render_html = (args: TreeTrimmingPricingArguments) => {
 	`
 }
 
+export const default_pricing_args: TreeTrimmingPricingArguments = {
+	tree_diameter: '11-15 inches',
+	pruned_by_arborist_recently: false,
+	raise_canopy: false,
+	tree_variety: 'other',
+	trim_type: 'normal',
+}
+
 export default {
 	pricing,
 	validator,
 	service_name,
 	render_html,
+	default_pricing_args,
 } as const

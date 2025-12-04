@@ -4,11 +4,14 @@
 	import PricingWrapper from '#lib/pricing_wrapper.svelte'
 	import ContactForm from '#lib/contact_form.svelte'
 	import type { ContactForm as ContactFormData } from '#lib/contact_form.d.ts'
-	import TreeRemovalForm, { default_data } from './forms/tree_removal_form.svelte'
+	import TreeRemovalForm from './forms/tree_removal_form.svelte'
 	import send_estimate_email from './send_estimate_email.ts'
-	import type { TreeRemovalPricingArguments } from '#pricing/dufftreeservice/tree_removal.ts'
+	import { services } from '#pricing/dufftreeservice/index.ts'
+	import { get_tree_removal_initial_args } from './get_initial_args.ts'
 
-	let pricing_args = $state<TreeRemovalPricingArguments>(default_data)
+	const service = services.tree_removal
+
+	let pricing_args = $state(get_tree_removal_initial_args())
 
 	const on_submit = (contact: ContactFormData<string>, turnstile_token: string | null) =>
 		send_estimate_email({
@@ -20,7 +23,7 @@
 </script>
 
 <PricingWrapper>
-	<TreeRemovalForm bind:pricing_args />
+	<TreeRemovalForm pricing={service.pricing} bind:pricing_args />
 
 	<ContactForm submit={on_submit} />
 </PricingWrapper>
