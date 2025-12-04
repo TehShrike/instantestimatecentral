@@ -1,4 +1,4 @@
-import type { Validator } from './json_validator.ts'
+import type { Validator } from './validator/json_validator.ts'
 
 function assert(condition: unknown, message?: string): asserts condition {
 	if (!condition) throw new Error(message ?? 'Assertion failed')

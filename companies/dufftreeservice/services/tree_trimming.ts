@@ -1,6 +1,6 @@
 import fnum from '#lib/fnum.ts'
 import round_estimate_price from '#lib/estimate_price_rounder.ts'
-import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
+import { exact, is_boolean, object, one_of, type Validator } from '#lib/validator/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
 export const service_name = 'Tree Trimming'

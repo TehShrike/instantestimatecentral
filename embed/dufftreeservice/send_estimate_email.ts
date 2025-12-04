@@ -1,5 +1,5 @@
 import { post } from './forms/fetch_executor.ts'
-import type { ContactForm } from '#lib/contact_form.d.ts'
+import type { ContactForm } from '#lib/components/form/contact_form.d.ts'
 import { type ServiceProgrammaticName, services } from '#companies/dufftreeservice/index.ts'
 import type { EstimateArguments } from '#companies/companies.js'
 

@@ -1,4 +1,4 @@
-import { Validator } from './json_validator.ts'
+import { Validator } from './validator/json_validator.ts'
 
 const PREFIX = 'instant_estimate_central_'
 

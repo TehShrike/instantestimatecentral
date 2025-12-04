@@ -3,9 +3,9 @@ import tree_removal from './services/tree_removal.ts'
 import tree_trimming from './services/tree_trimming.ts'
 import tree_planting from './services/tree_planting.ts'
 import { type Company, type ServiceNameToService, type Service } from '#companies/companies.js'
-import object_key_validator from '#lib/object_key_validator.ts'
+import object_key_validator from '#lib/validator/object_key_validator.ts'
 import { type FinancialNumber } from 'financial-number'
-import * as jv from '#lib/json_validator.ts'
+import * as jv from '#lib/validator/json_validator.ts'
 import make_monthly_inflation_calculator from '#lib/inflation/monthly_inflation.ts'
 
 const inflation_calculator = make_monthly_inflation_calculator({

@@ -1,5 +1,5 @@
 import fnum from '#lib/fnum.ts'
-import { exact, is_number, object, one_of, type Validator } from '#lib/json_validator.ts'
+import { exact, is_number, object, one_of, type Validator } from '#lib/validator/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
 export const service_name = 'Tree Planting'

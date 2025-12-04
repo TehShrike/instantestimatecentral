@@ -8,12 +8,12 @@
 </script>
 
 <script lang="ts" generics="FieldName extends string">
-	import ErrorDisplay from './error_display.svelte'
-	import CloudflareTurnstile from './cloudflare_turnstile.svelte'
+	import ErrorDisplay from '../error_display.svelte'
+	import CloudflareTurnstile from '../cloudflare_turnstile.svelte'
 	import { get, set } from '#lib/localstorage.ts'
-	import { object, is_string } from '#lib/json_validator.ts'
-	import type { ContactForm } from '#lib/contact_form.d.ts'
-	import type { Validator } from './json_validator.ts'
+	import { object, is_string } from '#lib/validator/json_validator.ts'
+	import type { ContactForm } from './contact_form.d.ts'
+	import type { Validator } from '#lib/validator/json_validator.ts'
 
 	let {
 		submit,

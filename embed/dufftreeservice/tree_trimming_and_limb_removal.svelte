@@ -1,18 +1,18 @@
 <svelte:options customElement="tree-trimming-and-limb-removal" />
 
 <script lang="ts">
-	import Tabs, { type Tab } from '#lib/tabs.svelte'
-	import PricingWrapper from '#lib/pricing_wrapper.svelte'
-	import ContactForm, { type AdditionalField } from '#lib/contact_form.svelte'
-	import type { ContactForm as ContactFormData } from '#lib/contact_form.d.ts'
+	import Tabs, { type Tab } from '#lib/components/tabs.svelte'
+	import PricingWrapper from '#lib/components/pricing_wrapper.svelte'
+	import ContactForm, { type AdditionalField } from '#lib/components/form/contact_form.svelte'
+	import type { ContactForm as ContactFormData } from '#lib/components/form/contact_form.d.ts'
 	import { get, set } from '#lib/localstorage.ts'
 	import LimbRemovalForm from './forms/limb_removal_form.svelte'
 	import TreeTrimmingForm from './forms/tree_trimming_form.svelte'
 	import send_estimate_email from './send_estimate_email.ts'
 	import { get_limb_removal_initial_args, get_tree_trimming_initial_args } from './get_initial_args.ts'
 	import { services, type ServiceProgrammaticName } from '#companies/dufftreeservice/index.ts'
-	import VerticalColumnWithGap from '#lib/vertical_column_with_gap.svelte'
-	import { one_of, exact } from '#lib/json_validator.ts'
+	import VerticalColumnWithGap from '#lib/components/vertical_column_with_gap.svelte'
+	import { one_of, exact } from '#lib/validator/json_validator.ts'
 
 	const tabs: Tab<ServiceProgrammaticName>[] = [
 		{

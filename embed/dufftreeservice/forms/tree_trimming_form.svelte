@@ -2,11 +2,11 @@
 	import type { TreeTrimmingPricingArguments } from '#companies/dufftreeservice/services/tree_trimming.ts'
 	import type { FinancialNumber } from 'financial-number'
 	import { set } from '#lib/localstorage.ts'
-	import BooleanToggle from '#lib/boolean_toggle.svelte'
-	import RadioGroup from '#lib/radio_group.svelte'
-	import ButtonRadioGroup from '#lib/button_radio_group.svelte'
-	import PricingForm from '#lib/pricing_form.svelte'
-	import EstimatedPriceDisplay from '#lib/estimated_price_display.svelte'
+	import BooleanToggle from '#lib/components/boolean_toggle.svelte'
+	import RadioGroup from '#lib/components/radio_group.svelte'
+	import ButtonRadioGroup from '#lib/components/button_radio_group.svelte'
+	import PricingForm from '#lib/components/form/pricing_form.svelte'
+	import EstimatedPriceDisplay from '#lib/components/estimated_price_display.svelte'
 
 	let {
 		pricing,

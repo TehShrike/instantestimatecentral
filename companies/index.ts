@@ -1,4 +1,4 @@
-import { type Validator } from '#lib/json_validator.ts'
+import { type Validator } from '#lib/validator/json_validator.ts'
 import { type DomainNameToCompany } from '#companies/companies.js'
 import dufftreeservice from './dufftreeservice/index.ts'
 
