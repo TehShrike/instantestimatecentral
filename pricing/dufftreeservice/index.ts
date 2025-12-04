@@ -6,6 +6,12 @@ import { type Company, type ServiceNameToService, type Service } from '#pricing/
 import object_key_validator from '#lib/object_key_validator.ts'
 import { type FinancialNumber } from 'financial-number'
 import * as jv from '#lib/json_validator.ts'
+import make_monthly_inflation_calculator from '#lib/inflation/monthly_inflation.ts'
+
+const inflation_calculator = make_monthly_inflation_calculator({
+	start_year: 2025n,
+	start_month: 11n,
+})
 
 export const services = {
 	limb_removal,

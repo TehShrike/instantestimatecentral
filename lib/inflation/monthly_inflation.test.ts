@@ -49,8 +49,5 @@ test('uses default monthly rate when not specified', () => {
 		start_month: 1n,
 	})
 
-	assert.strictEqual(
-		calc(fnum('100.00'), { current_year: 2025n, current_month: 1n }).toString(2),
-		'102.00',
-	)
+	assert.strictEqual(calc(fnum('100.00'), { current_year: 2025n, current_month: 1n }).toString(2), '102.00')
 })

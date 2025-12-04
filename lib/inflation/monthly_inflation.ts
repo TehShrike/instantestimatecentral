@@ -15,19 +15,21 @@ const get_current_year_and_month = (): {
 	}
 }
 
-const make_monthly_inflation_calculator = ({
-	start_year,
-	start_month,
-	monthly_rate = DEFAULT_MONTHLY_RATE,
-}: {
-	start_year: bigint
-	start_month: bigint
-	monthly_rate?: FinancialNumber
-}) => (price: FinancialNumber, current_year_and_month = get_current_year_and_month()) => {
-	const { current_year, current_month } = current_year_and_month
-	const months_elapsed = (current_year - start_year) * 12n + (current_month - start_month)
+const make_monthly_inflation_calculator =
+	({
+		start_year,
+		start_month,
+		monthly_rate = DEFAULT_MONTHLY_RATE,
+	}: {
+		start_year: bigint
+		start_month: bigint
+		monthly_rate?: FinancialNumber
+	}) =>
+	(price: FinancialNumber, current_year_and_month = get_current_year_and_month()) => {
+		const { current_year, current_month } = current_year_and_month
+		const months_elapsed = (current_year - start_year) * 12n + (current_month - start_month)
 
-	return compound(price, monthly_rate, months_elapsed)
-}
+		return compound(price, monthly_rate, months_elapsed)
+	}
 
 export default make_monthly_inflation_calculator
