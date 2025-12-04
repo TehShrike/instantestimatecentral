@@ -12,12 +12,20 @@ Test files are named `*.test.ts` and placed next to the file they test.
 import { test } from 'node:test'
 import * as assert from 'node:assert'
 
-test('description of what is being tested', () => {
-	const result = some_function()
+test('module or function being tested', () => {
+	const thing = setup_thing()
 
-	assert.strictEqual(result, expected_value)
+	assert.strictEqual(thing.do_something(), expected, 'description of this assertion')
+	assert.strictEqual(thing.do_another(), expected, 'description of this assertion')
 })
 ```
+
+## Structure preferences
+
+- Group related assertions in one `test()` call
+- Build fixtures inside the test, not at module level
+- Put assertion descriptions in the message parameter of `assert.strictEqual`, not in separate `test()` names
+- Only use separate `test()` calls when setup differs significantly
 
 ## Running tests
 
