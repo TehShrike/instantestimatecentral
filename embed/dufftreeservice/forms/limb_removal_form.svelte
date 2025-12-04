@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { LimbRemovalPricingArguments } from '#companies/dufftreeservice/limb_removal.ts'
+	import type { LimbRemovalPricingArguments } from '#companies/dufftreeservice/services/limb_removal.ts'
 	import type { FinancialNumber } from 'financial-number'
 	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/boolean_toggle.svelte'
