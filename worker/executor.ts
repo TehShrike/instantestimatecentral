@@ -1,4 +1,4 @@
-import domain_to_company_map, { domain_validator } from '#pricing/index.ts'
+import domain_to_company_map, { domain_validator } from '#companies/index.ts'
 import pipeline, { Result } from './effecty_middleware.ts'
 import { route } from './effecty_router.ts'
 import { send_email } from '#lib/resend.ts'

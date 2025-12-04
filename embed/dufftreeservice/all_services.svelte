@@ -19,7 +19,7 @@
 		get_tree_trimming_initial_args,
 		get_tree_planting_initial_args,
 	} from './get_initial_args.ts'
-	import { services, service_name_validator, type ServiceProgrammaticName } from '#pricing/dufftreeservice/index.ts'
+	import { services, service_name_validator, type ServiceProgrammaticName } from '#companies/dufftreeservice/index.ts'
 	import VerticalColumnWithGap from '#lib/vertical_column_with_gap.svelte'
 
 	const additional_contact_form_fields: Partial<Record<ServiceProgrammaticName, AdditionalField<string>[]>> = {

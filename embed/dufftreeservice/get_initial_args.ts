@@ -1,5 +1,5 @@
 import { get } from '#lib/localstorage.ts'
-import { services } from '#pricing/dufftreeservice/index.ts'
+import { services } from '#companies/dufftreeservice/index.ts'
 
 export const get_limb_removal_initial_args = () =>
 	get('limb_removal_data', services.limb_removal.validator, services.limb_removal.default_pricing_args)

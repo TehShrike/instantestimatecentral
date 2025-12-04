@@ -10,7 +10,7 @@
 	import TreeTrimmingForm from './forms/tree_trimming_form.svelte'
 	import send_estimate_email from './send_estimate_email.ts'
 	import { get_limb_removal_initial_args, get_tree_trimming_initial_args } from './get_initial_args.ts'
-	import { services, type ServiceProgrammaticName } from '#pricing/dufftreeservice/index.ts'
+	import { services, type ServiceProgrammaticName } from '#companies/dufftreeservice/index.ts'
 	import VerticalColumnWithGap from '#lib/vertical_column_with_gap.svelte'
 	import { one_of, exact } from '#lib/json_validator.ts'
 

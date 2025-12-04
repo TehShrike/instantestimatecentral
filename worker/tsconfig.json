@@ -6,7 +6,7 @@
 		"types": [],
 		"paths": {
 			"#lib/*": ["../lib/*"],
-			"#pricing/*": ["../pricing/*"]
+			"#companies/*": ["../companies/*"]
 		},
 		"exactOptionalPropertyTypes": false
 	}

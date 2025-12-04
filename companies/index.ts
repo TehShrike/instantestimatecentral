@@ -1,5 +1,5 @@
 import { type Validator } from '#lib/json_validator.ts'
-import { type DomainNameToCompany } from '#pricing/pricing.js'
+import { type DomainNameToCompany } from '#companies/companies.js'
 import dufftreeservice from './dufftreeservice/index.ts'
 
 const domain_to_company_map = {

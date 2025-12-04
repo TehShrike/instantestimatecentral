@@ -12,7 +12,7 @@
 	},
 	"imports": {
 		"#lib/*": "./lib/*",
-		"#pricing/*": "./pricing/*"
+		"#companies/*": "./companies/*"
 	},
 	"license": "UNLICENSED",
 	"author": "TehShrike",
@@ -20,14 +20,14 @@
 	"main": "index.js",
 	"packageManager": "pnpm@9.15.0",
 	"scripts": {
-		"autoformat": "prettier --write 'embed/**/*.{ts,svelte}' 'lib/**/*.{ts,svelte}' 'pricing/**/*.{ts,svelte}' 'worker/**/*.{ts,svelte}'",
+		"autoformat": "prettier --write 'embed/**/*.{ts,svelte}' 'lib/**/*.{ts,svelte}' 'companies/**/*.{ts,svelte}' 'worker/**/*.{ts,svelte}'",
 		"regenerate_worker_types": "wrangler types ./worker/worker_types.d.ts",
 		"test": "run-p test:*",
 		"test:types:svelte": "svelte-check --no-tsconfig --fail-on-warnings",
 		"test:types:worker": "tsc -p worker --noEmit",
 		"test:types:everything_else": "tsc --noEmit",
 		"test:types": "run-s -c test:types:*",
-		"test:unit": "node --test lib/**/*.test.ts embed/**/*.test.ts pricing/**/*.test.ts",
+		"test:unit": "node --test lib/**/*.test.ts embed/**/*.test.ts companies/**/*.test.ts",
 		"dev": "run-p dev:*",
 		"dev:build_demo_pages": "node generate_demo_pages.ts --dev",
 		"dev:watch_forms": "node esbuild.forms.ts --watch",

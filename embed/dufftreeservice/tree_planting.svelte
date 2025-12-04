@@ -6,7 +6,7 @@
 	import type { ContactForm as ContactFormData } from '#lib/contact_form.d.ts'
 	import TreePlantingForm, { additional_contact_form_fields } from './forms/tree_planting_form.svelte'
 	import send_estimate_email from './send_estimate_email.ts'
-	import { services } from '#pricing/dufftreeservice/index.ts'
+	import { services } from '#companies/dufftreeservice/index.ts'
 	import { get_tree_planting_initial_args } from './get_initial_args.ts'
 
 	const service = services.tree_planting

@@ -1,7 +1,7 @@
 import { post } from './forms/fetch_executor.ts'
 import type { ContactForm } from '#lib/contact_form.d.ts'
-import { type ServiceProgrammaticName, services } from '#pricing/dufftreeservice/index.ts'
-import type { EstimateArguments } from '#pricing/pricing.js'
+import { type ServiceProgrammaticName, services } from '#companies/dufftreeservice/index.ts'
+import type { EstimateArguments } from '#companies/companies.js'
 
 const send_estimate_email = <Service extends ServiceProgrammaticName, FieldName extends string>({
 	service_name,

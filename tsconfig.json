@@ -1,5 +1,5 @@
 {
-  "include": ["embed/**/*.ts", "embed/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte", "pricing/**/*.ts", "./*.ts"],
+  "include": ["embed/**/*.ts", "embed/**/*.svelte", "lib/**/*.ts", "lib/**/*.svelte", "companies/**/*.ts", "./*.ts"],
 	"exclude": ["node_modules/**", "build/**"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
@@ -18,7 +18,7 @@
     // Path mappings
     "paths": {
       "#lib/*": ["./lib/*"],
-      "#pricing/*": ["./pricing/*"]
+      "#companies/*": ["./companies/*"]
     },
 
     // Other Outputs

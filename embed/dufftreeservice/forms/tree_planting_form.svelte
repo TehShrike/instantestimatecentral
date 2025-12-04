@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import type { TreePlantingPricingArguments } from '#pricing/dufftreeservice/tree_planting.ts'
+	import type { TreePlantingPricingArguments } from '#companies/dufftreeservice/tree_planting.ts'
 	import type { FinancialNumber } from 'financial-number'
 	import { set } from '#lib/localstorage.ts'
 	import NumberInput from '#lib/number_input.svelte'
