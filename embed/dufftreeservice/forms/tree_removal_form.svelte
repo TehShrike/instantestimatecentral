@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { TreeRemovalPricingArguments } from '#companies/dufftreeservice/services/tree_removal.ts'
-	import type { FinancialNumber } from 'financial-number'
+	import type { PricingFunction } from '#companies/companies.js'
 	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/components/boolean_toggle.svelte'
 	import RadioGroup from '#lib/components/radio_group.svelte'
@@ -11,7 +11,7 @@
 		pricing,
 		pricing_args = $bindable(),
 	}: {
-		pricing: (args: TreeRemovalPricingArguments) => FinancialNumber
+		pricing: PricingFunction<TreeRemovalPricingArguments>
 		pricing_args: TreeRemovalPricingArguments
 	} = $props()
 
@@ -82,4 +82,4 @@
 	{/snippet}
 </PricingForm>
 
-<EstimatedPriceDisplay price={calculated_price} />
+<EstimatedPriceDisplay price={calculated_price.rounded_price_after_inflation} />

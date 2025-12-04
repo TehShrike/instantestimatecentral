@@ -4,7 +4,7 @@
 
 <script lang="ts">
 	import type { TreePlantingPricingArguments } from '#companies/dufftreeservice/services/tree_planting.ts'
-	import type { FinancialNumber } from 'financial-number'
+	import type { PricingFunction } from '#companies/companies.js'
 	import { set } from '#lib/localstorage.ts'
 	import NumberInput from '#lib/components/number_input.svelte'
 	import RadioGroup from '#lib/components/radio_group.svelte'
@@ -15,7 +15,7 @@
 		pricing,
 		pricing_args = $bindable(),
 	}: {
-		pricing: (args: TreePlantingPricingArguments) => FinancialNumber
+		pricing: PricingFunction<TreePlantingPricingArguments>
 		pricing_args: TreePlantingPricingArguments
 	} = $props()
 
@@ -56,4 +56,4 @@
 	{/snippet}
 </PricingForm>
 
-<EstimatedPriceDisplay price={calculated_price} />
+<EstimatedPriceDisplay price={calculated_price.rounded_price_after_inflation} />

@@ -1,6 +1,8 @@
 import fnum from '#lib/fnum.ts'
 import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/validator/json_validator.ts'
+import type { PricingResult } from '#companies/companies.js'
+import inflation_calculator from './inflation_calculator.ts'
 
 export const service_name = 'Tree Removal'
 
@@ -25,7 +27,7 @@ export const pricing = ({
 	branches_over_something,
 	fence,
 	adjacent_to_street_or_alley,
-}: TreeRemovalPricingArguments) => {
+}: TreeRemovalPricingArguments): PricingResult => {
 	const subtotal = base_price_by_diameter({ tree_diameter })
 
 	const branches_over_something_increase =
@@ -37,12 +39,19 @@ export const pricing = ({
 
 	const not_adjacent_to_street_increase = adjacent_to_street_or_alley ? fnum('0') : subtotal.times(fnum('0.3'))
 
-	const total = subtotal
+	const original_price = subtotal
 		.plus(branches_over_something_increase)
 		.plus(fence_increase)
 		.plus(not_adjacent_to_street_increase)
 
-	return round_estimate_price(total)
+	const price_after_inflation = inflation_calculator(original_price)
+
+	return {
+		original_price,
+		rounded_original_price: round_estimate_price(original_price),
+		price_after_inflation,
+		rounded_price_after_inflation: round_estimate_price(price_after_inflation),
+	}
 }
 
 const base_price_by_diameter = ({ tree_diameter }: { tree_diameter: TreeDiameter }) => {

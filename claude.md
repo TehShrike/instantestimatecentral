@@ -10,6 +10,8 @@ I prefer arrow function syntax rather than function declarations or function exp
 
 I like descriptive TypeScript type names (no one-letter type names for me). I also prefer the bracket syntax over the Array generic.
 
+Don't define a variable right before using it only once – inline the value instead.
+
 # AST-Grep (sg) Usage
 
 You run in an environment where ast-grep (sg) is available. Use it for syntax-aware structural matching instead of text-only tools.

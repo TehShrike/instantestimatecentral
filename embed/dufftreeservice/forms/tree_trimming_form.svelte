@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { TreeTrimmingPricingArguments } from '#companies/dufftreeservice/services/tree_trimming.ts'
-	import type { FinancialNumber } from 'financial-number'
+	import type { PricingFunction } from '#companies/companies.js'
 	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/components/boolean_toggle.svelte'
 	import RadioGroup from '#lib/components/radio_group.svelte'
@@ -12,7 +12,7 @@
 		pricing,
 		pricing_args = $bindable(),
 	}: {
-		pricing: (args: TreeTrimmingPricingArguments) => FinancialNumber
+		pricing: PricingFunction<TreeTrimmingPricingArguments>
 		pricing_args: TreeTrimmingPricingArguments
 	} = $props()
 
@@ -23,19 +23,26 @@
 			label: 'Just the necessities',
 			description: 'a half dozen or fewer offending branches',
 			value: 'just the necessities' as const,
-			price_difference: pricing({ ...pricing_args, trim_type: 'just the necessities' }).minus(calculated_price),
+			price_difference: pricing({
+				...pricing_args,
+				trim_type: 'just the necessities',
+			}).rounded_price_after_inflation.minus(calculated_price.rounded_price_after_inflation),
 		},
 		{
 			label: 'Normal',
 			description: '2" branches and larger',
 			value: 'normal' as const,
-			price_difference: pricing({ ...pricing_args, trim_type: 'normal' }).minus(calculated_price),
+			price_difference: pricing({ ...pricing_args, trim_type: 'normal' }).rounded_price_after_inflation.minus(
+				calculated_price.rounded_price_after_inflation,
+			),
 		},
 		{
 			label: 'Premium',
 			description: '1" branches and larger',
 			value: 'premium' as const,
-			price_difference: pricing({ ...pricing_args, trim_type: 'premium' }).minus(calculated_price),
+			price_difference: pricing({ ...pricing_args, trim_type: 'premium' }).rounded_price_after_inflation.minus(
+				calculated_price.rounded_price_after_inflation,
+			),
 		},
 	])
 
@@ -104,4 +111,4 @@
 	{/snippet}
 </PricingForm>
 
-<EstimatedPriceDisplay price={calculated_price} />
+<EstimatedPriceDisplay price={calculated_price.rounded_price_after_inflation} />

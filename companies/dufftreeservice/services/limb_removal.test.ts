@@ -1,6 +1,5 @@
 import { test } from 'node:test'
 import * as assert from 'node:assert'
-import fnum from '#lib/fnum.ts'
 import { pricing, type LimbRemovalPricingArguments } from './limb_removal.ts'
 import { for_each } from '#lib/array.ts'
 
@@ -37,17 +36,34 @@ const generate_all_cases = (): LimbRemovalPricingArguments[] => {
 const cases = generate_all_cases()
 
 test(`dufftreeservice limb removal pricing: ${cases.length} cases`, () => {
-	let highest_price = fnum('0')
-	let highest_price_args: LimbRemovalPricingArguments | null = null
+	let highest_price_result = pricing(cases[0]!)
+	let highest_price_args = cases[0]!
+	let lowest_price_result = pricing(cases[0]!)
+	let lowest_price_args = cases[0]!
 
-	for_each(cases, (arg, index) => {
-		const price = pricing(arg)
-		if (price.gt(highest_price)) {
-			highest_price = price
+	for_each(cases, (arg) => {
+		const result = pricing(arg)
+
+		assert.ok(result.rounded_price_after_inflation.gte('300'))
+
+		if (result.rounded_price_after_inflation.gt(highest_price_result.rounded_price_after_inflation)) {
+			highest_price_result = result
 			highest_price_args = arg
 		}
-		assert.ok(pricing(arg).gte('300'))
+
+		if (result.rounded_price_after_inflation.lt(lowest_price_result.rounded_price_after_inflation)) {
+			lowest_price_result = result
+			lowest_price_args = arg
+		}
+
+		if (!result.rounded_original_price.equal(result.rounded_price_after_inflation)) {
+			console.log(
+				`${result.rounded_original_price.toString(0)} -> ${result.rounded_price_after_inflation.toString(0)}`,
+				arg,
+			)
+		}
 	})
 
-	console.log(highest_price.toString(2), highest_price_args)
+	console.log('Highest:', highest_price_result.rounded_price_after_inflation.toString(0), highest_price_args)
+	console.log('Lowest:', lowest_price_result.rounded_price_after_inflation.toString(0), lowest_price_args)
 })

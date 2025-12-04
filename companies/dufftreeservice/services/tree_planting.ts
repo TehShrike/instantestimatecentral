@@ -1,6 +1,9 @@
 import fnum from '#lib/fnum.ts'
+import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_number, object, one_of, type Validator } from '#lib/validator/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
+import type { PricingResult } from '#companies/companies.js'
+import inflation_calculator from './inflation_calculator.ts'
 
 export const service_name = 'Tree Planting'
 
@@ -11,13 +14,22 @@ export type TreePlantingPricingArguments = {
 	number_of_trees: number
 }
 
-export const pricing = ({ tree_size, number_of_trees }: TreePlantingPricingArguments): FinancialNumber => {
+export const pricing = ({ tree_size, number_of_trees }: TreePlantingPricingArguments): PricingResult => {
 	const base_price_per_tree = get_base_price_per_tree(tree_size)
 	const discount_ratio = get_discount_ratio(number_of_trees)
 
-	const total = base_price_per_tree.times(fnum(number_of_trees.toString())).times(fnum('1').minus(discount_ratio))
+	const original_price = base_price_per_tree
+		.times(fnum(number_of_trees.toString()))
+		.times(fnum('1').minus(discount_ratio))
 
-	return total
+	const price_after_inflation = inflation_calculator(original_price)
+
+	return {
+		original_price,
+		rounded_original_price: round_estimate_price(original_price),
+		price_after_inflation,
+		rounded_price_after_inflation: round_estimate_price(price_after_inflation),
+	}
 }
 
 const get_base_price_per_tree = (tree_size: TreeSize): FinancialNumber => {

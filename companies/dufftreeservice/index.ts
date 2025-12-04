@@ -4,14 +4,7 @@ import tree_trimming from './services/tree_trimming.ts'
 import tree_planting from './services/tree_planting.ts'
 import { type Company, type ServiceNameToService, type Service } from '#companies/companies.js'
 import object_key_validator from '#lib/validator/object_key_validator.ts'
-import { type FinancialNumber } from 'financial-number'
 import * as jv from '#lib/validator/json_validator.ts'
-import make_monthly_inflation_calculator from '#lib/inflation/monthly_inflation.ts'
-
-const inflation_calculator = make_monthly_inflation_calculator({
-	start_year: 2025n,
-	start_month: 11n,
-})
 
 export const services = {
 	limb_removal,
@@ -39,11 +32,12 @@ const company: Company<ServiceProgrammaticName, typeof services, ContactForm> = 
 	company_name: 'Duff Tree Service',
 	recipient_email_address: ['andrew@dufftreeservice.com', 'josh@instantestimatecentral.com'],
 	contact_validator: contact_validator,
-	render_subject: (service, estimate) => `🌲💰${estimate.toString(0)}$🌳 ${service.service_name} estimate request`,
+	render_subject: (service, price) =>
+		`🌲💰${price.rounded_price_after_inflation.toString(0)}$🌳 ${service.service_name} estimate request`,
 	render_html: ({ service, contact, price, estimate_arguments }) => `
 	<h2>New Estimate Request</h2>
 	<p><strong>Service:</strong> ${service.service_name}</p>
-	<p><strong>Estimated Price:</strong> $${price.toString(0)}</p>
+	<p><strong>Estimated Price:</strong> $${price.rounded_price_after_inflation.toString(0)}</p>
 	<br>
 	<h3>Contact Information</h3>
 	<p><strong>Name:</strong> ${contact.name}</p>

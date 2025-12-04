@@ -2,6 +2,8 @@ import fnum from '#lib/fnum.ts'
 import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/validator/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
+import type { PricingResult } from '#companies/companies.js'
+import inflation_calculator from './inflation_calculator.ts'
 
 export const service_name = 'Tree Trimming'
 
@@ -25,7 +27,7 @@ export const pricing = ({
 	raise_canopy,
 	tree_variety,
 	trim_type,
-}: TreeTrimmingPricingArguments): FinancialNumber => {
+}: TreeTrimmingPricingArguments): PricingResult => {
 	const subtotal = get_base_price({ tree_diameter, trim_type })
 
 	const raise_canopy_increase = raise_canopy ? fnum('75') : fnum('0')
@@ -34,9 +36,16 @@ export const pricing = ({
 
 	const variety_adjustment = get_variety_adjustment({ tree_variety, subtotal })
 
-	const total = subtotal.plus(raise_canopy_increase).plus(pruned_by_arborist_discount).plus(variety_adjustment)
+	const original_price = subtotal.plus(raise_canopy_increase).plus(pruned_by_arborist_discount).plus(variety_adjustment)
 
-	return round_estimate_price(total)
+	const price_after_inflation = inflation_calculator(original_price)
+
+	return {
+		original_price,
+		rounded_original_price: round_estimate_price(original_price),
+		price_after_inflation,
+		rounded_price_after_inflation: round_estimate_price(price_after_inflation),
+	}
 }
 
 const price_matrix: Record<TreeDiameter, Record<TrimType, string>> = {

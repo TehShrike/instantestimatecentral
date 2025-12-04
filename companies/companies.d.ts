@@ -1,5 +1,14 @@
+export type PricingResult = {
+	original_price: FinancialNumber
+	rounded_original_price: FinancialNumber
+	price_after_inflation: FinancialNumber
+	rounded_price_after_inflation: FinancialNumber
+}
+
+export type PricingFunction<Args> = (args: Args) => PricingResult
+
 export type Service<EstimateArgs> = {
-	pricing: (args: EstimateArgs) => FinancialNumber
+	pricing: PricingFunction<EstimateArgs>
 	validator: Validator<EstimateArgs>
 	service_name: string
 	render_html: (estimate_arguments: EstimateArgs) => string
@@ -24,7 +33,7 @@ export type Company<
 	company_name: string
 	recipient_email_address: string | string[]
 	contact_validator: Validator<ContactForm>
-	render_subject: <SN extends ServiceName>(service: Services[SN], estimate: FinancialNumber) => string
+	render_subject: <SN extends ServiceName>(service: Services[SN], price: PricingResult) => string
 	render_html: <SN extends ServiceName>({
 		service,
 		contact,
@@ -33,7 +42,7 @@ export type Company<
 	}: {
 		service: Services[SN]
 		contact: ContactForm
-		price: FinancialNumber
+		price: PricingResult
 		estimate_arguments: EstimateArguments<Services[SN]>
 	}) => string
 }

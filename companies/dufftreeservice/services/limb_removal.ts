@@ -1,6 +1,8 @@
 import fnum, { greatest_of } from '#lib/fnum.ts'
 import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/validator/json_validator.ts'
+import type { PricingResult } from '#companies/companies.js'
+import inflation_calculator from './inflation_calculator.ts'
 
 export const service_name = 'Limb removal'
 
@@ -24,7 +26,7 @@ export const pricing = ({
 	distance_from_ground,
 	branches_over_something,
 	easy_to_haul_out,
-}: LimbRemovalPricingArguments) => {
+}: LimbRemovalPricingArguments): PricingResult => {
 	const need_to_climb = !can_we_get_it_without_climbing({ distance_from_ground, limb_diameter })
 
 	const base_price = fnum('300')
@@ -47,7 +49,15 @@ export const pricing = ({
 		.plus(over_something_increase)
 		.plus(not_easy_to_haul_out_increase)
 
-	return round_estimate_price(greatest_of(MINIMUM_PRICE, total))
+	const original_price = greatest_of(MINIMUM_PRICE, total)
+	const price_after_inflation = inflation_calculator(original_price)
+
+	return {
+		original_price,
+		rounded_original_price: round_estimate_price(original_price),
+		price_after_inflation,
+		rounded_price_after_inflation: round_estimate_price(price_after_inflation),
+	}
 }
 
 const can_we_get_it_without_climbing = ({
