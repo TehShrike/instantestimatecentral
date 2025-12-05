@@ -3,6 +3,7 @@ import round_estimate_price from '#lib/estimate_price_rounder.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/validator/json_validator.ts'
 import type { PricingResult } from '#companies/companies.js'
 import inflation_calculator from './inflation_calculator.ts'
+import { assert_never } from '#lib/assert.ts'
 
 export const service_name = 'Limb removal'
 
@@ -94,7 +95,7 @@ const increase_price_based_just_on_size = ({
 		if (limb_diameter === '1-3 inches') return fnum('0')
 		if (limb_diameter === '3-5 inches') return fnum('150')
 
-		return limb_diameter satisfies never
+		return assert_never(limb_diameter)
 	}
 
 	// need_to_climb is true - all sizes are possible
@@ -104,7 +105,7 @@ const increase_price_based_just_on_size = ({
 	if (limb_diameter === '10-13 inches') return fnum('600')
 	if (limb_diameter === '14+ inches') return fnum('1100')
 
-	return limb_diameter satisfies never
+	return assert_never(limb_diameter)
 }
 
 const cost_increase_ratio_for_broken_branches = ({ limb_diameter }: { limb_diameter: LimbDiameter }) => {

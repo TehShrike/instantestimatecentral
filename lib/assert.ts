@@ -11,3 +11,7 @@ export function assert_valid<T>(validator: Validator<T>, value: unknown): assert
 		throw new Error(`Assertion failed: ${validator.get_messages(value, 'value').join(', ')}`)
 	}
 }
+
+export function assert_never(value: never, message?: string): never {
+	throw new Error(message ?? `Unexpected value: ${value}`)
+}
