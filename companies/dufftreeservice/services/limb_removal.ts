@@ -9,6 +9,13 @@ export const service_name = 'Limb removal'
 const MINIMUM_PRICE = fnum('300')
 
 type LimbDiameter = '1-3 inches' | '3-5 inches' | '6-9 inches' | '10-13 inches' | '14+ inches'
+type SmallLimbDiameter = '1-3 inches' | '3-5 inches'
+
+function assertSmallLimb(diameter: LimbDiameter): asserts diameter is SmallLimbDiameter {
+	if (diameter !== '1-3 inches' && diameter !== '3-5 inches') {
+		throw new Error(`Expected small limb when not climbing, got ${diameter}`)
+	}
+}
 
 type DistanceFromGround = 'under 15 feet' | '15-20 feet' | 'higher than 20 feet'
 
@@ -81,21 +88,23 @@ const increase_price_based_just_on_size = ({
 	limb_diameter: LimbDiameter
 	need_to_climb: boolean
 }) => {
-	if (!need_to_climb && limb_diameter === '3-5 inches') return fnum('150')
+	if (!need_to_climb) {
+		assertSmallLimb(limb_diameter)
 
-	if (need_to_climb) {
-		if (limb_diameter === '1-3 inches') return fnum('150')
+		if (limb_diameter === '1-3 inches') return fnum('0')
+		if (limb_diameter === '3-5 inches') return fnum('150')
 
-		if (limb_diameter === '3-5 inches') return fnum('200')
-
-		if (limb_diameter === '6-9 inches') return fnum('500')
+		return limb_diameter satisfies never
 	}
 
+	// need_to_climb is true - all sizes are possible
+	if (limb_diameter === '1-3 inches') return fnum('150')
+	if (limb_diameter === '3-5 inches') return fnum('200')
+	if (limb_diameter === '6-9 inches') return fnum('500')
 	if (limb_diameter === '10-13 inches') return fnum('600')
-
 	if (limb_diameter === '14+ inches') return fnum('1100')
 
-	return fnum('0')
+	return limb_diameter satisfies never
 }
 
 const cost_increase_ratio_for_broken_branches = ({ limb_diameter }: { limb_diameter: LimbDiameter }) => {
