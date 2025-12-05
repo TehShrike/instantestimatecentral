@@ -31,3 +31,7 @@ At the bottom right of every form, light text for Instant Estimate Central, link
 
 - phone number should contain at least 7 digits
 - email address should contain an @ followed by a period at some point
+
+## Pricing table for business owners
+
+A table view showing how pricing shakes out for each service. The table should have a column for each option the user could pick. Options on the left will need a rowspan to account for the options below them (to show the hierarchical nature of choices). Should be displayable similar to the current demo pages.
