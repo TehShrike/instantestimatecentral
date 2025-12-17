@@ -1,7 +1,3 @@
-## Auto inflation calculator
-
-Every company needs a start date (and probably a customizable inflation rate?).  Prices should automatically increase based on the amount of time since the start date.
-
 ## Log sends
 
 There needs to be a mysql database, Digital Ocean I imagine, and it should be logged whenever we attempt to send an email, and when we successfully send an email, and all the details.
