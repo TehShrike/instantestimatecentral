@@ -40,12 +40,12 @@
 		tree_trimming: get_tree_trimming_initial_args(),
 	})
 
-	const on_submit = (contact: ContactFormData<string>, turnstile_token: string | null) =>
+	const on_submit = (contact: ContactFormData<string>, altcha_payload: string | null) =>
 		send_estimate_email({
 			service_name: current_tab_identifier,
 			pricing_args: pricing_args[current_tab_identifier],
 			contact,
-			turnstile_token,
+			altcha_payload,
 		})
 
 	$effect(() => set('all_services_current_tab_identifier', current_tab_identifier))

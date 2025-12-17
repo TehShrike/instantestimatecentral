@@ -13,12 +13,12 @@
 
 	let pricing_args = $state(get_tree_removal_initial_args())
 
-	const on_submit = (contact: ContactFormData<string>, turnstile_token: string | null) =>
+	const on_submit = (contact: ContactFormData<string>, altcha_payload: string | null) =>
 		send_estimate_email({
 			service_name: 'tree_removal',
 			pricing_args,
 			contact,
-			turnstile_token,
+			altcha_payload,
 		})
 </script>
 

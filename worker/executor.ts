@@ -6,25 +6,10 @@ import * as jv from '#lib/validator/json_validator.ts'
 import { Validator } from '#lib/validator/json_validator.ts'
 import { response, json_response, error_response } from './response_helpers.ts'
 import type { Env } from './environment.ts'
+import { createChallenge, verifySolution } from 'altcha-lib'
 
-const validate_turnstile = async (token: string, secret_key: string): Promise<{ success: boolean; error?: string }> => {
-	const form_data = new FormData()
-	form_data.append('secret', secret_key)
-	form_data.append('response', token)
-
-	const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-		method: 'POST',
-		body: form_data,
-	})
-
-	const outcome = (await result.json()) as { success: boolean; 'error-codes'?: string[] }
-
-	if (!outcome.success) {
-		return { success: false, error: outcome['error-codes']?.join(', ') || 'Unknown error' }
-	}
-
-	return { success: true }
-}
+const ALTCHA_MAX_NUMBER = 100_000
+const ALTCHA_EXPIRATION_SECONDS = 5 * 60
 
 const handle_request = async (
 	request: Request,
@@ -62,6 +47,10 @@ const handle_request = async (
 			return Result.success(context)
 		},
 		async (context) => {
+			if (context.request.method === 'GET') {
+				return Result.success({ ...context, body: null })
+			}
+
 			try {
 				const body = await request.json()
 
@@ -73,37 +62,40 @@ const handle_request = async (
 		(context) => {
 			return route(
 				{
+					'/altcha_challenge': {
+						GET: async ({ env }) => {
+							const expires = new Date(Date.now() + ALTCHA_EXPIRATION_SECONDS * 1000)
+							const challenge = await createChallenge({
+								hmacKey: env.ALTCHA_HMAC_KEY,
+								maxNumber: ALTCHA_MAX_NUMBER,
+								expires,
+							})
+							return Result.success(json_response({ body: challenge, status: 200 }))
+						},
+					},
 					'/send_estimate_email': {
 						POST: async ({ body, company, ...context }) => {
 							if (!body_validator.is_valid(body)) {
 								return Result.failure(error_response({ message: body_validator.get_messages(body, 'body').join(', ') }))
 							}
-							const { service: service_name, args: pricing_args, contact, turnstile_token } = body
+							const { service: service_name, args: pricing_args, contact, altcha_payload } = body
 
 							try {
-								const TURNSTILE_DISABLED_FOR_NOW = true
-								if (context.env.ENVIRONMENT !== 'local' && !TURNSTILE_DISABLED_FOR_NOW) {
-									console.log('Validating turnstile token:', turnstile_token)
-									// If turnstile_token is null, still validate with CF – if CF is down, it's acceptable to not have a valid token
-									const turnstile_result = await validate_turnstile(
-										turnstile_token || 'none',
-										context.env.CF_TURNSTILE_SECRET_KEY,
+								const is_valid = await verifySolution(altcha_payload, context.env.ALTCHA_HMAC_KEY)
+								if (!is_valid) {
+									return Result.failure(
+										error_response({
+											message: 'Security verification failed. Please try again.',
+										}),
 									)
-									if (!turnstile_result.success) {
-										return Result.failure(
-											error_response({
-												message:
-													'Security verification failed: ' +
-													(turnstile_result.error || 'Unknown error') +
-													'\nPlease make sure the captcha was successfully completed.',
-											}),
-										)
-									}
 								}
 							} catch (error) {
-								console.error('Error validating turnstile:', error instanceof Error ? error.message : String(error))
-								// Don't fail out – if the request to turnstile fails, we'll give the user the benefit of the doubt
-								// TODO: report error to Sentry?
+								console.error('Error validating altcha:', error instanceof Error ? error.message : String(error))
+								return Result.failure(
+									error_response({
+										message: 'Security verification error. Please try again.',
+									}),
+								)
 							}
 
 							if (!company.service_name_validator.is_valid(service_name)) {
@@ -184,7 +176,7 @@ const body_validator = jv.object({
 	service: jv.is_string,
 	args: jv.object_values(is_anything),
 	contact: jv.object_values(is_anything),
-	turnstile_token: jv.one_of(jv.is_string, jv.is_null),
+	altcha_payload: jv.regex(/^[A-Za-z0-9+/]+=*$/, 'altcha_payload must be a base64 string'),
 })
 
 export default handle_request

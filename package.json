@@ -57,6 +57,8 @@
 		"wrangler": "^4.48.0"
 	},
 	"dependencies": {
+		"altcha": "^2.2.4",
+		"altcha-lib": "^1.4.1",
 		"financial-number": "^5.0.0"
 	}
 }

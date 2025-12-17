@@ -13,12 +13,12 @@
 
 	let pricing_args = $state(get_limb_removal_initial_args())
 
-	const on_submit = (contact: ContactFormData, turnstile_token: string | null) =>
+	const on_submit = (contact: ContactFormData, altcha_payload: string | null) =>
 		send_estimate_email({
 			service_name: 'limb_removal',
 			pricing_args,
 			contact,
-			turnstile_token,
+			altcha_payload,
 		})
 </script>
 

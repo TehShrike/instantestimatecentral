@@ -62,7 +62,7 @@ type Middleware<Input, SuccessValue, FailureValue, InterruptValue> = (
 ) => Result<SuccessValue, FailureValue, InterruptValue> | Promise<Result<SuccessValue, FailureValue, InterruptValue>>
 
 type UnexpectedError = { message: string; stack: string | null }
-const make_unexpected_error_result = (error_texts: UnexpectedError) => Result.failure(error_texts)
+const make_unexpected_error_result = (unexpected_error: UnexpectedError) => Result.failure(unexpected_error)
 
 async function pipeline<InitialValue, FailureValue, InterruptValue>(
 	initial: InitialValue,

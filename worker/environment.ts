@@ -2,7 +2,7 @@ export interface Env {
 	ASSETS: Fetcher
 	RESEND_API_KEY: string
 	ENVIRONMENT: 'local' | 'production'
-	CF_TURNSTILE_SECRET_KEY: string
+	ALTCHA_HMAC_KEY: string
 }
 
 export const determine_embed_origin = (environment: Env['ENVIRONMENT']): string => {

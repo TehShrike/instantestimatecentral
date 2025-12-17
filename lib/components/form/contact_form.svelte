@@ -1,6 +1,4 @@
 <script lang="ts" module>
-	declare const __IS_DEV__: boolean
-
 	export type AdditionalField<FieldName extends string = string> = {
 		label: string
 		field_name: FieldName
@@ -9,7 +7,7 @@
 
 <script lang="ts" generics="FieldName extends string">
 	import ErrorDisplay from '../error_display.svelte'
-	import CloudflareTurnstile from '../cloudflare_turnstile.svelte'
+	import AltchaWidget from '../altcha_widget.svelte'
 	import { get, set } from '#lib/localstorage.ts'
 	import { object, is_string } from '#lib/validator/json_validator.ts'
 	import type { ContactForm } from './contact_form.d.ts'
@@ -19,7 +17,7 @@
 		submit,
 		additional_fields = [],
 	}: {
-		submit: (data: ContactForm<FieldName>, turnstile_token: string | null) => Promise<void>
+		submit: (data: ContactForm<FieldName>, altcha_payload: string | null) => Promise<void>
 		additional_fields?: AdditionalField<FieldName>[]
 	} = $props()
 
@@ -59,7 +57,7 @@
 	let additional_values = $state(get(additional_fields_key, additional_values_validator, default_additional_values))
 
 	let submission_promise = $state<Promise<void> | null>(null)
-	let turnstile_token = $state<string | null>(null)
+	let altcha_payload = $state<string | null>(null)
 
 	$effect(() => set('contact_form_data', common_data))
 	$effect(() => set(additional_fields_key, additional_values))
@@ -72,12 +70,9 @@
 				...common_data,
 				extra: additional_values,
 			},
-			turnstile_token,
+			altcha_payload,
 		)
 	}
-
-	const TURNSTILE_DISABLED_FOR_NOW = true
-	let form_is_valid = $derived(__IS_DEV__ || TURNSTILE_DISABLED_FOR_NOW || turnstile_token !== null)
 </script>
 
 <form onsubmit={handle_submit}>
@@ -117,9 +112,7 @@
 		out in the next business day or two.
 	</p>
 
-	{#if !__IS_DEV__ && !TURNSTILE_DISABLED_FOR_NOW}
-		<CloudflareTurnstile bind:token={turnstile_token} />
-	{/if}
+	<AltchaWidget bind:payload={altcha_payload} />
 
 	{#if submission_promise}
 		{#await submission_promise then}
@@ -129,7 +122,7 @@
 		{/await}
 	{/if}
 
-	<button type="submit" disabled={$effect.pending() > 0 || !form_is_valid}>
+	<button type="submit" disabled={$effect.pending() > 0}>
 		{#if $effect.pending() > 0}
 			Submitting...
 		{:else}

@@ -33,7 +33,6 @@ const compiler_options: CompileOptions = {
 	customElement: true,
 }
 
-const CF_TURNSTILE_SITE_KEY='0x4AAAAAACB5D9NkFrU62jG9'
 const api_host = dev ? 'https://executor.local.com:1337' : 'https://executor.instantestimatecentral.com'
 
 const build_options = {
@@ -50,7 +49,6 @@ const build_options = {
 	target: 'es2020',
 	define: {
 		'__API_HOST__': JSON.stringify(api_host),
-		'__CF_TURNSTILE_SITE_KEY__': JSON.stringify(CF_TURNSTILE_SITE_KEY),
 		'__IS_DEV__': JSON.stringify(dev),
 	},
 }
