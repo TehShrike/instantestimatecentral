@@ -1,11 +1,3 @@
-## More info on home page
-
-A description of the site, and the email address josh@instantestimatecentral.com
-
-## captcha
-
-Turnstile doesn't work, try [Altcha](https://altcha.org/open-source-captcha/)
-
 ## Basic contact form validation
 
 - phone number should contain at least 7 digits

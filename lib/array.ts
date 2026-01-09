@@ -16,6 +16,10 @@ export const for_each_async = async <T>(arr: readonly T[], fn: (item: T, index: 
 	}
 }
 
+export const for_each_parallel = async <T>(arr: readonly T[], fn: (item: T, index: number) => Promise<void>) => {
+	await Promise.all(map(arr, fn))
+}
+
 type Predicate<T> = (item: T) => boolean
 export const filter = <T>(arr: readonly T[], predicate: Predicate<T>) => {
 	const length = arr.length,

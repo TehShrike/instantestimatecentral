@@ -22,6 +22,12 @@
 	import { services, service_name_validator, type ServiceProgrammaticName } from '#companies/dufftreeservice/index.ts'
 	import VerticalColumnWithGap from '#lib/components/vertical_column_with_gap.svelte'
 
+	let {
+		disable_submit = false,
+	}: {
+		disable_submit?: boolean
+	} = $props()
+
 	const additional_contact_form_fields: Partial<Record<ServiceProgrammaticName, AdditionalField<string>[]>> = {
 		tree_planting: tree_planting_additional_contact_form_fields,
 	} as const
@@ -73,7 +79,11 @@
 
 <PricingWrapper>
 	<Tabs bind:current_tab_identifier {tabs} />
-	<ContactForm submit={on_submit} additional_fields={additional_contact_form_fields[current_tab_identifier] || []} />
+	<ContactForm
+		submit={on_submit}
+		additional_fields={additional_contact_form_fields[current_tab_identifier] || []}
+		{disable_submit}
+	/>
 </PricingWrapper>
 
 {#snippet limb_removal_content()}

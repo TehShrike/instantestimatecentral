@@ -16,9 +16,11 @@
 	let {
 		submit,
 		additional_fields = [],
+		disable_submit = false,
 	}: {
 		submit: (data: ContactForm<FieldName>, altcha_payload: string | null) => Promise<void>
 		additional_fields?: AdditionalField<FieldName>[]
+		disable_submit?: boolean
 	} = $props()
 
 	const common_data_validator = object({
@@ -112,7 +114,9 @@
 		out in the next business day or two.
 	</p>
 
-	<AltchaWidget bind:payload={altcha_payload} />
+	{#if !disable_submit}
+		<AltchaWidget bind:payload={altcha_payload} />
+	{/if}
 
 	{#if submission_promise}
 		{#await submission_promise then}
@@ -122,7 +126,7 @@
 		{/await}
 	{/if}
 
-	<button type="submit" disabled={$effect.pending() > 0}>
+	<button type="submit" disabled={disable_submit || $effect.pending() > 0}>
 		{#if $effect.pending() > 0}
 			Submitting...
 		{:else}

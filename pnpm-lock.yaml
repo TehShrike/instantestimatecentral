@@ -45,6 +45,9 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      watchlist:
+        specifier: ^0.3.1
+        version: 0.3.1
       wrangler:
         specifier: ^4.48.0
         version: 4.55.0
@@ -1291,6 +1294,11 @@ packages:
 
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
+
+  watchlist@0.3.1:
+    resolution: {integrity: sha512-m5r4bzxJ9eg07TT/O0Q49imFPD45ZTuQ3kaHwSpUJj1QwVd3pzit4UYOmySdmAP5Egkz6mB6hcAPuPfhIbNo0g==}
+    engines: {node: '>=8'}
+    hasBin: true
 
   which-boxed-primitive@1.1.1:
     resolution: {integrity: sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==}
@@ -2609,6 +2617,10 @@ snapshots:
     dependencies:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
+
+  watchlist@0.3.1:
+    dependencies:
+      mri: 1.2.0
 
   which-boxed-primitive@1.1.1:
     dependencies:

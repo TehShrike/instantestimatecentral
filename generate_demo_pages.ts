@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir } from 'fs/promises'
 import { dirname } from 'path'
 import { get_form_components } from '#lib/get_form_components.ts'
-import { for_each_async } from '#lib/array.ts'
+import { for_each_parallel } from '#lib/array.ts'
 
 const extract_custom_element_name = (content: string): string | null => {
 	const match = content.match(/<svelte:options\s+customElement="([^"]+)"\s*\/>/)
@@ -50,7 +50,7 @@ const embed_host = is_dev ? 'embed.local.com:1337' : 'embed.instantestimatecentr
 
 console.log('Generating demo pages...')
 
-await for_each_async(components, async (component) => {
+await for_each_parallel(components, async (component) => {
 	const content = await readFile(component.path, 'utf-8')
 	const custom_element_name = extract_custom_element_name(content)
 

@@ -36,11 +36,12 @@
 		"dev:worker:build": "node esbuild.worker.ts --watch",
 		"dev:worker:serve": "wrangler pages dev build --port=8788",
 		"dev:worker": "run-p dev:worker:*",
+		"dev:www": "watchlist www -- pnpm run build:www -- --dev",
 		"dev:open_browser": "open https://example-customer-site.com:1337/demo/dufftreeservice/all_services",
 		"build": "run-p build:**",
 		"build:forms": "node esbuild.forms.ts",
 		"build:worker": "node esbuild.worker.ts",
-		"build:www": "cp -r www build/",
+		"build:www": "node build_www.ts",
 		"build:build_demo_pages": "node generate_demo_pages.ts",
 		"postinstall": "mkdir -p build"
 	},
@@ -54,6 +55,7 @@
 		"svelte": "^5.43.3",
 		"svelte-check": "^4.3.4",
 		"typescript": "^5.9.3",
+		"watchlist": "^0.3.1",
 		"wrangler": "^4.48.0"
 	},
 	"dependencies": {

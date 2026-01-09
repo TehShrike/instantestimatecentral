@@ -7,11 +7,51 @@
 		</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			body {
+				font-family: Georgia, 'Times New Roman', Times, Garamond, 'Palatino Linotype', serif;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				height: 100vh;
+				padding-bottom: 200px;
+			}
+
+			#content {
+				display: flex;
+				flex-direction: column;
+				max-width: 800px;
+				width: 100%;
+			}
+
+			h1, h2, h3, h4, h5, h6 {
+				text-align: center;
+			}
+
+			p {
+				width: 100%;
+			}
+
+			hr {
+				border: none;
+				height: 1px;
+				background-color: black;
+			}
+		</style>
 	</head>
 	<body>
-		<h1>Instant Estimate Central</h1>
-		<p>
-			Hello world.
-		</p>
+		<div id="content">
+			<h1>Instant Estimate Central</h1>
+			<p>
+				My brother wanted a way for potential clients on of <a href="https://www.dufftreeservice.com/" target="_blank"></a>his tree service</a> to get an idea of how much work would cost and make it easy to start the process.  We ended up with this:
+			</p>
+			<script type="module" src="https://__EMBED_HOST__/dufftreeservice/all_services.js"></script>
+			<hr>
+			<all-services disable_submit="true"></all-services>
+			<p>
+				If you'd like your own estimation form on your site, <a href="mailto:josh@instantestimatecentral.com">send me an email</a> and let me know.
+			</p>
+		</div>
 	</body>
 </html>
