@@ -15,12 +15,12 @@
 		current_tab_identifier = $bindable(tabs[0]?.identifier),
 	}: {
 		tabs: Tab<Identifier>[]
-		current_tab_identifier?: Identifier
+		current_tab_identifier?: Identifier | null
 	} = $props()
 
 	const selected_tab_index = $derived(tabs.findIndex((tab) => tab.identifier === current_tab_identifier))
 
-	const selected_tab = $derived(tabs[selected_tab_index])
+	const selected_tab = $derived(current_tab_identifier === null ? null : tabs[selected_tab_index])
 
 	let container_width = $state(0)
 	let pixels_per_tab = $derived(container_width / tabs.length)
@@ -28,7 +28,7 @@
 </script>
 
 <div class="tabs-container" bind:clientWidth={container_width}>
-	<div class="tabs-header" data-need-to-wrap={need_to_wrap}>
+	<div class="tabs-header" data-need-to-wrap={need_to_wrap} data-no-tab-selected={current_tab_identifier === null}>
 		{#each tabs as tab, index}
 			<button
 				class="tab-button"
@@ -40,11 +40,11 @@
 		{/each}
 	</div>
 
-	<div>
-		{#if selected_tab}
+	{#if selected_tab}
+		<div>
 			{@render selected_tab.content()}
-		{/if}
-	</div>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -53,6 +53,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		--button_outline_color: var(--iec_brand_color, black)
 	}
 
 	.tabs-header {
@@ -87,8 +88,7 @@
 
 		&[data-selected='true'] {
 			background: white;
-			color: #2c3e50;
-			border: 2px solid black;
+			border: 2px solid var(--button_outline_color);
 			border-bottom: none;
 		}
 
@@ -96,5 +96,11 @@
 			font-size: 0.85em;
 			padding: 0.6rem 0.25rem;
 		}
+	}
+
+	[data-no-tab-selected='true'] .tab-button {
+		background: white;
+		border-radius: 8px;
+		border: 2px solid var(--button_outline_color);
 	}
 </style>

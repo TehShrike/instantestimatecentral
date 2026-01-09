@@ -10,6 +10,7 @@
 
 <style>
 	.pricing-wrapper {
+		width: 100%;
 		max-width: 800px;
 		box-sizing: border-box;
 
@@ -25,5 +26,11 @@
 	:global(:root) {
 		font-family: inherit;
 		color: inherit;
+	}
+
+	/* Not sure this is where it belongs but I don't want to do it in every entry point */
+	:global(:host) {
+		width: 100%;
+		max-width: 800px;
 	}
 </style>

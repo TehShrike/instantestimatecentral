@@ -18,6 +18,7 @@
 		padding: 1.5rem;
 		background: #ecf0f1;
 		border-radius: 8px;
+		--price_color: var(--iec_brand_color, #27ae60);
 
 		@media (max-width: 900px) {
 			padding: 1rem;
@@ -46,7 +47,7 @@
 	.price-value {
 		text-align: right;
 		font-weight: 700;
-		color: #27ae60;
+		color: var(--price_color);
 		font-size: 1.5em;
 
 		@media (max-width: 900px) {

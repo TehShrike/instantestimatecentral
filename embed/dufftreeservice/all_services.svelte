@@ -21,11 +21,15 @@
 	} from './get_initial_args.ts'
 	import { services, service_name_validator, type ServiceProgrammaticName } from '#companies/dufftreeservice/index.ts'
 	import VerticalColumnWithGap from '#lib/components/vertical_column_with_gap.svelte'
+	import assert from '#lib/assert.ts'
+	import { one_of, is_null } from '#lib/validator/json_validator.ts'
 
 	let {
 		disable_submit = false,
+		initial_tab_identifier = null,
 	}: {
 		disable_submit?: boolean
+		initial_tab_identifier?: ServiceProgrammaticName | null
 	} = $props()
 
 	const additional_contact_form_fields: Partial<Record<ServiceProgrammaticName, AdditionalField<string>[]>> = {
@@ -55,8 +59,9 @@
 		},
 	]
 
-	let current_tab_identifier = $state<ServiceProgrammaticName>(
-		get('all_services_current_tab_identifier', service_name_validator, 'limb_removal'),
+	let current_tab_identifier = $state<ServiceProgrammaticName | null>(
+		// svelte-ignore state_referenced_locally
+		get('all_services_current_tab_identifier', one_of(service_name_validator, is_null), initial_tab_identifier),
 	)
 
 	let pricing_args = $state({
@@ -66,24 +71,29 @@
 		tree_planting: get_tree_planting_initial_args(),
 	})
 
-	const on_submit = (contact: ContactFormData<string>, altcha_payload: string | null) =>
-		send_estimate_email({
+	const on_submit = async (contact: ContactFormData<string>, altcha_payload: string | null) =>{
+		assert(current_tab_identifier)
+
+		return send_estimate_email({
 			service_name: current_tab_identifier,
 			pricing_args: pricing_args[current_tab_identifier],
 			contact,
 			altcha_payload,
 		})
+	}
 
 	$effect(() => set('all_services_current_tab_identifier', current_tab_identifier))
 </script>
 
 <PricingWrapper>
 	<Tabs bind:current_tab_identifier {tabs} />
-	<ContactForm
-		submit={on_submit}
-		additional_fields={additional_contact_form_fields[current_tab_identifier] || []}
-		{disable_submit}
-	/>
+	{#if current_tab_identifier}
+		<ContactForm
+			submit={on_submit}
+			additional_fields={additional_contact_form_fields[current_tab_identifier] || []}
+			{disable_submit}
+		/>
+	{/if}
 </PricingWrapper>
 
 {#snippet limb_removal_content()}

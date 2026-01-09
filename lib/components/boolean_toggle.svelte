@@ -26,6 +26,7 @@
 		--width: 70px;
 		--height: 36px;
 		--toggle_height_and_width: calc(var(--height) - 8px);
+		--selected_background_color: var(--iec_brand_color, #0074ff);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -43,7 +44,7 @@
 	}
 
 	.toggle-display[data-checked='true'] {
-		background-color: #0074ff;
+		background-color: var(--selected_background_color);
 	}
 
 	.toggle-text-yes,

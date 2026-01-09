@@ -36,6 +36,7 @@
 		display: flex;
 		flex-direction: row;
 		gap: 0.75rem;
+		--button_selected_color: var(--iec_brand_color, #0074ff);
 
 		& > * {
 			flex-basis: 0;
@@ -70,12 +71,12 @@
 		font-size: 1em;
 
 		&:focus {
-			outline: 2px solid #0074ff;
+			outline: 2px solid var(--button_selected_color);
 			outline-offset: 2px;
 		}
 
 		&[data-active='true'] {
-			background-color: #0074ff;
+			background-color: var(--button_selected_color);
 
 			strong,
 			small {
