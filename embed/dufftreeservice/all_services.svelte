@@ -59,10 +59,7 @@
 		},
 	]
 
-	let current_tab_identifier = $state<ServiceProgrammaticName | null>(
-		// svelte-ignore state_referenced_locally
-		get('all_services_current_tab_identifier', one_of(service_name_validator, is_null), initial_tab_identifier),
-	)
+	let current_tab_identifier = $state<ServiceProgrammaticName | null>(null)
 
 	let pricing_args = $state({
 		limb_removal: get_limb_removal_initial_args(),
@@ -81,8 +78,6 @@
 			altcha_payload,
 		})
 	}
-
-	$effect(() => set('all_services_current_tab_identifier', current_tab_identifier))
 </script>
 
 <PricingWrapper>
