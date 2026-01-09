@@ -1,3 +1,7 @@
+## Nicer radio inputs
+
+- multi-select button thingy like on BAPSAD
+
 ## Basic contact form validation
 
 - phone number should contain at least 7 digits
