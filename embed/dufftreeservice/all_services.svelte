@@ -61,6 +61,9 @@
 
 	let current_tab_identifier = $state<ServiceProgrammaticName | null>(null)
 
+	// svelte-ignore state_referenced_locally
+	console.log('initial_tab_identifier', initial_tab_identifier)
+
 	let pricing_args = $state({
 		limb_removal: get_limb_removal_initial_args(),
 		tree_removal: get_tree_removal_initial_args(),
