@@ -78,7 +78,7 @@
 		border: 2px solid transparent;
 		border-bottom: none;
 		cursor: pointer;
-		transition: background-color 0.2s;
+		transition: background-color 0.2s, color 0.2s;
 		text-align: center;
 		flex-basis: 40%;
 
@@ -99,7 +99,8 @@
 	}
 
 	[data-no-tab-selected='true'] .tab-button {
-		background: white;
+		background: var(--button_outline_color);
+		color: white;
 		border-radius: 8px;
 		border: 2px solid var(--button_outline_color);
 	}
