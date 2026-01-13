@@ -141,6 +141,8 @@
 	}
 	form {
 		--gap: 1rem;
+		--button_brand_color: var(--iec_brand_color, #0074ff);
+		--button_border_radius: var(--iec_button_border_radius, 16px);
 		display: flex;
 		flex-direction: column;
 		gap: var(--gap);
@@ -221,26 +223,27 @@
 
 	button {
 		padding: 0.75rem 1.5rem;
-		background-color: #3498db;
+		background-color: var(--button_brand_color);
 		color: white;
 		border: none;
-		border-radius: 4px;
+		border-radius: var(--button_border_radius);
 		font-size: 1em;
 		font-weight: 600;
 		cursor: pointer;
 		transition: background-color 0.2s;
 
 		&:hover {
-			background-color: #2980b9;
+			filter: brightness(0.9);
 		}
 
 		&:active {
-			background-color: #21618c;
+			filter: brightness(0.8);
 		}
 
 		&:disabled {
 			background-color: #95a5a6;
 			cursor: not-allowed;
+			filter: none;
 		}
 
 		@media (max-width: 900px) {
