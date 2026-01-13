@@ -54,7 +54,7 @@
 		flex-direction: column;
 		gap: 1rem;
 		--button_outline_color: var(--iec_brand_color, black);
-		--button_border_radius: var(--iec_button_border_radius, 16px);
+		--button_border_radius: var(--iec_button_border_radius);
 	}
 
 	.tabs-header {
