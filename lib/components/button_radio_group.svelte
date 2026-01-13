@@ -37,6 +37,7 @@
 		flex-direction: row;
 		gap: 0.75rem;
 		--button_selected_color: var(--iec_brand_color, #0074ff);
+		--button_border_radius: var(--iec_button_border_radius, var(--default_border_radius));
 
 		& > * {
 			flex-basis: 0;
@@ -63,7 +64,7 @@
 		align-items: stretch;
 		padding: 1rem;
 		border: 2px solid #2c3e50;
-		border-radius: 8px;
+		border-radius: var(--button_border_radius);
 		background-color: white;
 		cursor: pointer;
 		font-family: inherit;

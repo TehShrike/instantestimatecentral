@@ -10,6 +10,8 @@
 
 <style>
 	.pricing-wrapper {
+		--default_border_radius: 16px;
+
 		width: 100%;
 		max-width: 800px;
 		box-sizing: border-box;

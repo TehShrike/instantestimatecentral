@@ -53,7 +53,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		--button_outline_color: var(--iec_brand_color, black)
+		--button_outline_color: var(--iec_brand_color, black);
+		--button_border_radius: var(--iec_button_border_radius, var(--default_border_radius));
 	}
 
 	.tabs-header {
@@ -69,7 +70,7 @@
 	.tab-button {
 		flex: 1;
 		padding: 0.75rem 0.25rem;
-		border-radius: 8px 8px 0 0;
+		border-radius: var(--button_border_radius) var(--button_border_radius) 0 0;
 		font-size: 1em;
 		font-weight: 600;
 		font-family: inherit;
@@ -101,7 +102,7 @@
 	[data-no-tab-selected='true'] .tab-button {
 		background: var(--button_outline_color);
 		color: white;
-		border-radius: 8px;
+		border-radius: var(--button_border_radius);
 		border: 2px solid var(--button_outline_color);
 	}
 </style>
