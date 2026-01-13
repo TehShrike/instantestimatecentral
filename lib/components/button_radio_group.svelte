@@ -37,7 +37,7 @@
 		flex-direction: row;
 		gap: 0.75rem;
 		--button_selected_color: var(--iec_brand_color, #0074ff);
-		--button_border_radius: var(--iec_button_border_radius);
+		--button_border_radius: var(--iec_button_border_radius, var(--default_border_radius));
 
 		& > * {
 			flex-basis: 0;

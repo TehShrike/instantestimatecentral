@@ -10,7 +10,7 @@
 
 <style>
 	.pricing-wrapper {
-		--iec_button_border_radius: 16px;
+		--default_border_radius: 16px;
 
 		width: 100%;
 		max-width: 800px;
