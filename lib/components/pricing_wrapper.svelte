@@ -10,7 +10,7 @@
 
 <style>
 	.pricing-wrapper {
-		--default_border_radius: 16px;
+		--default_border_radius: 12px;
 
 		width: 100%;
 		max-width: 800px;
