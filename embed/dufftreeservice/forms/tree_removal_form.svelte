@@ -3,7 +3,7 @@
 	import type { PricingFunction } from '#companies/companies.js'
 	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/components/boolean_toggle.svelte'
-	import RadioGroup from '#lib/components/radio_group.svelte'
+	import RadioButtonCardGroup from '#lib/components/radio_button_card_group.svelte'
 	import PricingForm from '#lib/components/form/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/components/estimated_price_display.svelte'
 
@@ -29,7 +29,7 @@
 
 {#snippet tree_diameter()}
 	<div class="left">What is the diameter of the trunk at chest height?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: '6-10 inches', value: '6-10 inches' as const },
 			{ label: '11-15 inches', value: '11-15 inches' as const },
@@ -44,7 +44,7 @@
 
 {#snippet branches_over_something()}
 	<div class="left">Are its branches over anything that you don't want a branch to land on?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: 'Nope', value: 'nothing underneath' as const },
 			{ label: 'Some branches', value: 'some branches over something' as const },
@@ -56,7 +56,7 @@
 
 {#snippet fence()}
 	<div class="left">Is the tree inside a fence?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: 'No', value: 'no' as const },
 			{ label: 'Yes – single gate', value: 'single gate' as const },

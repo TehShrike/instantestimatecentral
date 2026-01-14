@@ -3,7 +3,7 @@
 	import type { PricingFunction } from '#companies/companies.js'
 	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/components/boolean_toggle.svelte'
-	import RadioGroup from '#lib/components/radio_group.svelte'
+	import RadioButtonCardGroup from '#lib/components/radio_button_card_group.svelte'
 	import ButtonRadioGroup from '#lib/components/button_radio_group.svelte'
 	import PricingForm from '#lib/components/form/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/components/estimated_price_display.svelte'
@@ -59,7 +59,7 @@
 
 {#snippet tree_diameter()}
 	<div class="left">What is the diameter of the trunk at chest height?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: '6-10 inches', value: '6-10 inches' as const },
 			{ label: '11-15 inches', value: '11-15 inches' as const },
@@ -84,7 +84,7 @@
 
 {#snippet tree_variety()}
 	<div class="left">What variety is it?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: 'Other', value: 'other' as const },
 			{ label: 'Sycamore', value: 'sycamore' as const },

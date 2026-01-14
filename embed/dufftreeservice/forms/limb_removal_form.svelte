@@ -3,7 +3,7 @@
 	import type { PricingFunction } from '#companies/companies.js'
 	import { set } from '#lib/localstorage.ts'
 	import BooleanToggle from '#lib/components/boolean_toggle.svelte'
-	import RadioGroup from '#lib/components/radio_group.svelte'
+	import RadioButtonCardGroup from '#lib/components/radio_button_card_group.svelte'
 	import PricingForm from '#lib/components/form/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/components/estimated_price_display.svelte'
 
@@ -35,7 +35,7 @@
 
 {#snippet how_big_is_it()}
 	<div class="left">How big is the branch (diameter near the trunk)?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: '1-3 inches', value: '1-3 inches' as const },
 			{ label: '3-5 inches', value: '3-5 inches' as const },
@@ -49,7 +49,7 @@
 
 {#snippet distance_from_ground()}
 	<div class="left">How far off the ground is it where it meets the trunk?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: 'under 15 feet', value: 'under 15 feet' as const },
 			{ label: '15-20 feet', value: '15-20 feet' as const },

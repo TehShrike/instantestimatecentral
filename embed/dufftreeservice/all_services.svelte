@@ -68,7 +68,7 @@
 		tree_planting: get_tree_planting_initial_args(),
 	})
 
-	const on_submit = async (contact: ContactFormData<string>, altcha_payload: string | null) =>{
+	const on_submit = async (contact: ContactFormData<string>, altcha_payload: string | null) => {
 		assert(current_tab_identifier)
 
 		return send_estimate_email({

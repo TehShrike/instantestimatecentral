@@ -7,7 +7,7 @@
 	import type { PricingFunction } from '#companies/companies.js'
 	import { set } from '#lib/localstorage.ts'
 	import NumberInput from '#lib/components/number_input.svelte'
-	import RadioGroup from '#lib/components/radio_group.svelte'
+	import RadioButtonCardGroup from '#lib/components/radio_button_card_group.svelte'
 	import PricingForm from '#lib/components/form/pricing_form.svelte'
 	import EstimatedPriceDisplay from '#lib/components/estimated_price_display.svelte'
 
@@ -36,7 +36,7 @@
 
 {#snippet tree_size()}
 	<div class="left">How big of a tree?</div>
-	<RadioGroup
+	<RadioButtonCardGroup
 		options={[
 			{ label: '1 gallon (1-2 feet high)', value: '1 gallon' as const },
 			{ label: '3 gallons (3-4 feet high)', value: '3 gallons' as const },
