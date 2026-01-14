@@ -12,6 +12,8 @@ I like descriptive TypeScript type names (no one-letter type names for me). I al
 
 Don't define a variable right before using it only once – inline the value instead.
 
+Run `pnpm run test:types` to check whether the types are correct.  `pnpm run test:unit` will run the unit tests.  `pnpm run test` will run everything.
+
 # AST-Grep (sg) Usage
 
 You run in an environment where ast-grep (sg) is available. Use it for syntax-aware structural matching instead of text-only tools.
