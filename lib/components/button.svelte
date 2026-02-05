@@ -31,7 +31,9 @@
 		font-size: 1em;
 		font-weight: 600;
 		cursor: pointer;
-		transition: background-color 100ms, filter 100ms;
+		transition:
+			background-color 100ms,
+			filter 100ms;
 
 		&:hover {
 			filter: brightness(0.9);
