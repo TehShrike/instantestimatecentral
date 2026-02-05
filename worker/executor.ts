@@ -133,9 +133,9 @@ const handle_request = async (
 
 							const subject = company.render_subject(service, price)
 							const html = company.render_html({
-								service: service,
-								contact: contact as any,
-								price: price,
+								service,
+								contact,
+								price,
 								estimate_arguments: pricing_args as any,
 							})
 
@@ -158,6 +158,71 @@ const handle_request = async (
 							return Result.success(json_response({ body: { success: true }, status: 200 }))
 						},
 					},
+					'/send_contact_email': {
+						POST: async ({ body, company, ...context }) => {
+							if (!contact_email_body_validator.is_valid(body)) {
+								return Result.failure(
+									error_response({ message: contact_email_body_validator.get_messages(body, 'body').join(', ') }),
+								)
+							}
+							const { contact, altcha_payload } = body
+
+							try {
+								const is_valid = await verifySolution(altcha_payload, context.env.ALTCHA_HMAC_KEY)
+								if (!is_valid) {
+									return Result.failure(
+										error_response({
+											message: 'Security verification failed. Please try again.',
+										}),
+									)
+								}
+							} catch (error) {
+								console.error('Error validating altcha:', error instanceof Error ? error.message : String(error))
+								return Result.failure(
+									error_response({
+										message: 'Security verification error. Please try again.',
+									}),
+								)
+							}
+
+							if (!company.contact_validator.is_valid(contact)) {
+								return Result.failure(
+									error_response({
+										message:
+											'Invalid contact: ' + company.contact_validator.get_messages(contact, 'body.contact').join(', '),
+									}),
+								)
+							}
+
+							const to =
+								context.env.ENVIRONMENT === 'local'
+									? 'josh@instantestimatecentral.com'
+									: contact.email.toLowerCase() === 'me+iectest@joshduff.com'
+										? 'josh@instantestimatecentral.com'
+										: company.recipient_email_address
+
+							await send_email({
+								api_key: context.env.RESEND_API_KEY,
+								from: 'Instant Estimate Central <estimate@estimate.instantestimatecentral.com>',
+								reply_to: `Josh <josh@instantestimatecentral.com>`,
+								to,
+								subject: `📞 Contact request from ${contact.name}`,
+								html: `
+									<h2>New Contact Request</h2>
+									<h3>Contact Information</h3>
+									<p><strong>Name:</strong> ${contact.name}</p>
+									<p><strong>Email:</strong> ${contact.email}</p>
+									<p><strong>Phone:</strong> ${contact.phone}</p>
+									<p><strong>Address:</strong> ${contact.street_address}</p>
+									${Object.entries(contact.extra)
+										.map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
+										.join('')}
+								`,
+							})
+
+							return Result.success(json_response({ body: { success: true }, status: 200 }))
+						},
+					},
 				},
 				context.url.pathname,
 				context.request.method,
@@ -172,11 +237,25 @@ const is_anything: Validator<any> = {
 	get_messages: (input: unknown, name: string) => [],
 }
 
+const altcha_payload_validator = jv.regex(/^[A-Za-z0-9+/]+=*$/, 'altcha_payload must be a base64 string')
+const contact_validator = jv.object({
+	name: jv.is_string,
+	email: jv.is_string,
+	phone: jv.is_string,
+	street_address: jv.is_string,
+	extra: jv.object_values(jv.is_string),
+})
+
 const body_validator = jv.object({
 	service: jv.is_string,
 	args: jv.object_values(is_anything),
-	contact: jv.object_values(is_anything),
-	altcha_payload: jv.regex(/^[A-Za-z0-9+/]+=*$/, 'altcha_payload must be a base64 string'),
+	contact: contact_validator,
+	altcha_payload: altcha_payload_validator,
+})
+
+const contact_email_body_validator = jv.object({
+	contact: contact_validator,
+	altcha_payload: altcha_payload_validator,
 })
 
 export default handle_request

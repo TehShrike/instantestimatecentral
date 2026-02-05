@@ -6,6 +6,7 @@
 </script>
 
 <script lang="ts" generics="FieldName extends string">
+	import Button from '../button.svelte'
 	import ErrorDisplay from '../error_display.svelte'
 	import AltchaWidget from '../altcha_widget.svelte'
 	import { get, set } from '#lib/localstorage.ts'
@@ -126,13 +127,13 @@
 		{/await}
 	{/if}
 
-	<button type="submit" disabled={disable_submit || $effect.pending() > 0}>
+	<Button type="submit" disabled={disable_submit || $effect.pending() > 0}>
 		{#if $effect.pending() > 0}
 			Submitting...
 		{:else}
 			Submit
 		{/if}
-	</button>
+	</Button>
 </form>
 
 <style>
@@ -141,8 +142,6 @@
 	}
 	form {
 		--gap: 1rem;
-		--button_brand_color: var(--iec_brand_color, #0074ff);
-		--button_border_radius: var(--iec_button_border_radius, var(--default_border_radius));
 		display: flex;
 		flex-direction: column;
 		gap: var(--gap);
@@ -218,41 +217,6 @@
 		@media (max-width: 500px) {
 			font-size: 0.75em;
 			padding: 0.75rem;
-		}
-	}
-
-	button {
-		padding: 0.75rem 1.5rem;
-		background-color: var(--button_brand_color);
-		color: white;
-		border: none;
-		border-radius: var(--button_border_radius);
-		font-size: 1em;
-		font-weight: 600;
-		cursor: pointer;
-		transition: background-color 0.2s;
-
-		&:hover {
-			filter: brightness(0.9);
-		}
-
-		&:active {
-			filter: brightness(0.8);
-		}
-
-		&:disabled {
-			background-color: #95a5a6;
-			cursor: not-allowed;
-			filter: none;
-		}
-
-		@media (max-width: 900px) {
-			font-size: 0.9em;
-		}
-
-		@media (max-width: 500px) {
-			font-size: 0.85em;
-			padding: 0.6rem 1rem;
 		}
 	}
 
