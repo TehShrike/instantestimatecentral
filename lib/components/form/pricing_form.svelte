@@ -61,6 +61,7 @@
 			&[data-type='radio'] {
 				grid-template-columns: 1fr;
 				justify-items: center;
+				width: 100%;
 
 				:global(.left) {
 					justify-self: start;

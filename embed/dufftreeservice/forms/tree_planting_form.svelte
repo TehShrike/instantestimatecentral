@@ -38,10 +38,10 @@
 	<div class="left">How big of a tree?</div>
 	<RadioButtonCardGroup
 		options={[
-			{ label: '1 gallon (1-2 feet high)', value: '1 gallon' as const },
-			{ label: '3 gallons (3-4 feet high)', value: '3 gallons' as const },
-			{ label: '7 gallons (5-7 feet high)', value: '7 gallons' as const },
-			{ label: '15 gallons (6-8 feet high)', value: '15 gallons' as const },
+			{ label: '1 gallon (1-2 ft)', value: '1 gallon' as const },
+			{ label: '3 gallons (3-4 ft)', value: '3 gallons' as const },
+			{ label: '7 gallons (5-7 ft)', value: '7 gallons' as const },
+			{ label: '15 gallons (6-8 ft)', value: '15 gallons' as const },
 		]}
 		bind:value={pricing_args.tree_size}
 	/>
