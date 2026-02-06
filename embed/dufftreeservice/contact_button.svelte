@@ -21,7 +21,7 @@
 
 <PricingWrapper>
 	{#if !show_form}
-		<div out:slide={{ duration: 100 }}>
+		<div out:slide={{ duration: 100 }} style="display: flex; justify-content: center;">
 			<Button onclick={() => (show_form = true)}>
 				{call_to_action}
 			</Button>
