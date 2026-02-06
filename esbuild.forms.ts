@@ -1,5 +1,5 @@
 import { build, context } from 'esbuild'
-import { mkdirSync, readFileSync } from 'fs'
+import { mkdirSync } from 'fs'
 import type { CompileOptions } from "svelte/compiler";
 import sveltePlugin from 'esbuild-svelte'
 import { get_form_components } from '#lib/get_form_components.ts'
@@ -14,18 +14,18 @@ if (components.length === 0) {
 	process.exit(1)
 }
 
-const entry_points: Record<string, string> = {}
+const components_by_service = new Map<string, Record<string, string>>()
 for_each(components, (component) => {
-	const output_key = `${component.service_name}/${component.form_name}`
-	entry_points[output_key] = component.path
+	if (!components_by_service.has(component.service_name)) {
+		components_by_service.set(component.service_name, {})
+	}
+	components_by_service.get(component.service_name)![component.form_name] = component.path
 })
 
 console.log('Building components:')
 for_each(components, (component) => {
 	console.log(`  ${component.path} -> build/embed/${component.service_name}/${component.form_name}.js`)
 })
-
-mkdirSync('build/embed', { recursive: true })
 
 const dev = is_watch
 const compiler_options: CompileOptions = {
@@ -35,10 +35,17 @@ const compiler_options: CompileOptions = {
 
 const api_host = dev ? 'https://executor.local.com:1337' : 'https://executor.instantestimatecentral.com'
 
-const build_options = {
-	entryPoints: entry_points,
+const service_names = [...components_by_service.keys()]
+
+for_each(service_names, (service_name) => {
+	mkdirSync(`build/embed/${service_name}`, { recursive: true })
+})
+
+const get_build_options = (service_name: string) => ({
+	entryPoints: components_by_service.get(service_name)!,
 	bundle: true,
-	outdir: 'build/embed',
+	splitting: true,
+	outdir: `build/embed/${service_name}`,
 	plugins: [
 		// @ts-expect-error - not sure what's up with TS not picking up the types
 		sveltePlugin({
@@ -51,13 +58,15 @@ const build_options = {
 		'__API_HOST__': JSON.stringify(api_host),
 		'__IS_DEV__': JSON.stringify(dev),
 	},
-}
+})
 
 if (is_watch) {
-	const ctx = await context(build_options)
-	await ctx.watch()
+	await Promise.all(service_names.map(async (service_name) => {
+		const ctx = await context(get_build_options(service_name))
+		await ctx.watch()
+	}))
 	console.log('Watching for changes...')
 } else {
-	await build(build_options)
+	await Promise.all(service_names.map((service_name) => build(get_build_options(service_name))))
 	console.log('Build complete')
 }
