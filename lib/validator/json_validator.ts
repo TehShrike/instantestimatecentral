@@ -1,4 +1,6 @@
 import assert from '#lib/assert.ts'
+import email_validator from './email_validator.ts'
+import phone_validator from './phone_validator.ts'
 
 type MessageReturningFunction = (input: unknown, name: string) => string[]
 
@@ -223,24 +225,6 @@ const make_regex_validator = <T extends string>(regex: RegExp, custom_message?: 
 		return []
 	},
 })
-
-const count_digits = (str: string) => str.replace(/\D/g, '').length
-
-const email_validator: Validator<string> = {
-	is_valid: (input: unknown): input is string => typeof input === 'string' && /@.*\./.test(input),
-	get_messages: (input: unknown, name: string) =>
-		typeof input === 'string' && /@.*\./.test(input)
-			? []
-			: [`${double_quote(name)} must contain an @ followed by a period`],
-}
-
-const phone_validator: Validator<string> = {
-	is_valid: (input: unknown): input is string => typeof input === 'string' && count_digits(input) >= 7,
-	get_messages: (input: unknown, name: string) =>
-		typeof input === 'string' && count_digits(input) >= 7
-			? []
-			: [`${double_quote(name)} must contain at least 7 digits`],
-}
 
 const undefined_validator: Validator<undefined> = {
 	is_valid(input: unknown): input is undefined {
