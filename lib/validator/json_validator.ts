@@ -1,6 +1,4 @@
 import assert from '#lib/assert.ts'
-import email_validator from './email_validator.ts'
-import phone_validator from './phone_validator.ts'
 
 type MessageReturningFunction = (input: unknown, name: string) => string[]
 
@@ -279,6 +277,4 @@ export {
 	number_validator as is_number,
 	date_validator as is_date,
 	null_validator as is_null,
-	email_validator as is_email,
-	phone_validator as is_phone,
 }
