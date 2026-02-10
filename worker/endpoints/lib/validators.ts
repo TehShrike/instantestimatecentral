@@ -10,8 +10,8 @@ export const altcha_payload_validator = jv.regex(/^[A-Za-z0-9+/]+=*$/, 'altcha_p
 
 export const contact_validator = jv.object({
 	name: jv.is_string,
-	email: jv.is_string,
-	phone: jv.is_string,
+	email: jv.is_email,
+	phone: jv.is_phone,
 	street_address: jv.is_string,
 	extra: jv.object_values(jv.is_string),
 })

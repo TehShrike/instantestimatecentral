@@ -224,6 +224,24 @@ const make_regex_validator = <T extends string>(regex: RegExp, custom_message?: 
 	},
 })
 
+const count_digits = (str: string) => str.replace(/\D/g, '').length
+
+const email_validator: Validator<string> = {
+	is_valid: (input: unknown): input is string => typeof input === 'string' && /@.*\./.test(input),
+	get_messages: (input: unknown, name: string) =>
+		typeof input === 'string' && /@.*\./.test(input)
+			? []
+			: [`${double_quote(name)} must contain an @ followed by a period`],
+}
+
+const phone_validator: Validator<string> = {
+	is_valid: (input: unknown): input is string => typeof input === 'string' && count_digits(input) >= 7,
+	get_messages: (input: unknown, name: string) =>
+		typeof input === 'string' && count_digits(input) >= 7
+			? []
+			: [`${double_quote(name)} must contain at least 7 digits`],
+}
+
 const undefined_validator: Validator<undefined> = {
 	is_valid(input: unknown): input is undefined {
 		return input === undefined
@@ -277,4 +295,6 @@ export {
 	number_validator as is_number,
 	date_validator as is_date,
 	null_validator as is_null,
+	email_validator as is_email,
+	phone_validator as is_phone,
 }

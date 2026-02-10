@@ -17,8 +17,8 @@ export const service_name_validator = object_key_validator(services)
 
 const contact_validator = jv.object({
 	name: jv.is_string,
-	email: jv.is_string,
-	phone: jv.is_string,
+	email: jv.is_email,
+	phone: jv.is_phone,
 	street_address: jv.is_string,
 	extra: jv.object_values(jv.is_string),
 })
