@@ -15,6 +15,12 @@ const get_subdomain = (hostname: string): string => {
 	return parts.length > 2 ? (parts[0] ?? '') : ''
 }
 
+const with_cache_headers = (response: Response): Response => {
+	const cached_response = new Response(response.body, response)
+	cached_response.headers.set('Cache-Control', 'public, max-age=43200')
+	return cached_response
+}
+
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url)
@@ -42,11 +48,11 @@ export default {
 		}
 
 		if (subdomain === 'embed') {
-			return env.ASSETS.fetch(prepend_path(request, '/embed'))
+			return with_cache_headers(await env.ASSETS.fetch(prepend_path(request, '/embed')))
 		}
 
 		console.log('🍏 redirecting to ASSETS binding', prepend_path(request, '/www').url)
 
-		return env.ASSETS.fetch(prepend_path(request, '/www'))
+		return with_cache_headers(await env.ASSETS.fetch(prepend_path(request, '/www')))
 	},
 }
