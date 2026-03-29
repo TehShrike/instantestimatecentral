@@ -94,7 +94,14 @@
 
 		<div class="form-group">
 			<label for="contact_phone">Phone number</label>
-			<input type="tel" id="contact_phone" bind:value={common_data.phone} required />
+			<input
+				type="tel"
+				id="contact_phone"
+				bind:value={common_data.phone}
+				required
+				pattern="\D*(\d\D*){'{7,}'}"
+				title="Phone number must contain at least 7 digits"
+			/>
 		</div>
 
 		<div class="form-group">

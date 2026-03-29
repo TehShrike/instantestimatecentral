@@ -5,6 +5,8 @@ import tree_planting from './services/tree_planting.ts'
 import { type Company, type ServiceNameToService, type Service } from '#companies/companies.js'
 import object_key_validator from '#lib/validator/object_key_validator.ts'
 import * as jv from '#lib/validator/json_validator.ts'
+import email_validator from '#lib/validator/email_validator.ts'
+import phone_validator from '#lib/validator/phone_validator.ts'
 
 export const services = {
 	limb_removal,
@@ -17,8 +19,8 @@ export const service_name_validator = object_key_validator(services)
 
 const contact_validator = jv.object({
 	name: jv.is_string,
-	email: jv.is_string,
-	phone: jv.is_string,
+	email: email_validator,
+	phone: phone_validator,
 	street_address: jv.is_string,
 	extra: jv.object_values(jv.is_string),
 })
