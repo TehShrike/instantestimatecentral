@@ -15,9 +15,11 @@ const get_subdomain = (hostname: string): string => {
 	return parts.length > 2 ? (parts[0] ?? '') : ''
 }
 
+const FIVE_MINUTES_IN_SECONDS = 300
+
 const with_cache_headers = (response: Response): Response => {
 	const cached_response = new Response(response.body, response)
-	cached_response.headers.set('Cache-Control', 'public, max-age=43200')
+	cached_response.headers.set('Cache-Control', `public, max-age=${FIVE_MINUTES_IN_SECONDS}`)
 	return cached_response
 }
 
