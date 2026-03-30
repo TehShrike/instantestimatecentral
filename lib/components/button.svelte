@@ -4,27 +4,29 @@
 	let {
 		disabled = false,
 		type = 'button' as const,
+		style = '',
 		onclick,
 		children,
 	}: {
 		disabled?: boolean
 		type?: 'button' | 'submit' | 'reset'
+		style?: string
 		onclick?: (event: MouseEvent) => void
 		children: Snippet
 	} = $props()
 </script>
 
-<button {type} {disabled} {onclick}>
+<button {type} {disabled} {style} {onclick}>
 	{@render children()}
 </button>
 
 <style>
 	button {
-		--button_brand_color: var(--iec_brand_color, #0074ff);
+		--button_background_color: var(--button_background_color_override, var(--iec_brand_color, #0074ff));
 		--button_border_radius: var(--iec_button_border_radius, var(--default_border_radius));
 
 		padding: 0.75rem 1.5rem;
-		background-color: var(--button_brand_color);
+		background-color: var(--button_background_color);
 		color: white;
 		border: none;
 		border-radius: var(--button_border_radius);

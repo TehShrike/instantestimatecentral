@@ -29,6 +29,7 @@ const generate_html = (custom_element_name: string, service_name: string, form_n
 				width: 100%;
 				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 				padding-bottom: 200px;
+				--iec_secondary_color: orange;
 			}
 		</style>
 	</head>
