@@ -1,5 +1,7 @@
 import * as jv from '#lib/validator/json_validator.ts'
 import type { Validator } from '#lib/validator/json_validator.ts'
+import email_validator from '#lib/validator/email_validator.ts'
+import phone_validator from '#lib/validator/phone_validator.ts'
 
 export const is_anything: Validator<any> = {
 	is_valid: (input: unknown): input is any => true,
@@ -10,8 +12,8 @@ export const altcha_payload_validator = jv.regex(/^[A-Za-z0-9+/]+=*$/, 'altcha_p
 
 export const contact_validator = jv.object({
 	name: jv.is_string,
-	email: jv.is_string,
-	phone: jv.is_string,
+	email: email_validator,
+	phone: phone_validator,
 	street_address: jv.is_string,
 	extra: jv.object_values(jv.is_string),
 })
