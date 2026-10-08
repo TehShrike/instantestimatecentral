@@ -2,7 +2,7 @@ import fnum, { greatest_of, increase_by_ratio } from '#lib/fnum.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
 
-const MINIMUM_PRICE = fnum('300')
+const MINIMUM_PRICE = fnum('700')
 
 type LimbWidth = '1-3 inches'
 	| '3-5 inches'

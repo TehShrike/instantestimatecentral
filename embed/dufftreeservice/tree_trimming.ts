@@ -1,6 +1,8 @@
-import fnum, { increase_by_ratio } from '#lib/fnum.ts'
+import fnum, { greatest_of, increase_by_ratio } from '#lib/fnum.ts'
 import { exact, is_boolean, object, one_of, type Validator } from '#lib/json_validator.ts'
 import type { FinancialNumber } from 'financial-number'
+
+const MINIMUM_PRICE = fnum('700')
 
 type TreeDiameter = '6-10 inches'
 	| '11-15 inches'
@@ -46,7 +48,7 @@ export const pricing = ({
 		.plus(pruned_by_arborist_discount)
 		.plus(variety_adjustment)
 
-	return total
+	return greatest_of(MINIMUM_PRICE, total)
 }
 
 const price_matrix: Record<TreeDiameter, Record<TrimType, string>> = {

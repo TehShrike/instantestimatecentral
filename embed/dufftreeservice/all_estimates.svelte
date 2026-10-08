@@ -7,7 +7,6 @@
 	import LimbRemoval from './limb_removal.svelte'
 	import TreeRemoval from './tree_removal.svelte'
 	import TreeTrimming from './tree_trimming.svelte'
-	import TreePlanting from './tree_planting.svelte'
 
 	let current_tab = $state(get('all_estimates_current_tab', is_string, 'Limb Removal'))
 
@@ -30,10 +29,6 @@
 				name: 'Tree Trimming',
 				content: tree_trimming_content,
 			},
-			{
-				name: 'Tree Planting',
-				content: tree_planting_content,
-			},
 		]}
 	/>
 </div>
@@ -48,10 +43,6 @@
 
 {#snippet tree_trimming_content()}
 	<TreeTrimming />
-{/snippet}
-
-{#snippet tree_planting_content()}
-	<TreePlanting />
 {/snippet}
 
 <style>

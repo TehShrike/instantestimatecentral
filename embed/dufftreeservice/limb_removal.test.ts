@@ -46,7 +46,7 @@ test(`dufftreeservice limb removal pricing: ${cases.length} cases`, () => {
 			highest_price = price
 			highest_price_args = arg
 		}
-		assert.ok(pricing(arg).gte('300'))
+		assert.ok(pricing(arg).gte('700'))
 	})
 
 	console.log(highest_price.toString(2), highest_price_args)

@@ -8,7 +8,7 @@
 
 	let { tabs, current_tab = $bindable(tabs[0]?.name) }: { tabs: Tab[]; current_tab?: string } = $props()
 
-	const selected_tab_index = $derived(tabs.findIndex(tab => tab.name === current_tab))
+	const selected_tab_index = $derived(Math.max(0, tabs.findIndex(tab => tab.name === current_tab)))
 
 	const selected_tab = $derived(tabs[selected_tab_index])
 </script>
